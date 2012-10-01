@@ -1,0 +1,19 @@
+\begin{thebibliography}{1}
+
+\bibitem{personalizingimagesearchresults}
+Kristina Lerman, Anon Plangprasopchok, and Chio Wong.
+\newblock {Personalizing Image Search Results on Flickr}.
+\newblock {\em Computing Research Repository}, abs/0704.1, 2007.
+
+\bibitem{Sebastiani:2002:MLA:505282.505283}
+Fabrizio Sebastiani.
+\newblock Machine learning in automated text categorization.
+\newblock {\em ACM Comput. Surv.}, 34(1):1--47, March 2002.
+
+\bibitem{lornet}
+Maryam Shokri1, Hamid~R. Tizhoosh1, and Mohamed Kamel.
+\newblock {Reinforcement Learning for Personalizing Image Search}.
+\newblock In {\em LORNET Annual E-Learning Conference on Intelligent
+  Interactive Learning Object Repositories}, 2006.
+
+\end{thebibliography}

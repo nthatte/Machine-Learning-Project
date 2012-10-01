@@ -29,25 +29,36 @@ Adwait Gandhe \\
 \nipsfinalcopy % Uncomment for camera-ready version
 
 \begin{document}
-\vspace{-0.5in}
 \maketitle
-\vspace{-0.25in}
+\vspace{-0.5in}
 \section{Project Idea}
+\vspace{-0.125in}
 \label{sec:projidea}
 Social networks allow users to share photographs, tag them and organize them into albums (defined by Meta-labels, eg: Birthday). The task of creating albums from unorganized images is currently left to the user and is very tedious. We propose to build a semi-automated photo organization system that learns from collective and individual user input and provides personalized categorization of photographs. 
 
 We use existing label and meta-label data to learn a global prior model and user specific models of the correlation between labels and meta-labels. The former allows us to make predictions for users who haven't created the concerned meta-label(or album) and the later allows us to make even better predictions for users who have created these categories and pre-populated them with a few relevant images. Our algorithm uses the users' evaluations of these predictions to iteratively improve the global and user specific models, and thus refine the predictions.
-
+\vspace{-0.125in}
 \section{Dataset}
+\vspace{-0.125in}
 We plan to use the MIR FLIKR 1M dataset. The dataset consists of images, user defined tags and user identification numbers. 
 We use user defined tags to approximate the output of an object recognition algorithm that would otherwise generate these tags from images.
 The dataset is designed to contain, for each user, for each (manually chosen) meta-label , a set of images and their corresponding low level labels. We use this form of the data to simulate N users in the semi-supervised learning process. 
-
-The simulation begins by assigning meta-labels to a subset of the images. These are used by our algorithm to make predictions for the images without meta-labels. A random subset of these are then marked as correct or incorrect by the simulation engine and this data is then incorporated by our algorithm in an attempt to refine all the unmarked predictions. This repeats for a finite number of iterations after which the system stops to avoid over fitting.
-
+%
+%The simulation begins by assigning meta-labels to a subset of the images. These are used by our algorithm to make predictions for the images without meta-labels. A random subset of these are then marked as correct or incorrect by the simulation engine and this data is then incorporated by our algorithm in an attempt to refine all the unmarked predictions. This repeats for a finite number of iterations after which the system stops to avoid over fitting.
+\vspace{-0.125in}
 \section{Software}
-To complete this project we will write software that (a) parses the dataset to extract metadata, (b) runs the simulation and (c) implements the learning algorithm discussed in section \ref{sec:projidea}.
-
+\vspace{-0.125in}
+To complete this project we will write software that (a) parses the dataset to extract metadata, (b) runs the multi-user simulation and (c) implements the learning algorithm discussed in section \ref{sec:projidea}.
+\vspace{-0.125in}
 \section{Midway Report Milestone}
+\vspace{-0.125in}
 In the midway report we shall evaluate different approaches of machine learning to learn the global model and write software that parses the dataset and runs the simulation. Each team member shall experiment with a different machine learning technique on a toy subset of the complete dataset. Further, Adwait will write the parsing software; Nitish will write the simulation software and Aravindh will discuss testing approaches feasible for the evaluation of the algorithms.
+\vspace{-0.125in}
+\section{Papers to read}
+\vspace{-0.125in}
+We shall read papers \cite{personalizingimagesearchresults}, \cite{lornet} and \cite{Sebastiani:2002:MLA:505282.505283} to understand how individual components of the task can be achieved.
+\vspace{-0.125in}
+\bibliographystyle{plain}
+\bibliography{bibtex}
+\vspace{-0.125in}
 \end{document}
