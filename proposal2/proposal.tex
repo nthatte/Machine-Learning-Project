@@ -1,0 +1,55 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{nips12submit_e,times}
+\usepackage{amsmath}
+\usepackage[top=1.0in, bottom=1.0in, left=1.0in, right=1.0in]{geometry}
+\renewcommand\refname{Papers To Read}
+\title{Semantic Segmentation Using Hybrid Markov Logic Networks}
+
+\author{
+Aravindh Mahendran \\
+\texttt{amahend1@andrew.cmu.edu} \\ 
+\And
+Nitish Thatte \\
+\texttt{nitisht@andrew.cmu.edu} \\
+\AND
+Adwait Gandhe \\
+\texttt{agandhe@andrew.cmu.edu} \\
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\nipsfinalcopy
+
+\begin{document}
+\maketitle
+\section{Project Idea}
+\vspace{-0.125in}
+
+The task of semantic labeling in crowded scenes is a difficult problem that has received much attention from the machine learning, computer vision and robotics communities. 
+Previous approaches include Stacked Hierarchical Labeling \cite{Munoz:2010:SHL:1888212.1888218} and taking advantage of visual word co-occurrence using hierarchical vocabulary trees \cite{Micusik08032012}. 
+We propose a new approach that uses hybrid Markov logic networks (HMLNs) \cite{Wang:2008:HML:1620163.1620244} to capture relationships between adjacent super-pixels and class co-occurrence.
+This approach relaxes the I.I.D assumption used by some of the previous techniques and allows us to use first order logic to express complex relationships between super-pixels.
+
+Examples of predicate statements we may use include $isClass(superPixel, Class)$ and $neighbors(superPixel, superPixel)$. Possible formulas based on these predicates are, $isClass(s,t)$, $neighbors(s,s') \Rightarrow \left( isClass(s, t) \Leftrightarrow isClass(s', t) \right)$. The former will learn the prior probability of a given class type based on the training data and the later will learn the influence a neighboring label on the label assigned to a given super-pixel. 
+	
+\vspace{-0.125in}
+\section{Dataset}
+\vspace{-0.125in}
+We plan to use the CAMVID dataset (Cambridge-Driving Labeled Video Database), which consists of videos and user defined object class semantic labels filmed from a car driving through a city.
+This dataset includes 32 semantic classes such as buildings, trees, and sidewalks. 
+
+\vspace{-0.125in}
+\section{Software}
+\vspace{-0.125in}
+Alchemy is an open source software developed by University of Washington that implements efficient learning and inference algorithms for HMLNs. We are required to write the predicates/numeric terms and formulas/numeric properties for the task of semantic segmentation. The formulas/numeric properties would decide the kind of relationships we learn. The HMLN inference would operate over image features describing super pixel appearance information. Software for over segmentation and feature extraction would also be written by us and may use libraries such as OpenCV.
+
+\vspace{-0.125in}
+\section{Midway Report Milestone}
+\vspace{-0.125in}
+From now until the midterm report, Nitish will work on writing HMLNs, Aravindh will work on feature extraction and Adwait will work on super-pixel generation techniques. The midterm report will consist of the results of initial experiments with different techniques for each aspect and present our design choices.
+
+\vspace{-.125in}
+\bibliography{../bibtex}
+\bibliographystyle{plain}
+\end{document}
