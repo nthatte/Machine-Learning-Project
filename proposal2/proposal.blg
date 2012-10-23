@@ -1,30 +1,3 @@
-<<<<<<< HEAD
-This is BibTeX, Version 0.99d (TeX Live 2012)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
-The top-level auxiliary file: proposal.aux
-The style file: plain.bst
-Database file #1: ../bibtex.bib.bib
-You've used 3 entries,
-            2118 wiz_defined-function locations,
-            518 strings with 4570 characters,
-and the built_in function-call counts, 870 in all, are:
-= -- 80
-> -- 43
-< -- 0
-+ -- 17
-- -- 14
-* -- 59
-:= -- 158
-add.period$ -- 9
-call.type$ -- 3
-change.case$ -- 16
-chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 35
-empty$ -- 70
-format.name$ -- 14
-if$ -- 174
-=======
 This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: proposal.aux
 The style file: plain.bst
@@ -49,23 +22,11 @@ duplicate$ -- 56
 empty$ -- 98
 format.name$ -- 16
 if$ -- 282
->>>>>>> 11f719ccc9fa4b78837c28e7aca0d94fdaa870b1
 int.to.chr$ -- 0
 int.to.str$ -- 3
 missing$ -- 3
 newline$ -- 18
 num.names$ -- 6
-<<<<<<< HEAD
-pop$ -- 16
-preamble$ -- 1
-purify$ -- 13
-quote$ -- 0
-skip$ -- 22
-stack$ -- 0
-substring$ -- 31
-swap$ -- 4
-text.length$ -- 0
-=======
 pop$ -- 17
 preamble$ -- 1
 purify$ -- 14
@@ -75,17 +36,10 @@ stack$ -- 0
 substring$ -- 79
 swap$ -- 22
 text.length$ -- 2
->>>>>>> 11f719ccc9fa4b78837c28e7aca0d94fdaa870b1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 12
 warning$ -- 0
-<<<<<<< HEAD
-while$ -- 8
-width$ -- 4
-write$ -- 34
-=======
 while$ -- 12
 width$ -- 4
 write$ -- 39
->>>>>>> 11f719ccc9fa4b78837c28e7aca0d94fdaa870b1

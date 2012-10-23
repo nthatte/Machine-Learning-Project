@@ -1,22 +1,5 @@
 \begin{thebibliography}{1}
 
-<<<<<<< HEAD
-\bibitem{personalizingimagesearchresults}
-Kristina Lerman, Anon Plangprasopchok, and Chio Wong.
-\newblock {Personalizing Image Search Results on Flickr}.
-\newblock {\em Computing Research Repository}, abs/0704.1, 2007.
-
-\bibitem{Sebastiani:2002:MLA:505282.505283}
-Fabrizio Sebastiani.
-\newblock Machine learning in automated text categorization.
-\newblock {\em ACM Comput. Surv.}, 34(1):1--47, March 2002.
-
-\bibitem{lornet}
-Maryam Shokri1, Hamid~R. Tizhoosh1, and Mohamed Kamel.
-\newblock {Reinforcement Learning for Personalizing Image Search}.
-\newblock In {\em LORNET Annual E-Learning Conference on Intelligent
-  Interactive Learning Object Repositories}, 2006.
-=======
 \bibitem{Micusik08032012}
 Branislav Micusik, Jana Košecká, and Gautam Singh.
 \newblock Semantic parsing of street scenes from video.
@@ -34,6 +17,5 @@ Jue Wang and Pedro Domingos.
 \newblock Hybrid markov logic networks.
 \newblock In {\em Proceedings of the 23rd national conference on Artificial
   intelligence - Volume 2}, AAAI'08, pages 1106--1111. AAAI Press, 2008.
->>>>>>> 11f719ccc9fa4b78837c28e7aca0d94fdaa870b1
 
 \end{thebibliography}
