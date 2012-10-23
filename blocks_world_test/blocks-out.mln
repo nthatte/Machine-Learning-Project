@@ -1,0 +1,34 @@
+//predicate declarations
+isRed(block)
+isAbove(block,block)
+isGreen(block)
+isBlue(block)
+isSameColor(block,block)
+
+// 7.09466  isRed(b1) ^ isRed(b2) => isSameColor(b1,b2)
+7.09466  !isRed(a1) v !isRed(a2) v isSameColor(a1,a2)
+
+// 6.35969  isBlue(b1) ^ isBlue(b2) => isSameColor(b1,b2)
+6.35969  !isBlue(a1) v !isBlue(a2) v isSameColor(a1,a2)
+
+// 4.85965  isGreen(b1) ^ isGreen(b2) => isSameColor(b1,b2)
+4.85965  !isGreen(a1) v !isGreen(a2) v isSameColor(a1,a2)
+
+// -0.844359  isSameColor(b1,b2) <=> isSameColor(b2,b1)
+-0.844359  isSameColor(a1,a2) v !isSameColor(a2,a1)
+
+// 12.5666  isRed(a1)
+12.5666  isRed(a1)
+
+// 11.9685  isBlue(a1)
+11.9685  isBlue(a1)
+
+// 14.3056  isGreen(a1)
+14.3056  isGreen(a1)
+
+// -7.25905  isAbove(a1,a2)
+-7.25905  isAbove(a1,a2)
+
+// -6.00818  isSameColor(a1,a2)
+-6.00818  isSameColor(a1,a2)
+
