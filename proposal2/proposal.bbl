@@ -1,5 +1,6 @@
 \begin{thebibliography}{1}
 
+<<<<<<< HEAD
 \bibitem{personalizingimagesearchresults}
 Kristina Lerman, Anon Plangprasopchok, and Chio Wong.
 \newblock {Personalizing Image Search Results on Flickr}.
@@ -15,5 +16,24 @@ Maryam Shokri1, Hamid~R. Tizhoosh1, and Mohamed Kamel.
 \newblock {Reinforcement Learning for Personalizing Image Search}.
 \newblock In {\em LORNET Annual E-Learning Conference on Intelligent
   Interactive Learning Object Repositories}, 2006.
+=======
+\bibitem{Micusik08032012}
+Branislav Micusik, Jana Košecká, and Gautam Singh.
+\newblock Semantic parsing of street scenes from video.
+\newblock {\em The International Journal of Robotics Research}, 2012.
+
+\bibitem{Munoz:2010:SHL:1888212.1888218}
+Daniel Munoz, J.~Andrew Bagnell, and Martial Hebert.
+\newblock Stacked hierarchical labeling.
+\newblock In {\em Proceedings of the 11th European conference on Computer
+  vision: Part VI}, ECCV'10, pages 57--70, Berlin, Heidelberg, 2010.
+  Springer-Verlag.
+
+\bibitem{Wang:2008:HML:1620163.1620244}
+Jue Wang and Pedro Domingos.
+\newblock Hybrid markov logic networks.
+\newblock In {\em Proceedings of the 23rd national conference on Artificial
+  intelligence - Volume 2}, AAAI'08, pages 1106--1111. AAAI Press, 2008.
+>>>>>>> 11f719ccc9fa4b78837c28e7aca0d94fdaa870b1
 
 \end{thebibliography}

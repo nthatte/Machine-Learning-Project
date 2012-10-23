@@ -1,0 +1,40 @@
+//predicate declarations
+
+isRed(block)
+isBlue(block)
+isGreen(block)
+isSameColor(block,block)
+
+isHigh(block)
+isLow(block)
+isAbove(block,block)
+isBelow(block,block)
+isSameHeight(block,block)
+
+//formulas
+
+isRed(b1) ^ isRed(b2) => isSameColor(b1,b2)
+isBlue(b1) ^ isBlue(b2) => isSameColor(b1,b2)
+isGreen(b1) ^ isGreen(b2) => isSameColor(b1,b2)
+FORALL b isSameColor(b,b)
+isSameColor(b1,b2) <=> isSameColor(b2,b1)
+(isSameColor(b1,b2)) ^ (isSameColor(b2,b3)) => isSameColor(b1,b3)
+
+isHigh(b1) <=> !isLow(b1)
+isHigh(b1)^isLow(b2) <=> isAbove(b1,b2)
+isLow(b1)^isHigh(b2) <=> isBelow(b1,b2)
+isAbove(b1,b2) => !isBelow(b1,b2)
+isBelow(b1,b2) => !isAbove(b1,b2)
+
+isHigh(b1) ^ is High(b2) => isSameHeight(b1,b2)
+isLow(b1) ^ isLow(b2) => isSameHeight(b1,b2)
+isSameHeight(b1,b2) => !isAbove(b1,b2) & !isBelow(b1,b2)
+
+FORALL b isSameHeight(b,b)
+isSameHeight(b1,b2) <=> isSameHeight(b2,b1)
+(isSameHeight(b1,b2)) ^ (isSameHeight(b2,b3)) => isSameHeight(b1,b3)
+
+isSameColor(b1,b2) ^ isSameHeight(b1,b2) <=> b1 = b2
+
+//constants
+block = {Block1, Block2, Block3, Block4, Block5, Block6}
