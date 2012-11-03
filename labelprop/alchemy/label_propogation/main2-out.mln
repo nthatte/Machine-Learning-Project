@@ -1,0 +1,30 @@
+//predicate declarations
+FeatureDistance(superpixel,superpixel,feature_number)
+IsNeighbor(superpixel,superpixel)
+IsLabel(superpixel,label!)
+
+// 0.00608455  IsNeighbor(s1,s2) => (IsLabel(s1,C@label@1) <=> IsLabel(s2,C@label@1))
+-0.430002  IsLabel(a1,1) v !IsLabel(a2,1) v !IsNeighbor(a1,a2)
+0.436087  IsLabel(a1,1) v !IsLabel(a2,1) v !IsNeighbor(a2,a1)
+
+// -0.00598454  IsNeighbor(s1,s2) => (IsLabel(s1,C@label@1) <=> IsLabel(s2,C@label@2))
+-0.431485  IsLabel(a1,1) v !IsLabel(a2,2) v !IsNeighbor(a1,a2)
+0.4255  IsLabel(a1,2) v !IsLabel(a2,1) v !IsNeighbor(a2,a1)
+
+// -0.00598454  IsNeighbor(s1,s2) => (IsLabel(s1,C@label@2) <=> IsLabel(s2,C@label@1))
+0.4255  IsLabel(a1,2) v !IsLabel(a2,1) v !IsNeighbor(a1,a2)
+-0.431485  IsLabel(a1,1) v !IsLabel(a2,2) v !IsNeighbor(a2,a1)
+
+// 0.00608455  IsNeighbor(s1,s2) => (IsLabel(s1,C@label@2) <=> IsLabel(s2,C@label@2))
+0.436087  IsLabel(a1,2) v !IsLabel(a2,2) v !IsNeighbor(a1,a2)
+-0.430002  IsLabel(a1,2) v !IsLabel(a2,2) v !IsNeighbor(a2,a1)
+
+// 0       IsLabel(a1,a2!)
+0       IsLabel(a1,a2)
+
+// 0       IsNeighbor(a1,a2)
+0       IsNeighbor(a1,a2)
+
+// 0       FeatureDistance(a1,a2,a3)
+0       FeatureDistance(a1,a2,a3)
+
