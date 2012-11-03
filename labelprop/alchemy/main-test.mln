@@ -1,0 +1,18 @@
+superpixel = {1,2,3}
+label = {1,2}
+feature_number = {1,2}
+number = {-1000.0, ...,0.0}
+
+IsLabel(superpixel, label!)
+IsNeighbor(superpixel, superpixel)
+FeatureDistance(superpixel, superpixel, feature_number)
+
+(IsLabel(s1,+l1) <=> IsLabel(s2, +l2)) * (FeatureDistance(s1, s2, +i) = 0)
+IsNeighbor(s1,s2) => (IsLabel(s1,+l1) <=> IsLabel(s2,+l2))
+
+-2.19722457734 IsLabel(1,1)
+2.19722457734 IsLabel(1,2)
+-2.19722457734 IsLabel(2,1)
+2.19722457734 IsLabel(2,2)
+-2.19722457734 IsLabel(3,1)
+2.19722457734 IsLabel(3,2)
