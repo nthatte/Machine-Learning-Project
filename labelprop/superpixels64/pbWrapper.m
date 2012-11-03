@@ -10,7 +10,7 @@ else
 end
 
 if ~exist('pbCGTG')
-  addpath('/cs/fac1/mori/linux/src/segbench/lib/matlab/');
+  addpath('/usr0/home/nitisht/segbench/lib/matlab');
 end
 
 [r,c,k] = size(I);

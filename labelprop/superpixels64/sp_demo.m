@@ -6,7 +6,7 @@ if ~exist('cncut')
     addpath('yu_imncut');
 end
 
-I = im2double(imread('img_000070.jpg'));
+I = im2double(imread('../adjmat_tests/8_29_s.png'));
 
 N = size(I,1);
 M = size(I,2);
@@ -64,4 +64,8 @@ imshow(I_sp);
 subplot(1,4,4);
 imshow(I_sp2);
 
+print -dpdf 'spdemo.pdf'
 
+dlmwrite('../S1.txt',Seg)
+dlmwrite('../S2.txt',Sp)
+dlmwrite('../S3.txt',Sp2)

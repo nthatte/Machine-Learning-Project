@@ -1,9 +1,10 @@
 %Connect supersuperpixel borders
 
+imgName = 'forAlchemy/5_26_s'
 tic;
 %load susu: coarse superpixels and su: fine superpixels
-susu   = dlmread('S1.txt');
-su = dlmread('S3.txt');
+susu   = dlmread(strcat(imgName,'.S1.csv'));
+su = dlmread(strcat(imgName,'.S3.csv'));
 
 %make copies
 sucx = su;
@@ -55,6 +56,8 @@ for susuNum = susus'
 	adjMat(uniquein,uniquein) = 1;
 end	
 
+dlmwrite(strcat(imgName,'.adj13.csv'),adjMat)
+
 %plot stuff
 figure(1)
 [susugx, susugy]= gradient(susu);
@@ -77,3 +80,4 @@ imagesc(adjMat)
 axis image
 print -dpdf './adjmat_tests/adj.pdf'
 system('pdfcrop ./adjmat_tests/adj.pdf ./adjmat_tests/adj.pdf')
+
