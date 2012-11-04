@@ -1,9 +1,9 @@
 %Connect supersuperpixel borders
 
-imgName = 'forAlchemy/5_26_s'
+imgName = '/usr0/home/nitisht/Documents/MLProject/labelprop/Toy/2_22_s'
 tic;
 %load susu: coarse superpixels and su: fine superpixels
-susu   = dlmread(strcat(imgName,'.S1.csv'));
+susu   = dlmread(strcat(imgName,'.S2.csv'));
 su = dlmread(strcat(imgName,'.S3.csv'));
 
 %make copies
@@ -56,9 +56,11 @@ for susuNum = susus'
 	adjMat(uniquein,uniquein) = 1;
 end	
 
-dlmwrite(strcat(imgName,'.adj13.csv'),adjMat)
+adjMat(1:length(adjMat)+1:length(adjMat)^2) = 0;
 
-%plot stuff
+dlmwrite(strcat(imgName,'.adj23.csv'),adjMat);
+
+%{plot stuff
 figure(1)
 [susugx, susugy]= gradient(susu);
 susug = susugx.^2 + susugy.^2;
@@ -73,11 +75,9 @@ set(gca, 'YTick', []);
 set(gca, 'XTick', []);
 axis image
 print -dpdf './adjmat_tests/su.pdf'
-system('pdfcrop ./adjmat_tests/su.pdf ./adjmat_tests/su.pdf')
 
 figure(2)
 imagesc(adjMat)
 axis image
 print -dpdf './adjmat_tests/adj.pdf'
-system('pdfcrop ./adjmat_tests/adj.pdf ./adjmat_tests/adj.pdf')
-
+%}

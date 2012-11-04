@@ -1,7 +1,8 @@
 function genSP(testImgName,kNNImgNums)
 
-global HOMEIMAGES HOMESP
-dirList = dir(HOMEIMAGES);
+global ALLIMAGES ALLSUPIX TESTIMAGES  TESTSUPIX  TRAINIMAGES  TRAINSUPIX 
+
+dirList = dir(ALLIMAGES);
 dirList = dirList(3:end); %remove . and .. from list
 
 if ~exist('cncut')
@@ -9,10 +10,10 @@ if ~exist('cncut')
 end
 
 %imgList = {fullfile(HOMEIMAGES,testImgName)};
-imgList = {testImgName}
+imgList = {testImgName};
 i = 1;
 for imgNum = kNNImgNums
-	imgList(end + 1) = {dirList(imgNum).name}
+	imgList(end + 1) = {dirList(imgNum).name};
 	%imgList(end + 1) = {fullfile(HOMEIMAGES,dirList(imgNum).name)};
 	i = i +1;
 end
@@ -69,6 +70,7 @@ for imgName = imgList
 	Sp2 = clusterLocations(Sp,ceil(N*M/N_sp2));
 	fprintf(' took %.2f minutes\n',etime(clock,st)/60);
 	
+	%{
 	I_sp = segImage(I,Sp);
 	I_sp2 = segImage(I,Sp2);
 	I_seg = segImage(I,Seg);
@@ -81,7 +83,8 @@ for imgName = imgList
 	imshow(I_sp);
 	subplot(1,4,4);
 	imshow(I_sp2);
-	
+	%}
+
 	dlmwrite(strcat(spname(1:end-3),'S1.csv'),Seg)
 	dlmwrite(strcat(spname(1:end-3),'S2.csv'),Sp)
 	dlmwrite(strcat(spname(1:end-3),'S3.csv'),Sp2)

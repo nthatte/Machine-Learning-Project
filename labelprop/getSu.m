@@ -1,0 +1,1 @@
+(testImgName,kNNImgNums)

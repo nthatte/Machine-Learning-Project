@@ -1,32 +1,25 @@
 function imgs = findkNN(testImgName,k)
 
-	global HOMEIMAGES
+	global TRAIN TRAINIMAGES TEST TESTIMAGES
 	
 	%get and list of images 
-	dirList = dir(HOMEIMAGES);
-	dirList = dirList(3:end); %remove . and .. from list
-	testImageNum = find(strcmp(testImgName,{dirList.name}));
-	NtrainImages = length(dirList) - 1;
+	testList = dir(TESTIMAGES);
+	testList = testList(3:end);
+	trainList = dir(TRAINIMAGES);
+	trainList = trainList(3:end);
 
-	%gist feature parameters and get gist features for all images
-	param.orientationsPerScale = [8 8 8 8];
-	param.numberBlocks = 4;
-	param.fc_prefilt = 4;
-	param.imageSize = [320 213];
-	if ~exist('gist.csv')
-		gist = calcGist(dirList,param);
-	else
-		gist = dlmread('gist.csv');
-	end
+	trainGist = dlmread(fullfile(TRAIN,'gist.csv'));
+	testGist = dlmread(fullfile(TEST,'gist.csv'));
 
 	%load a test image
 	% use full path because the folder may not be the active path
-	testImg = imread(fullfile(HOMEIMAGES,testImgName));		
-	gistTest = gist(testImageNum,:);
+	testImg = imread(fullfile(TESTIMAGES,testImgName));		
+	testImageNum = find(strcmp(testImgName,{testList.name}));
+	gistTestVector = testGist(testImageNum,:);
 
 	%find k nearest images excluding testImage
-	gist(testImageNum,:) = nan;
-	[imgs,D] = knnsearch(gist,gistTest,'K',k);
+	[imgs,D] = knnsearch(trainGist,gistTestVector,'K',k);
+	
 	%plot k nearest images
 	scrsz = get(0,'ScreenSize');
 	figure(1)
@@ -35,7 +28,9 @@ function imgs = findkNN(testImgName,k)
 	title(strcat('test image: ',testImgName),'Interpreter','none')
 	i = 2;
 	for img=imgs
-		subplot(4,3,i), imshow(imread(fullfile(HOMEIMAGES,dirList(img).name)))
-		title(strcat(int2str(i-1),': ',dirList(img).name),'Interpreter','none')
+		trainList(img).name
+		subplot(4,3,i), imshow(imread(fullfile(TRAINIMAGES,trainList(img).name)))
+		title(strcat(int2str(i-1),': ',trainList(img).name),'Interpreter','none')
 		i = i + 1;
 	end
+

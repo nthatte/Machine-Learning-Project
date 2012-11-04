@@ -3,5 +3,5 @@ function [p] = getLabelProbabilityDistribution(hist, histMat, labelvector)
 %the labels indicating the probability of label given histogram
 [D,I] = pdist2(histMat', hist', 'cityblock', 'Smallest', 130);
 label_list = label_vector(I');
-p = hist(label_list, 1:13);
+p = hist(label_list, 0:12);
 end
