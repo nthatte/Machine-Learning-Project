@@ -36,23 +36,25 @@ Semantic segmentation is the process of partitioning pixels in an image into cat
 
 
 \section{Introduction}
-
+\label{sec:Intro}
 Semantic segmentation is the process of classification of an image at the pixel level, which involves assigning a class label to each pixel of the image. Recognition of such semantic labels is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. Several techniques proposed for semantic segmentation make use of low level features and a learning framework to combine them with their higher level labels.   \cite{Leibe04combinedobject} is one of the first approaches for simultaneous object segmentation and recognition that uses an Implicit Shape Model, which integrates both capabilities into a common probabilistic framework. \cite{cao:spatially} proposes a generative model based on the bag of words representation for such simultaneous recognition and segmentation. \cite{Borenstein04combiningtop} discusses how to combine bottom-up and top-down approaches into a single figure ground segmentation process that draws merits from both the approaches. \cite{Russell:2006:UMS:1153171.1153637} uses topic discovery models to learn the objects and choose the right segmentation. \cite{lin07multiple} propose a similar approach using bag of keypoints model integrated over mean-shift patches. \cite{conf/bmvc/CsurkaP08} propose a method based on some of these approaches for scoring low-level patches according to their class relevance and propagating these posterior probabilities to pixels. Contrary to these methods, certain approaches use random fields to incorporate local cues and impart global control without implementing low level segmentation. \cite{Kumar:2005:OC:1068507.1068889} propose a Bayesian method for combining up-down and bottom-up cues. \cite{Richard04multiscaleconditional} and \cite{Kumar:2005:HFF:1097115.1097790} use conditional random fields for this purpose. \cite{Shotton06textonboost:joint} discusses an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. 
 
 The motivation behind this work is the second of these approaches that uses a random field for using local cues and learning the labels globally. \cite{Domingos06unifyinglogical} discusses how Markov Logic combines the complexity and uncertainty by attaching weights to first-order formulas and viewing them as templates for features of Markov Networks. Markov Logic Networks (MLNs) \cite{Richardson06markovlogic} combine first-order logic and Markov networks and allow us to handle complexity and uncertainty in one consistent framework. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} also allow for continuous properties to appear as features. 
 
-This paper is structured as follows. Section 2 discusses the related work in semantic segmentation and Hybrid Markov Logic Networks. In section 3, we discuss the method that we have proposed for the semantic segmentation. The experiments conducted and the results obtained are presented in section 4. As this is the mid-term report, we have described the design of upcoming experiments in section 6 and the work undertaken by each of the authors in section 7.  
+This paper is structured as follows: Section \ref{sec:Related} discusses the related work in semantic segmentation and Hybrid Markov Logic Networks. In section \ref{sec:Attempt}, we discuss attempted methods that we have proposed for the semantic segmentation. The experiments conducted and the results obtained are presented in section \ref{sec:Exp}. Section \ref{sec:New} presents our approaches for the second half of the semester. We summarize our conclusions in section \ref{sec:Conclusion}. And finally section \ref{sec:Plan} outlines what we will accomplish in the second half of the semester.
 
 %------------------------------------------------------------------------------------------
 
 \section{Related Work}
-
+\label{sec:Related}
 %------------------------------------------------------------------------------------------
 
-\section{Method}
-
+\section{Attempted Methods}
+\label{sec:Attempt}
 %------------------------------------------------------------------------------------------
 \subsection{Label Propagation}
+\label{sec:AttemptLabProp}
+
 	In the related works section above, we discussed a method of propagating labels on a graph of connected superpixels based on a learned label transfer confidence function. This method introduced us to two ideas: propagating labels rather than directly minimizing a cost function to arrive at a segmentation and working with graphs of related superpixels. Building on these ideas, one approach we decided to pursue is to learn the weights for a hybrid Markov logic network in order to refine a prior expected segmentation obtained from a baseline algorithm through maximum a posteriori estimation. The method incorporates an undirected graph of connected superpixels that expresses where labels can propagate.
 
 Examples of numeric terms and predicates in this Markov logic network are:
@@ -88,7 +90,7 @@ is to connect nodes that are directly share borders. Consequently, the graph wou
 Therefore, we propose to take a middle ground approach that will produce densely connected superpixels where relations are expected to be strong, and fewer edges across boundaries expected to not share labels. In order build this superpixel graph, we take two levels of superpixel segmentations: A coarse level, which we will henceforth refer to as supersuperpixels, and a fine level, termed superpixels. All superpixels within a supersuperpixel are connected allowing for contextual information to be shared within a region. Additionally superpixels that share a boundary between two supersuperpixels are connected allowing for labels to propagate across supersuperpixels while acknowledging that label transfer across supersuperpixels is less probable than within a supersuperpixel.
 
 \section{Experiment}
-
+\label{sec:Exp}
 \begin{figure}
 	\centering
 	\begin{subfigure}[c]{\textwidth}
@@ -235,14 +237,15 @@ Therefore, we propose to take a middle ground approach that will produce densely
 	\caption{}
 \end{figure}
 %------------------------------------------------------------------------------------------
+\section{New Proposed Method}
+\label{sec:New}
+%------------------------------------------------------------------------------------------
 
 \section{Conclusion}
-
-%------------------------------------------------------------------------------------------
-\section{Design of Upcoming Experiments}
-
+\label{sec:Conclusion}
 %------------------------------------------------------------------------------------------
 \section{Plan of Activities}
+\label{sec:Plan}
 
 %------------------------------------------------------------------------------------------\bibliography{midway_report}
 \bibliographystyle{plain}
