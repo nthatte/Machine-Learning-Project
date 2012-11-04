@@ -1,0 +1,84 @@
+\begin{thebibliography}{10}
+
+\bibitem{cao:spatially}
+Liangliang Cao and Fei-Fei Li.
+\newblock Spatially coherent latent topic model for concurrent segmentation and
+  classification of objects and scenes.
+\newblock In {\em ICCV'07}, pages 1--8, 2007.
+
+\bibitem{conf/bmvc/CsurkaP08}
+Gabriela Csurka and Florent Perronnin.
+\newblock A simple high performance approach to semantic segmentation.
+\newblock In Mark Everingham, Chris~J. Needham, and Roberto Fraile, editors,
+  {\em BMVC}. British Machine Vision Association, 2008.
+
+\bibitem{Domingos06unifyinglogical}
+Pedro Domingos, Stanley Kok, Hoifung Poon, Matthew Richardson, and Parag
+  Singla.
+\newblock Unifying logical and statistical ai.
+\newblock In {\em Proceedings of the Twenty-First National Conference on
+  Artificial Intelligence}, pages 2--7. AAAI Press, 2006.
+
+\bibitem{Borenstein04combiningtop}
+E.~Sharon E.~Borenstein and S.~Ullman.
+\newblock Combining top-down and bottom-up segmentation.
+\newblock In {\em CVPR}, 2004.
+
+\bibitem{Kumar:2005:OC:1068507.1068889}
+M.~Pawan Kumar, Philip H.~S. Torr, and A.~Zisserman.
+\newblock Obj cut.
+\newblock In {\em Proceedings of the 2005 IEEE Computer Society Conference on
+  Computer Vision and Pattern Recognition (CVPR'05) - Volume 1 - Volume 01},
+  CVPR '05, pages 18--25, Washington, DC, USA, 2005. IEEE Computer Society.
+
+\bibitem{Kumar:2005:HFF:1097115.1097790}
+Sanjiv Kumar and Martial Hebert.
+\newblock A hierarchical field framework for unified context-based
+  classification.
+\newblock In {\em Proceedings of the Tenth IEEE International Conference on
+  Computer Vision - Volume 2}, ICCV '05, pages 1284--1291, Washington, DC, USA,
+  2005. IEEE Computer Society.
+
+\bibitem{Leibe04combinedobject}
+Bastian Leibe, Ales Leonardis, and Bernt Schiele.
+\newblock Combined object categorization and segmentation with an implicit
+  shape model.
+\newblock In {\em In ECCV workshop on statistical learning in computer vision},
+  pages 17--32, 2004.
+
+\bibitem{Richard04multiscaleconditional}
+Xuming~He Richard, Richard~S. Zemel, and Miguel~Á. Carreira-perpiñán.
+\newblock Multiscale conditional random fields for image labeling.
+\newblock In {\em In CVPR}, pages 695--702, 2004.
+
+\bibitem{Richardson06markovlogic}
+Matthew Richardson and Pedro Domingos.
+\newblock Markov logic networks.
+\newblock In {\em Machine Learning}, page 2006, 2006.
+
+\bibitem{Russell:2006:UMS:1153171.1153637}
+Bryan~C. Russell, William~T. Freeman, Alexei~A. Efros, Josef Sivic, and Andrew
+  Zisserman.
+\newblock Using multiple segmentations to discover objects and their extent in
+  image collections.
+\newblock In {\em Proceedings of the 2006 IEEE Computer Society Conference on
+  Computer Vision and Pattern Recognition - Volume 2}, CVPR '06, pages
+  1605--1614, Washington, DC, USA, 2006. IEEE Computer Society.
+
+\bibitem{Shotton06textonboost:joint}
+J.~Shotton, J.~Winn, C.~Rother, and A.~Criminisi.
+\newblock Textonboost: Joint appearance, shape and context modeling for
+  multi-class object recognition and segmentation.
+\newblock In {\em In ECCV}, pages 1--15, 2006.
+
+\bibitem{Wang_hybridmarkov}
+Jue Wang and Pedro Domingos.
+\newblock Hybrid markov logic networks.
+
+\bibitem{lin07multiple}
+Lin Yang, Peter Meer, and David~J. Foran.
+\newblock {Multiple Class Segmentation Using A Unified Framework over
+  Mean-Shift Patches}.
+\newblock In {\em Computer Vision and Pattern Recognition}, 2007.
+
+\end{thebibliography}
