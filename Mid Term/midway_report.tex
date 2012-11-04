@@ -63,7 +63,7 @@ Examples of numeric terms and predicates in this Markov logic network are:
 An example of a formula in this hybrid Markov logic network that use these predicates and numeric terms are :
 
 \begin{equation*}
-	[isNeighbor(s_i,s_j) => (isLabel(s_i,l_k) <=> isLabel(s_k,l_m))]*(featureDistance(s_i, s_k, f_m))
+	[isNeighbor(s_i,s_j) \Rightarro (isLabel(s_i,l_k) \Leftrightarrow isLabel(s_k,l_m))]*(featureDistance(s_i, s_k, f_m))
 \end{equation*}
 
 \noindent This formula encodes the following two beliefs about how and why labels can propagate in the image.
