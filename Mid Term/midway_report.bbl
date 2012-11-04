@@ -1,10 +1,23 @@
 \begin{thebibliography}{10}
 
+\bibitem{Borenstein04combiningtop}
+E.~Borenstein, E.~Sharon, and S.~Ullman.
+\newblock Combining top-down and bottom-up segmentation.
+\newblock In {\em CVPR}, 2004.
+
 \bibitem{cao:spatially}
 Liangliang Cao and Fei-Fei Li.
 \newblock Spatially coherent latent topic model for concurrent segmentation and
   classification of objects and scenes.
 \newblock In {\em ICCV'07}, pages 1--8, 2007.
+
+\bibitem{Chen2012}
+Xiaowu Chen, Qing Li, Yafei Song, Xin Jin, and Qinping Zhao.
+\newblock Supervised geodesic propagation for semantic label transfer.
+\newblock In Andrew Fitzgibbon, Svetlana Lazebnik, Pietro Perona, Yoichi Sato,
+  and Cordelia Schmid, editors, {\em Computer Vision – ECCV 2012}, volume
+  7574 of {\em Lecture Notes in Computer Science}, pages 553--565. Springer
+  Berlin / Heidelberg, 2012.
 
 \bibitem{conf/bmvc/CsurkaP08}
 Gabriela Csurka and Florent Perronnin.
@@ -18,11 +31,6 @@ Pedro Domingos, Stanley Kok, Hoifung Poon, Matthew Richardson, and Parag
 \newblock Unifying logical and statistical ai.
 \newblock In {\em Proceedings of the Twenty-First National Conference on
   Artificial Intelligence}, pages 2--7. AAAI Press, 2006.
-
-\bibitem{Borenstein04combiningtop}
-E.~Sharon E.~Borenstein and S.~Ullman.
-\newblock Combining top-down and bottom-up segmentation.
-\newblock In {\em CVPR}, 2004.
 
 \bibitem{Kumar:2005:OC:1068507.1068889}
 M.~Pawan Kumar, Philip H.~S. Torr, and A.~Zisserman.

@@ -3,52 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: midway_report.aux
 The style file: plain.bst
 Database file #1: midway_report.bib
-A bad cross reference---entry "conf/bmvc/CsurkaP08"
-refers to entry "conf/bmvc/2008", which doesn't exist
-Warning--I didn't find a database entry for "conf/bmvc/2008"
-Name 1 in "E. Borenstein, E. Sharon, and S. Ullman" has a comma at the end for entry Borenstein04combiningtop
-while executing---line 1049 of file plain.bst
-Name 1 in "E. Borenstein, E. Sharon, and S. Ullman" has a comma at the end for entry Borenstein04combiningtop
-while executing---line 1090 of file plain.bst
-You've used 13 entries,
+You've used 14 entries,
             2118 wiz_defined-function locations,
-            580 strings with 6820 characters,
-and the built_in function-call counts, 5328 in all, are:
-= -- 524
-> -- 240
-< -- 9
-+ -- 94
-- -- 79
-* -- 320
-:= -- 811
-add.period$ -- 43
-call.type$ -- 13
-change.case$ -- 77
+            590 strings with 7158 characters,
+and the built_in function-call counts, 6007 in all, are:
+= -- 583
+> -- 290
+< -- 11
++ -- 112
+- -- 96
+* -- 381
+:= -- 919
+add.period$ -- 47
+call.type$ -- 14
+change.case$ -- 86
 chr.to.int$ -- 0
-cite$ -- 13
-duplicate$ -- 244
-empty$ -- 446
-format.name$ -- 79
-if$ -- 1200
+cite$ -- 14
+duplicate$ -- 269
+empty$ -- 489
+format.name$ -- 96
+if$ -- 1347
 int.to.chr$ -- 0
-int.to.str$ -- 13
-missing$ -- 12
-newline$ -- 67
-num.names$ -- 28
-pop$ -- 110
+int.to.str$ -- 14
+missing$ -- 13
+newline$ -- 72
+num.names$ -- 32
+pop$ -- 121
 preamble$ -- 1
-purify$ -- 64
+purify$ -- 72
 quote$ -- 0
-skip$ -- 192
+skip$ -- 209
 stack$ -- 0
-substring$ -- 282
-swap$ -- 91
-text.length$ -- 9
+substring$ -- 315
+swap$ -- 103
+text.length$ -- 11
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 52
+type$ -- 56
 warning$ -- 0
-while$ -- 51
-width$ -- 15
-write$ -- 149
-(There were 3 error messages)
+while$ -- 56
+width$ -- 16
+write$ -- 162
