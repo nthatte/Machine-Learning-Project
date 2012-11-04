@@ -47,6 +47,9 @@ This paper is structured as follows: Section \ref{sec:Related} discusses the rel
 
 \section{Related Work}
 \label{sec:Related}
+\subsection{sec:Geo}
+
+A recent approach for semantic image segmentation is 
 %------------------------------------------------------------------------------------------
 
 \section{Attempted Methods}
@@ -55,7 +58,7 @@ This paper is structured as follows: Section \ref{sec:Related} discusses the rel
 \subsection{Label Propagation}
 \label{sec:AttemptLabProp}
 
-	In the related works section above, we discussed a method of propagating labels on a graph of connected superpixels based on a learned label transfer confidence function. This method introduced us to two ideas: propagating labels rather than directly minimizing a cost function to arrive at a segmentation and working with graphs of related superpixels. Building on these ideas, one approach we decided to pursue is to learn the weights for a hybrid Markov logic network in order to refine a prior expected segmentation obtained from a baseline algorithm through maximum a posteriori estimation. The method incorporates an undirected graph of connected superpixels that expresses where labels can propagate.
+	In the section \ref{sec:Geo}, we discussed a method of propagating labels on a graph of connected superpixels based on a learned label transfer confidence function. This method introduced us to two ideas: propagating labels rather than directly minimizing a cost function to arrive at a segmentation and working with graphs of related superpixels. Building on these ideas, one approach we decided to pursue is to learn the weights for a hybrid Markov logic network in order to refine a prior expected segmentation obtained from a baseline algorithm through maximum a posteriori estimation. The method incorporates an undirected graph of connected superpixels that expresses where labels can propagate.
 
 Examples of numeric terms and predicates in this Markov logic network are:
 
@@ -65,7 +68,7 @@ Examples of numeric terms and predicates in this Markov logic network are:
 	&isNeighbor(s_i,s_j)
 \end{align*}
 
-\noindent Where $s_i$ is the $i^\textrm{th}$ superpixel in an image and $l_k$ is the $k^\textrm{th}$ label. $featureDistance()$ is a numeric term that returns the computed distance between two image feature vectors via a distance metric such as euclidean or cosine distance. $isLabel()$ returns 1 if superpixel $s_i$ has label $l_j$ and 0 otherwise, and $isNeighbor$ returns 1 if its arguments are the neighbors and 0 otherwise. 
+Where $s_i$ is the $i^\textrm{th}$ superpixel in an image and $l_k$ is the $k^\textrm{th}$ label. $featureDistance()$ is a numeric term that returns the computed distance between two image feature vectors via a distance metric such as euclidean or cosine distance. $isLabel()$ returns 1 if superpixel $s_i$ has label $l_j$ and 0 otherwise, and $isNeighbor$ returns 1 if its arguments are the neighbors and 0 otherwise. 
 
 An example of a formula in this hybrid Markov logic network that use these predicates and numeric terms are :
 
@@ -73,7 +76,7 @@ An example of a formula in this hybrid Markov logic network that use these predi
 	[isNeighbor(s_i,s_j) \Rightarrow (isLabel(s_i,l_k) \Leftrightarrow isLabel(s_k,l_m))]*(featureDistance(s_i, s_k, f_m))
 \end{equation*}
 
-\noindent This formula encodes the following two beliefs about how and why labels can propagate in the image.
+This formula encodes the following two beliefs about how and why labels can propagate in the image.
 
 \begin{enumerate}
 \item
