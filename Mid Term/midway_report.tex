@@ -30,7 +30,7 @@ Adwait Gandhe \\
 \maketitle
 
 \begin{abstract}
-Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. Increasing the number of labels increases the complexity of the problem. Markov Logic Networks (MLNs) allow us to handle uncertainty and complexity in a single framework, whereas Hybrid Markov Logic Networks (HMLNs) are an extension of the MLNs that allow continuous properties and functions over those properties as features.  In this paper, we propose a method for semantic segmentation using Hybrid Markov Logic Networks, which integrate first order logic and statistical learning. We test our results on the CAMVID dataset (Cambridge-Driving Labeled Video Database).  
+Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. Increasing the number of labels increases the complexity of the problem. Markov Logic Networks (MLNs) allow us to handle uncertainty and complexity in a single framework, whereas Hybrid Markov Logic Networks (HMLNs) are an extension of the MLNs that allow continuous properties and functions over those properties as features.  In this paper, we propose a method for semantic segmentation using Hybrid Markov Logic Networks, which integrate first order logic and statistical learning.  
 \end{abstract}
 
 
@@ -51,21 +51,13 @@ Furthermore, a method based on some of these approaches for scoring low-level pa
 
 Several recent approaches use random fields to incorporate local cues and impart global control without implementing low level segmentation. For example, \cite{Kumar:2005:OC:1068507.1068889} proposes a Bayesian method for combining top-down and bottom-up cues. Conditional random fields have also been used for this purpose \cite{Kumar:2005:HFF:1097115.1097790} \cite{Richard04multiscaleconditional}. Finally, Textonboost \cite{Shotton06textonboost:joint} is an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for other semantic image segmentation approaches.
 
-These approaches handle the complexity and uncertainty inherent in the structured inference problem in different ways. An alternate approach is to use Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} that attach weights to first-order formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} are an extension that allow for continuous properties to appear as features. In this paper we discuss our attempts to use HMLNs for semantic segmentation. We discuss below the three approaches that inspired our attempted method.  
-
-\textbf{Supervised Geodesic Propagation for Semantic Label Transfer} \hfill \\
+These approaches handle the complexity and uncertainty inherent in the structured inference problem in different ways. An alternate approach is to use Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} that attach weights to first-order formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} are an extension that allow for continuous properties to appear as features. In this paper we discuss our attempts to use HMLNs for semantic segmentation. 
 \label{sec:Geo}
-\noindent A recent approach for semantic segmentation is to use a learned label transfer confidence function to propagate labels between neighboring superpixels based on the geodesic distance metric \cite{Chen2012}. Labels are iteratively propagated based on geodesic distance from seeds to to other super pixels.
-%TODO
-This paper employs several useful tools for image segmentation. First its use of superpixels, which are groups of similar pixels in terms of both position and appearance, allows represents the important information in the images in a compressed and easy to process manner. Second, constructing graphs of superpixels allowed the authors to express how and where labels can propagate. Finally, propagating labels iteratively allows one to obtain a semantic segmentation without needing to minimize a cost function.
-
-\textbf{Semantic Image Segmentation using Iterative Context Forests} \hfill \\
+A recent approach for semantic segmentation is to use a learned label transfer confidence function to propagate labels between neighboring superpixels based on the geodesic distance metric \cite{Chen2012}. Labels are iteratively propagated across edges of a graph of connected superpixels based on geodesic distance.
 \label{sec:RandFor}
-\noindent Another recent approach learns a single random forest and incrementally adds context features derived from coarser levels. Unlike Textonboost \cite{Shotton06textonboost:joint}, which learns two random forests, this approach models the dependencies between contextual and non-contextual features directly. The authors suggest that learning the contextual and image features in a single framework is beneficial as it better reflects the inherent dependency between the two types of features. This work uses a large number of features in a single iterative framework and provides better results than previous approaches.
-
-\textbf{Semantic Image Segmentation using Bag of Words Approach} \hfill \\
+Another recent approach \cite{IterContFor12} learns a single random forest and incrementally adds context features derived from coarser levels. Unlike Textonboost \cite{Shotton06textonboost:joint}, which learns two random forests, this approach models the dependencies between contextual and non-contextual features directly. 
 \label{sec:bagofwords}
-\noindent Semantic image segmentation has also been approached using the bag of words model. In one of the recent approaches, \cite{visualdictrene}, the authors develop a conditional random field model that combines dictionary learning, feature categorization (assigning key points to visual words) and image semantic segmentation into one framework. The conditional random field consists of energy terms for bottom up segmentation, key point categorization, dictionary learning and visual word co-occurrence.
+Semantic image segmentation has also been approached using the bag of words model. In one of the recent approaches, \cite{visualdictrene}, the authors develop a conditional random field model that combines dictionary learning, feature categorization (assigning key points to visual words) and image semantic segmentation into one framework.
 %------------------------------------------------------------------------------------------
 
 \section{Attempted Methods}
@@ -79,40 +71,37 @@ This paper employs several useful tools for image segmentation. First its use of
 %TODO
 	Using a MLN provides several advantages. First, MLNs allows us to perform metric learning by discovering a different weight for every label and feature vector component combination. Therefore, an MLN can model complex systems more easily than an SVM or logistic regression, which can learn one weight vector for all labels. Another advantage of MLNs is that they allow the user to express a template for his or her model using first order logic, a language that is easy to understand and learn.
 
-Numeric terms and predicates in this Markov logic network are: $\mathrm{featureDistance}(s_i,s_j)$, $\mathrm{isLabel}(s_i,l_k)$, and $\mathrm{isNeighbor}(s_i,s_j)$.
-Where $s_i$ is the $i^\textrm{th}$ superpixel in an image and $l_k$ is the $k^\textrm{th}$ label. 
-$\mathrm{featureDistance}()$ is a numeric term that returns the computed distance between two image feature vectors via a distance metric such as euclidean or cosine distance. $\mathrm{isLabel}()$ returns 1 if superpixel $s_i$ has label $l_j$ and 0 otherwise, and $\mathrm{isNeighbor}()$ returns 1 if its arguments are the neighbors and 0 otherwise. 
+Definition of Markov logic network: Numeric terms and predicates:
+\begin{align*}
+	\mathrm{featureDistance}(s_i,s_j,f_m) & \quad \textrm{Numeric term equal to the distance based on the $m^\textrm{th}$ component of feature vectors} \\
+		& \quad \textrm{for superpixels $s_i$ and $s_j$.} \\
+	\mathrm{isLabel}(s_i,l_k) &\quad \textrm{Boolean predicate, True if $s_i$ is assigned label $l_k$, false otherwise.} \\
+	\mathrm{isNeighbor}(s_i,s_j) & \quad \textrm{Boolean predicate, True if $s_i$ and $s_j$ are neighbors in our superpixel connectivity graph.}
+\end{align*}
 
-An example of a formula in this hybrid Markov logic network that use these predicates and numeric terms are :
+Formulae:
+\begin{align*}
+	\mathrm{isNeighbor}(s_i,s_j) &\Rightarrow (\mathrm{isLabel}(s_i,l_k) \Leftrightarrow \mathrm{isLabel}(s_k,l_m)) \\
+	(\mathrm{isLabel}(s_i,l_k) &\Leftrightarrow \mathrm{isLabel}(s_k,l_m)) \times \mathrm{featureDistance}(s_i, s_k, f_m)
+\end{align*}
 
-\begin{equation*}
-	[isNeighbor(s_i,s_j) \Rightarrow (isLabel(s_i,l_k) \Leftrightarrow isLabel(s_k,l_m))]*(featureDistance(s_i, s_k, f_m))
-\end{equation*}
+These formulae encode that Superpixels with similar feature vectors should have the same label and superpixels that are connected by an edge (are neighbors) should also have the same label.
 
-This formula encodes the following two beliefs about how and why labels can propagate in the image:	Superpixels with similar feature vectors should have the same label and superpixels that are connected by an edge (are neighbors) should have the same label.
+A brute-force approach to this problem would be to allow every superpixel to transfer its label to every other superpixel. Such a graph would allow superpixel labels to be learned from a more global context in the image. However, this would overly complicate the underlying Markov random field, thus making learning and inference intractable. In contrast, a simple approach is to connect nodes that are directly share borders. This approach, however, would only use local context for label propagation.
 
-A brute-force approach to this problem would be to allow every super pixel to transfer its label to every other superpixel. This would result in a complete graph, where there is an edge between every two distinct nodes. Such a graph would allow superpixel labels to be learned from a more global context in the image. However, there would be an immense number of formulas for which to learn weights, making finding the solution computationally intractable. 
+Therefore, we propose to take a middle ground approach that will produce densely connected superpixels where relations are expected to be strong, and fewer edges across boundaries expected not to share labels. In order to build this superpixel graph, we take two levels of superpixel segmentations: A coarse level, which we will henceforth refer to as supersuperpixels, and a fine level, which we term superpixels. These segmentations were found using the algorithm outlined in \cite{Superpixel}. All superpixels within a supersuperpixel are connected allowing for contextual information to be shared within a region. Additionally, superpixels that share a boundary between two supersuperpixels are connected allowing for labels to propagate across supersuperpixels while acknowledging that label transfer across these borders is less probable than within a supersuperpixel. We then search through the training data set and select the $k-$Nearest Neighbors based on euclidean distance between GIST features \cite{Gist} of the images. We use the superpixels in these $k$ images to train the MLN on the formulae listed above.
 
-In contrast, a simple approach is to connect nodes that are directly share borders. Consequently, the graph would very few edges, greatly reducing the number of required learned weights and simplifying the learning problem. This approach, however, would only use local context for label propagation.
-
-Therefore, we propose to take a middle ground approach that will produce densely connected superpixels where relations are expected to be strong, and fewer edges across boundaries expected to not share labels. In order build this superpixel graph, we take two levels of superpixel segmentations: A coarse level, which we will henceforth refer to as supersuperpixels, and a fine level, which we term superpixels. These segmentations were found using the algorithm outlined in \cite{Superpixel}. All superpixels within a supersuperpixel are connected allowing for contextual information to be shared within a region. Additionally superpixels that share a boundary between two supersuperpixels are connected allowing for labels to propagate across supersuperpixels while acknowledging that label transfer across supersuperpixels is less probable than within a supersuperpixel.
-
-We then search through the training data set and select the $k-NN$ according to the distance with respect to the GIST Features \cite{Gist} of the images. We use the superpixels in these $k$ images to train the MLN on the formulas listed abo
-
-\subsection{Iterative Context Forests}
+\subsection{Other Approaches}
 \label{sec:IterContFor}
-
-In the section \ref{sec:RandFor} we discussed a method of using large number of features to learn a single random forest for semantic label segmentation in a joint, flexible and fast manner. The motivation to use HMLN comes with the same purpose of learning the context and pixel features at the same time. We attempt to learn a HMLN on such multiple feature sets, however, while the random forests select a subset of the feature set, the HMLN weights are trained while working with all these features simultaneously. We realize while conducting experiments using \cite{alchemy} that the process of learning the weights for the HMLN is extremely time consuming and memory intensive and hence we abandon this approach. 
-
-\subsection{Bag of Words Approach}
+We attempted to learn a HMLN on an ensemble of feature sets such as those used by \cite{IterContFor12}. In spite of the advantages of this approach, the HMLN does not afford the use of a large number of features the way random forests do. Hence we abandoned this approach. 
 \label{sec:BofWordApp}
-
-In section \ref{sec:bagofwords} we discussed the bag of words approach for semantic image segmentation. Even though the bag of words approach developed in \cite{visualdictrene} has shown very good results on the CAMVID and Graz-02 \cite{graz02} datasets it cannot be incorporated into a MLN as it requires second order logic. Particularly, the word count histogram built as part of the bag of words model requires a count of the number of true predicates of a certain kind which is a meta level information beyond the first order logic. Hence, we abandon this approach.
+Even though the bag of words approach developed in \cite{visualdictrene} has shown very good results on the CAMVID\cite{BrostowFC:PRL2008} and Graz-02 \cite{graz02} datasets, it cannot be incorporated into a MLN as it requires second order logic. Particularly, the word count histogram built as part of the bag of words model requires a count of the number of true predicates of a certain kind which is a meta level information beyond the first order logic. Hence, we abandoned this approach.
 
 \section{Experiment}
 \label{sec:Exp}
 
-We have used the Alchemy - Open Source AI software \cite{alchemy} for learning the weights of the HMLN.
+We used the Alchemy - Open Source AI software \cite{alchemy} for learning the weights for the HMLN. Results described in this section are from the MSRC v1 dataset \cite{DBLP:conf/iccv/WinnCM05}. The 3 nearest neighbors from the training set of a query image are retrieved. Superpixels (fine and coarse, ~1000 and ~40 superpixels respectively), adjacency matrices and word maps are computed for each image. These are illustrated in \ref{fig:labelprop:preprocess}. An initial baseline segmentation for the test image is computed by matching bag of words histograms of individual superpixels to histograms from the training set. The $28-$nearest histograms based on euclidean distance were retrieved and a probability vector was computed based on the counts of individual labels in this collection.
+Unfortunately, we ran into memory issues with the system using more than 23 Gb of virtual memory forcing it to kill the process. 
 
 \begin{figure}
 	\centering
@@ -140,7 +129,6 @@ We have used the Alchemy - Open Source AI software \cite{alchemy} for learning t
 				\label{fig1_22_s_adj}
 			\end{subfigure}
 		\end{subfigure}
-	\end{comment}
 
 	\begin{subfigure}[c]{\textwidth}
 		\centering
@@ -165,7 +153,7 @@ We have used the Alchemy - Open Source AI software \cite{alchemy} for learning t
 			\label{fig2_21_s_adj}
 		\end{subfigure}
 	\end{subfigure}
-
+	\end{comment}
 	\begin{subfigure}[c]{\textwidth}
 		\centering
 		\begin{subfigure}[c]{0.195\textwidth}
@@ -259,15 +247,22 @@ We have used the Alchemy - Open Source AI software \cite{alchemy} for learning t
 			\subcaption{superpixel adjacency matrix}
 		\end{subfigure}
 	\end{subfigure}
-	\caption{}
+	\caption{Pre-processing pipeline for label propagation experiment.}
+	\label{fig:labelprop:preprocess}
+	
 \end{figure}
 %------------------------------------------------------------------------------------------
 \section{New Proposed Method}
 \label{sec:New}
+After attempting such varied methods using Markov logic networks, we realize that Markov logic is not a good solution to problems in low level vision due to combinatorial explosion. Therefore, we propose to use Markov logic for high level reasoning only. We consider all possible outputs of a meanshift based unsupervised segmentation algorithm by varying the parameters involved and use Markov logic to choose the best of these predictions. We generate a random set of parameter values for the unsupervised segmentation algorithm. An SVM classifier is trained to predict the label for each segment. Each such semantic segmentation corresponds to a parse of the image. An HMLN associates a consistency value with a given parse which evaluates the initial segmentation and classifier output. We choose the best current parameter settings and repeat this process by generating another random set of parameters within the neighborhood of the current values.  
+
 %------------------------------------------------------------------------------------------
 
 \section{Conclusion}
 \label{sec:Conclusion}
+
+As mentioned in the project proposal, we have attempted to model different approaches for semantic image segmentation using HMLNs. We further analyzed why these are infeasible and proposed a new method for addressing the problem.
+
 %------------------------------------------------------------------------------------------
 \section{Plan of Activities}
 \label{sec:Plan}

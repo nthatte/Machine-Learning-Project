@@ -11,6 +11,12 @@ Erik~Rodner Björn~Fröhlich and Joachim Denzler.
   cues in a combined random forest approach.
 \newblock In {\em In ACCV}, 2012.
 
+\bibitem{BrostowFC:PRL2008}
+Gabriel~J. Brostow, Julien Fauqueur, and Roberto Cipolla.
+\newblock Semantic object classes in video: A high-definition ground truth
+  database.
+\newblock {\em Pattern Recognition Letters}, xx(x):xx--xx, 2008.
+
 \bibitem{cao:spatially}
 Liangliang Cao and Fei-Fei Li.
 \newblock Spatially coherent latent topic model for concurrent segmentation and
@@ -112,5 +118,10 @@ J.~Shotton, J.~Winn, C.~Rother, and A.~Criminisi.
 \bibitem{Wang_hybridmarkov}
 Jue Wang and Pedro Domingos.
 \newblock Hybrid markov logic networks.
+
+\bibitem{DBLP:conf/iccv/WinnCM05}
+John~M. Winn, Antonio Criminisi, and Thomas~P. Minka.
+\newblock Object categorization by learned universal visual dictionary.
+\newblock In {\em ICCV}, pages 1800--1807, 2005.
 
 \end{thebibliography}
