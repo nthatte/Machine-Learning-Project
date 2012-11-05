@@ -54,6 +54,11 @@ Bastian Leibe, Ales Leonardis, and Bernt Schiele.
 \newblock In {\em In ECCV workshop on statistical learning in computer vision},
   pages 17--32, 2004.
 
+\bibitem{SegmentRegionsParts}
+C.~Gu S. Gupta L.~Bourdev P.~Arbelaez, B.~Hariharan and J.~Malik.
+\newblock Semantic segmentation using regions and parts.
+\newblock In {\em In CVPR}, 2012.
+
 \bibitem{Richard04multiscaleconditional}
 Xuming~He Richard, Richard~S. Zemel, and Miguel~Á. Carreira-perpiñán.
 \newblock Multiscale conditional random fields for image labeling.
