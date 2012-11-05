@@ -1,5 +1,16 @@
 \begin{thebibliography}{10}
 
+\bibitem{SegmentRegionsParts}
+P.~Arbelaez, B.~Hariharan, C.~Gu, S.~Gupta, L.~Bourdev, and J.~Malik.
+\newblock Semantic segmentation using regions and parts.
+\newblock In {\em In CVPR}, 2012.
+
+\bibitem{IterContFor12}
+Erik~Rodner Björn~Fröhlich and Joachim Denzler.
+\newblock Semantic segmentation with millions of features: Integrating multiple
+  cues in a combined random forest approach.
+\newblock In {\em In ACCV}, 2012.
+
 \bibitem{Borenstein04combiningtop}
 E.~Borenstein, E.~Sharon, and S.~Ullman.
 \newblock Combining top-down and bottom-up segmentation.
@@ -32,6 +43,22 @@ Pedro Domingos, Stanley Kok, Hoifung Poon, Matthew Richardson, and Parag
 \newblock In {\em Proceedings of the Twenty-First National Conference on
   Artificial Intelligence}, pages 2--7. AAAI Press, 2006.
 
+\bibitem{visualdictrene}
+Aastha Jain, Luca Zappella, Patrick McClure, and René Vidal.
+\newblock Visual dictionary learning for joint object categorization and
+  segmentation.
+\newblock In Andrew Fitzgibbon, Svetlana Lazebnik, Pietro Perona, Yoichi Sato,
+  and Cordelia Schmid, editors, {\em Computer Vision – ECCV 2012}, volume
+  7576 of {\em Lecture Notes in Computer Science}, pages 718--731. Springer
+  Berlin Heidelberg, 2012.
+
+\bibitem{alchemy}
+Stanley Kok, Marc Sumner, Matthew Richardson, Parag Singla, Hoifung Poon,
+  Daniel Lowd, Jue Wang, Aniruddh Nath, and Pedro Domingos.
+\newblock The alchemy system for statistical relational ai.
+\newblock Technical report, Department of Computer Science and Engineering,
+  University of Washington, Seattle, WA, 2010.
+
 \bibitem{Kumar:2005:OC:1068507.1068889}
 M.~Pawan Kumar, Philip H.~S. Torr, and A.~Zisserman.
 \newblock Obj cut.
@@ -53,6 +80,11 @@ Bastian Leibe, Ales Leonardis, and Bernt Schiele.
   shape model.
 \newblock In {\em In ECCV workshop on statistical learning in computer vision},
   pages 17--32, 2004.
+
+\bibitem{graz02}
+Opelt, A., and A~Pinz.
+\newblock The tu graz-02 database.
+\newblock Technical report, TU Graz, 2002.
 
 \bibitem{Richard04multiscaleconditional}
 Xuming~He Richard, Richard~S. Zemel, and Miguel~Á. Carreira-perpiñán.
