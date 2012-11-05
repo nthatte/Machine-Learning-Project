@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: midway_report.aux
 The style file: plain.bst
 Database file #1: midway_report.bib
-You've used 19 entries,
+You've used 21 entries,
             2118 wiz_defined-function locations,
-            615 strings with 8066 characters,
-and the built_in function-call counts, 8008 in all, are:
-= -- 756
-> -- 442
-< -- 13
-+ -- 172
-- -- 149
-* -- 532
-:= -- 1269
-add.period$ -- 63
-call.type$ -- 19
-change.case$ -- 127
+            630 strings with 8401 characters,
+and the built_in function-call counts, 8884 in all, are:
+= -- 849
+> -- 462
+< -- 15
++ -- 180
+- -- 155
+* -- 589
+:= -- 1391
+add.period$ -- 69
+call.type$ -- 21
+change.case$ -- 136
 chr.to.int$ -- 0
-cite$ -- 19
-duplicate$ -- 338
-empty$ -- 618
-format.name$ -- 149
-if$ -- 1754
+cite$ -- 21
+duplicate$ -- 376
+empty$ -- 697
+format.name$ -- 155
+if$ -- 1954
 int.to.chr$ -- 0
-int.to.str$ -- 19
-missing$ -- 16
-newline$ -- 97
-num.names$ -- 44
-pop$ -- 168
+int.to.str$ -- 21
+missing$ -- 18
+newline$ -- 107
+num.names$ -- 48
+pop$ -- 177
 preamble$ -- 1
-purify$ -- 106
+purify$ -- 113
 quote$ -- 0
-skip$ -- 252
+skip$ -- 287
 stack$ -- 0
-substring$ -- 370
-swap$ -- 119
-text.length$ -- 13
+substring$ -- 467
+swap$ -- 136
+text.length$ -- 15
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 76
+type$ -- 84
 warning$ -- 0
-while$ -- 69
-width$ -- 21
-write$ -- 217
+while$ -- 77
+width$ -- 23
+write$ -- 240

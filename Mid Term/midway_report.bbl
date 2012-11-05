@@ -81,6 +81,18 @@ Bastian Leibe, Ales Leonardis, and Bernt Schiele.
 \newblock In {\em In ECCV workshop on statistical learning in computer vision},
   pages 17--32, 2004.
 
+\bibitem{Superpixel}
+G.~Mori.
+\newblock Guiding model search using segmentation.
+\newblock In {\em Computer Vision, 2005. ICCV 2005. Tenth IEEE International
+  Conference on}, volume~2, pages 1417 --1423 Vol. 2, oct. 2005.
+
+\bibitem{Gist}
+Aude Oliva and Antonio Torralba.
+\newblock Modeling the shape of the scene: A holistic representation of the
+  spatial envelope.
+\newblock {\em International Journal of Computer Vision}, 42:145--175, 2001.
+
 \bibitem{graz02}
 Opelt, A., and A~Pinz.
 \newblock The tu graz-02 database.
