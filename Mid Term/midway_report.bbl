@@ -1,5 +1,11 @@
 \begin{thebibliography}{10}
 
+\bibitem{IterContFor12}
+Erik~Rodner Björn~Fröhlich and Joachim Denzler.
+\newblock Semantic segmentation with millions of features: Integrating multiple
+  cues in a combined random forest approach.
+\newblock In {\em In ACCV}, 2012.
+
 \bibitem{Borenstein04combiningtop}
 E.~Borenstein, E.~Sharon, and S.~Ullman.
 \newblock Combining top-down and bottom-up segmentation.
@@ -83,6 +89,13 @@ J.~Shotton, J.~Winn, C.~Rother, and A.~Criminisi.
 \newblock Textonboost: Joint appearance, shape and context modeling for
   multi-class object recognition and segmentation.
 \newblock In {\em In ECCV}, pages 1--15, 2006.
+
+\bibitem{alchemy}
+Matthew Richardson Parag Singla Hoifung Poon Daniel Lowd Jue Wang Aniruddh~Nath
+  Stanley~Kok, Marc~Sumner and Pedro Domingos.
+\newblock The alchemy system for statistical relational ai.
+\newblock Technical report, Department of Computer Science and Engineering,
+  University of Washington, Seattle, WA, 2010.
 
 \bibitem{Wang_hybridmarkov}
 Jue Wang and Pedro Domingos.

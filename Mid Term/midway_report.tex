@@ -60,7 +60,7 @@ This paper employs several useful tools for image segmentation. First its use of
 \subsection{Semantic Image Segmentation using Iterative Context Forests}
 \label{sec:RandFor}
 
-\cite{} is another recent approach in which a single random forest is learnt and context features derived from coarser levels are incrementally added. Unlike \cite{Shotton06textonboost:joint}, which learns two random forests, this approach models the dependencies between contextual and non-contextual features directly. The authors suggest that learning the contextual and image features in a single framework is beneficial as it better reflects the inherent dependency between the two types of features. This work uses a large number of features in a single iterative framework and 
+\cite{IterContFor12} is another recent approach in which a single random forest is learnt and context features derived from coarser levels are incrementally added. Unlike \cite{Shotton06textonboost:joint}, which learns two random forests, this approach models the dependencies between contextual and non-contextual features directly. The authors suggest that learning the contextual and image features in a single framework is beneficial as it better reflects the inherent dependency between the two types of features. This work uses a large number of features in a single iterative framework and provides better results than previous approaches.
 %------------------------------------------------------------------------------------------
 
 \section{Attempted Methods}
@@ -103,8 +103,16 @@ is to connect nodes that are directly share borders. Consequently, the graph wou
 
 Therefore, we propose to take a middle ground approach that will produce densely connected superpixels where relations are expected to be strong, and fewer edges across boundaries expected to not share labels. In order build this superpixel graph, we take two levels of superpixel segmentations: A coarse level, which we will henceforth refer to as supersuperpixels, and a fine level, termed superpixels. All superpixels within a supersuperpixel are connected allowing for contextual information to be shared within a region. Additionally superpixels that share a boundary between two supersuperpixels are connected allowing for labels to propagate across supersuperpixels while acknowledging that label transfer across supersuperpixels is less probable than within a supersuperpixel.
 
+\subsection{Iterative Context Forests}
+\label{sec:IterContFor}
+
+In the section \ref{sec:RandFor} we discussed a method of using large number of features to learn a single random forest for semantic label segmentation. 
+
 \section{Experiment}
 \label{sec:Exp}
+
+We have used the Alchemy - Open Source AI software \cite{alchemy} for learning the weights of the HMLN.
+
 \begin{figure}
 	\centering
 	\begin{subfigure}[c]{\textwidth}
