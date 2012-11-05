@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{comment}
 \usepackage[top=1.0in, bottom=1.0in, left=1.0in, right=1.0in]{geometry}
 
 %\renewcommand\refname{Papers To Read}
@@ -84,14 +85,7 @@ An example of a formula in this hybrid Markov logic network that use these predi
 	[isNeighbor(s_i,s_j) \Rightarrow (isLabel(s_i,l_k) \Leftrightarrow isLabel(s_k,l_m))]*(featureDistance(s_i, s_k, f_m))
 \end{equation*}
 
-This formula encodes the following two beliefs about how and why labels can propagate in the image.
-
-\begin{enumerate}
-\item
-	Superpixels with similar feature vectors should have the same label.
-\item
-	Superpixels that are connected by an edge (are neighbors) should have the same label.
-\end{enumerate}
+This formula encodes the following two beliefs about how and why labels can propagate in the image:	Superpixels with similar feature vectors should have the same label and superpixels that are connected by an edge (are neighbors) should have the same label.
 
 A brute-force approach to this problem would be to allow every super pixel to transfer its label to every other superpixel. This would result in a complete graph, where there is an edge between every two distinct nodes. Such a graph would allow superpixel labels to be learned from a more global context in the image. However, there would be an immense number of formulas for which to learn weights, making finding the solution computationally intractable. 
 
@@ -99,7 +93,7 @@ In contrast, a simple approach is to connect nodes that are directly share borde
 
 Therefore, we propose to take a middle ground approach that will produce densely connected superpixels where relations are expected to be strong, and fewer edges across boundaries expected to not share labels. In order build this superpixel graph, we take two levels of superpixel segmentations: A coarse level, which we will henceforth refer to as supersuperpixels, and a fine level, which we term superpixels. These segmentations were found using the algorithm outlined in \cite{Superpixel}. All superpixels within a supersuperpixel are connected allowing for contextual information to be shared within a region. Additionally superpixels that share a boundary between two supersuperpixels are connected allowing for labels to propagate across supersuperpixels while acknowledging that label transfer across supersuperpixels is less probable than within a supersuperpixel.
 
-We then search through the training data set and select the $k-NN$ according to the distance with respect to the GIST Features \cite{Gist} of the images. We use the superpixels in these $k$ images to train the MLN on the formulas listed above.
+We then search through the training data set and select the $k-NN$ according to the distance with respect to the GIST Features \cite{Gist} of the images. We use the superpixels in these $k$ images to train the MLN on the formulas listed abo
 
 \subsection{Iterative Context Forests}
 \label{sec:IterContFor}
@@ -118,29 +112,31 @@ We have used the Alchemy - Open Source AI software \cite{alchemy} for learning t
 
 \begin{figure}
 	\centering
-	\begin{subfigure}[c]{\textwidth}
-		\centering
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/1_22_s.png}
-			\label{fig:1_22_s}
+	\begin{comment}
+		\begin{subfigure}[c]{\textwidth}
+			\centering
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/1_22_s.png}
+				\label{fig:1_22_s}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/1_22_s_GT.png}
+				\label{fig:1_22_s_lab}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/1_22_s_map.png}
+				\label{fig:1_22_s_map}
+			\end{subfigure}
+			\begin{subfigure}[]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/su1_22_s.pdf}
+				\label{fig:1_22_s_su}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/adj1_22_s.pdf}
+				\label{fig1_22_s_adj}
+			\end{subfigure}
 		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/1_22_s_GT.png}
-			\label{fig:1_22_s_lab}
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/1_22_s_map.png}
-			\label{fig:1_22_s_map}
-		\end{subfigure}
-		\begin{subfigure}[]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/su1_22_s.pdf}
-			\label{fig:1_22_s_su}
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/adj1_22_s.pdf}
-			\label{fig1_22_s_adj}
-		\end{subfigure}
-	\end{subfigure}
+	\end{comment}
 
 	\begin{subfigure}[c]{\textwidth}
 		\centering
@@ -189,76 +185,77 @@ We have used the Alchemy - Open Source AI software \cite{alchemy} for learning t
 			\label{fig4_1_s_adj}
 		\end{subfigure}
 	\end{subfigure}
-
-	\begin{subfigure}[c]{\textwidth}
-		\centering
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/6_3_s.png}
-			\label{fig:6_3_s}
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/6_3_s_GT.png}
-			\label{fig:6_3_s_lab}
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/6_3_s_map.png}
-			\label{fig:6_3_s_map}
-		\end{subfigure}
-		\begin{subfigure}[]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/su6_3_s.pdf}
-			\label{fig:6_3_s_su}
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/adj6_3_s.pdf}
-			\label{fig6_3_s_adj}
-		\end{subfigure}
-	\end{subfigure}
-
-	\begin{subfigure}[c]{\textwidth}
-		\centering
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/7_8_s.png}
-			\label{fig:7_8_s}
-
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/7_8_s_GT.png}
-			\label{fig:7_8_s_lab}
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/7_8_s_map.png}
-			\label{fig:7_8_s_map}
-		\end{subfigure}
-		\begin{subfigure}[]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/su7_8_s.pdf}
-			\label{fig:7_8_s_su}
-		\end{subfigure}
-		\begin{subfigure}[c]{0.195\textwidth}
-			\includegraphics[width = \textwidth]{./img/adj7_8_s.pdf}
-			\label{fig7_8_s_adj}
-		\end{subfigure}
-	\end{subfigure}
-
 	
-	\begin{subfigure}[t]{\textwidth}
-		\centering
-		\begin{subfigure}[t]{0.195\textwidth}
-			\subcaption{original image}
+	\begin{comment}
+		\begin{subfigure}[c]{\textwidth}
+			\centering
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/6_3_s.png}
+				\label{fig:6_3_s}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/6_3_s_GT.png}
+				\label{fig:6_3_s_lab}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/6_3_s_map.png}
+				\label{fig:6_3_s_map}
+			\end{subfigure}
+			\begin{subfigure}[]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/su6_3_s.pdf}
+				\label{fig:6_3_s_su}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/adj6_3_s.pdf}
+				\label{fig6_3_s_adj}
+			\end{subfigure}
 		\end{subfigure}
-		\begin{subfigure}[t]{0.195\textwidth}
-			\subcaption{ground truth segmentation}
-		\end{subfigure}
-		\begin{subfigure}[t]{0.195\textwidth}
-			\subcaption{visual words map}
-		\end{subfigure}
-		\begin{subfigure}[t]{0.195\textwidth}
-			\subcaption{superpixel segmentation}
-		\end{subfigure}
-		\begin{subfigure}[t]{0.195\textwidth}
-			\subcaption{superpixel adjacency matrix}
-		\end{subfigure}
-	\end{subfigure}
 
+		\begin{subfigure}[c]{\textwidth}
+			\centering
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/7_8_s.png}
+				\label{fig:7_8_s}
+
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/7_8_s_GT.png}
+				\label{fig:7_8_s_lab}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/7_8_s_map.png}
+				\label{fig:7_8_s_map}
+			\end{subfigure}
+			\begin{subfigure}[]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/su7_8_s.pdf}
+				\label{fig:7_8_s_su}
+			\end{subfigure}
+			\begin{subfigure}[c]{0.195\textwidth}
+				\includegraphics[width = \textwidth]{./img/adj7_8_s.pdf}
+				\label{fig7_8_s_adj}
+			\end{subfigure}
+		\end{subfigure}
+
+		
+		\begin{subfigure}[t]{\textwidth}
+			\centering
+			\begin{subfigure}[t]{0.195\textwidth}
+				\subcaption{original image}
+			\end{subfigure}
+			\begin{subfigure}[t]{0.195\textwidth}
+				\subcaption{ground truth segmentation}
+			\end{subfigure}
+			\begin{subfigure}[t]{0.195\textwidth}
+				\subcaption{visual words map}
+			\end{subfigure}
+			\begin{subfigure}[t]{0.195\textwidth}
+				\subcaption{superpixel segmentation}
+			\end{subfigure}
+			\begin{subfigure}[t]{0.195\textwidth}
+				\subcaption{superpixel adjacency matrix}
+			\end{subfigure}
+		\end{subfigure}
+	\end{comment}
 	\caption{}
 \end{figure}
 %------------------------------------------------------------------------------------------
