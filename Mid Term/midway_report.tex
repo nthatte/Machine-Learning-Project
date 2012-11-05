@@ -30,41 +30,42 @@ Adwait Gandhe \\
 \maketitle
 
 \begin{abstract}
-Semantic segmentation is the process of partitioning pixels in an image into categories and is a high level vision problem. Increasing the number of labels increases the complexity of the problem further. Markov Logic Networks (MLN) allow us to handle the uncertainty and complexity in a single framework, whereas Hybrid Markov Logic Networks (HMLN) are an extension of the MLNs that allow the continuous properties and functions over those properties as features.  In this paper, we propose a method for semantic segmentation using Hybrid Markov Logic Networks, which integrate logical and statistical learning. We test our results on the CAMVID dataset (Cambridge-Driving Labeled Video Database) and compare them against the results obtained using Naive Bayes method. 
+Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. Increasing the number of labels increases the complexity of the problem. Markov Logic Networks (MLNs) allow us to handle uncertainty and complexity in a single framework, whereas Hybrid Markov Logic Networks (HMLNs) are an extension of the MLNs that allow continuous properties and functions over those properties as features.  In this paper, we propose a method for semantic segmentation using Hybrid Markov Logic Networks, which integrate first order logic and statistical learning. We test our results on the CAMVID dataset (Cambridge-Driving Labeled Video Database).  
 \end{abstract}
 
 
 \section{Introduction}
 \label{sec:Intro}
-Semantic segmentation is the process of classification of an image at the pixel level, which involves assigning a class label to each pixel of the image. Recognition of such semantic labels is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. Classical techniques proposed for semantic segmentation make use of low level features and a learning framework to combine them with their higher level labels. Another approach is to use low level cues rather than features with random fields and learn a unified framework using low level segmentation. In this paper we explore the second approach. We are particularly interested in combining logical and statistical techniques to jointly address the issue of probability and complexity. 
+Semantic segmentation is the process of assigning a class label to each pixel of the image. This is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. There are two common approaches for semantic segmentation. The first makes use of low level features and combines them with a learning framework to obtain higher level labels. The second approach is to use low level cues, rather than features, with random fields and learn a unified framework using low level segmentation. In this paper we explore the second approach further by combining logical and statistical techniques to jointly address the issues of uncertainty and complexity. 
 
-This paper is structured as follows: Section \ref{sec:Related} discusses the related work in semantic segmentation using both of the above mentioned approaches and the methods proposed for combining logical and statistical techniques. In section \ref{sec:Attempt}, we discuss attempted methods that we have proposed for the semantic segmentation. The experiments conducted and the results obtained are presented in section \ref{sec:Exp}. Section \ref{sec:New} presents our approaches for the second half of the semester. We summarize our conclusions in section \ref{sec:Conclusion}. And finally section \ref{sec:Plan} outlines what we will accomplish in the second half of the semester.
+This paper is structured as follows: Section \ref{sec:Related} discusses the related work. In section \ref{sec:Attempt}, we discuss methods that we have attempted for semantic segmentation. The experiments conducted and the results obtained are presented in section \ref{sec:Exp}. Section \ref{sec:New} presents our approach for the second half of the semester. We summarize our conclusions in section \ref{sec:Conclusion}. And finally section \ref{sec:Plan} outlines our plan to implement the proposed approach.
 
 %------------------------------------------------------------------------------------------
 
 \section{Related Work}
 \label{sec:Related}
 
-\cite{Leibe04combinedobject} is one of the first approaches for simultaneous object segmentation and recognition that uses an Implicit Shape Model, which integrates both capabilities into a common probabilistic framework. \cite{cao:spatially} proposes a generative model based on the bag of words representation for such simultaneous recognition and segmentation. \cite{Borenstein04combiningtop} discusses how to combine bottom-up and top-down approaches into a single figure ground segmentation process that draws merits from both the approaches. \cite{Russell:2006:UMS:1153171.1153637} uses topic discovery models to learn the objects and choose the right segmentation. \cite{lin07multiple} propose a similar approach using bag of keypoints model integrated over mean-shift patches. \cite{conf/bmvc/CsurkaP08} propose a method based on some of these approaches for scoring low-level patches according to their class relevance and propagating these posterior probabilities to pixels. Contrary to these methods, certain approaches use random fields to incorporate local cues and impart global control without implementing low level segmentation. \cite{Kumar:2005:OC:1068507.1068889} propose a Bayesian method for combining up-down and bottom-up cues. \cite{Richard04multiscaleconditional} and \cite{Kumar:2005:HFF:1097115.1097790} use conditional random fields for this purpose. \cite{Shotton06textonboost:joint} discusses an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for other semantic image segmentation approaches.
+One of the first approaches for simultaneous object segmentation and recognition utilizes an Implicit Shape Model that integrates both capabilities into a common probabilistic framework \cite{Leibe04combinedobject}. 
+Another approach used a generative model based on the bag of words representation for such simultaneous recognition and segmentation \cite{cao:spatially}.  
+Furthermore, a method based on some of these approaches for scoring low-level patches according to their class relevance and propagating these posterior probabilities to pixels has been developed \cite{conf/bmvc/CsurkaP08}.
 
-The motivation behind this work is the second of these approaches that uses a random field for using local cues and learning the labels globally. \cite{Domingos06unifyinglogical} discusses how Markov Logic combines the complexity and uncertainty by attaching weights to first-order formulas and viewing them as templates for features of Markov Networks. Markov Logic Networks (MLNs) \cite{Richardson06markovlogic} combine first-order logic and Markov networks and allow us to handle complexity and uncertainty in one consistent framework. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} also allow for continuous properties to appear as features. We attempt to use HMLNs for semantic segmentation and test our results using the CAMVID dataset. 
+Several recent approaches use random fields to incorporate local cues and impart global control without implementing low level segmentation. For example, \cite{Kumar:2005:OC:1068507.1068889} proposes a Bayesian method for combining top-down and bottom-up cues. Conditional random fields have also been used for this purpose \cite{Kumar:2005:HFF:1097115.1097790} \cite{Richard04multiscaleconditional}. Finally, Textonboost \cite{Shotton06textonboost:joint} is an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for other semantic image segmentation approaches.
 
-\subsection{Supervised Geodesic Propagation for Semantic Label Transfer}
+These approaches handle the complexity and uncertainty inherent in the structured inference problem in different ways. An alternate approach is to use Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} that attach weights to first-order formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} are an extension that allow for continuous properties to appear as features. In this paper we discuss our attempts to use HMLNs for semantic segmentation. We discuss below the three approaches that inspired our attempted method.  
+
+\textbf{Supervised Geodesic Propagation for Semantic Label Transfer} \hfill \\
 \label{sec:Geo}
-
-A recent approach for semantic segmentation is to use a learned label transfer confidence function to transfer labels between neighboring superpixels based on the geodesic distance metric \cite{Chen2012}.  A graph of all adjacent superpixels is constructed where the weights between edges are calculated from various features of the image such as its texture and the strength of its edges. The geodesic distance metric is then obtained by integrating over these edges from one superpixel to another. Finally, labels are iteratively propagated based on geodesic distance from seeds to to other super pixels
-
+\noindent A recent approach for semantic segmentation is to use a learned label transfer confidence function to propagate labels between neighboring superpixels based on the geodesic distance metric \cite{Chen2012}. Labels are iteratively propagated based on geodesic distance from seeds to to other super pixels.
+%TODO
 This paper employs several useful tools for image segmentation. First its use of superpixels, which are groups of similar pixels in terms of both position and appearance, allows represents the important information in the images in a compressed and easy to process manner. Second, constructing graphs of superpixels allowed the authors to express how and where labels can propagate. Finally, propagating labels iteratively allows one to obtain a semantic segmentation without needing to minimize a cost function.
 
-\subsection{Semantic Image Segmentation using Iterative Context Forests}
+\textbf{Semantic Image Segmentation using Iterative Context Forests} \hfill \\
 \label{sec:RandFor}
+\noindent Another recent approach learns a single random forest and incrementally adds context features derived from coarser levels. Unlike Textonboost \cite{Shotton06textonboost:joint}, which learns two random forests, this approach models the dependencies between contextual and non-contextual features directly. The authors suggest that learning the contextual and image features in a single framework is beneficial as it better reflects the inherent dependency between the two types of features. This work uses a large number of features in a single iterative framework and provides better results than previous approaches.
 
-\cite{IterContFor12} is another recent approach in which a single random forest is learnt and context features derived from coarser levels are incrementally added. Unlike \cite{Shotton06textonboost:joint}, which learns two random forests, this approach models the dependencies between contextual and non-contextual features directly. The authors suggest that learning the contextual and image features in a single framework is beneficial as it better reflects the inherent dependency between the two types of features. This work uses a large number of features in a single iterative framework and provides better results than previous approaches.
-
-\subsection{Semantic Image Segmentation using Bag of Words Approach}
+\textbf{Semantic Image Segmentation using Bag of Words Approach} \hfill \\
 \label{sec:bagofwords}
-
-Semantic image segmentation has also been approached using the bag of words model. \cite{visualdictrene} develop a conditional random field model that combines dictionary learning, feature categorization (assigning key points to visual words) and image semantic segmentation into one framework. The conditional random field consists of energy terms for bottom up segmentation, key point categorization, dictionary learning and visual word co-occurrence. The last of these helps overcome the bag of words assumption to incorporate local co-occurrence information. The first of these imposes unary and pairwise potentials, the later of which again incorporates dependence between variables.
+\noindent Semantic image segmentation has also been approached using the bag of words model. In one of the recent approaches, \cite{visualdictrene}, the authors develop a conditional random field model that combines dictionary learning, feature categorization (assigning key points to visual words) and image semantic segmentation into one framework. The conditional random field consists of energy terms for bottom up segmentation, key point categorization, dictionary learning and visual word co-occurrence.
 %------------------------------------------------------------------------------------------
 
 \section{Attempted Methods}
@@ -73,11 +74,14 @@ Semantic image segmentation has also been approached using the bag of words mode
 \subsection{Label Propagation}
 \label{sec:AttemptLabProp}
 
-	In the section \ref{sec:Geo}, we discussed a method of propagating labels on a graph of connected superpixels based on a learned label transfer confidence function. This method introduced us to two ideas: propagating labels rather than directly minimizing a cost function to arrive at a segmentation and working with graphs of related superpixels. Building on these ideas, one approach we decided to pursue is to learn the weights for a hybrid Markov logic network in order to refine a prior expected segmentation obtained from a baseline algorithm through maximum a posteriori estimation. The method incorporates an undirected graph of connected superpixels that expresses where labels can propagate.
+	In section \ref{sec:Geo}, we discussed a method of propagating labels on a graph of connected superpixels based on a learned label transfer confidence function. This method introduced us to two ideas: propagating labels rather than directly minimizing a cost function to arrive at a segmentation and working with graphs of related superpixels. Building on these ideas, we learn the weights for a hybrid Markov logic network in order to refine a prior expected segmentation obtained from a baseline algorithm. The method incorporates an undirected graph of connected superpixels that expresses where labels can propagate.
 
-	Using a Markov logic network (MLN) provides several advantages over traditional graphical models. First, MLNs allows us to perform metric learning by discovering a different weight for every label and feature vector component combination. Therefore, an MLN can model complex systems more easily than an SVM or logistic regression, which would only be able to learn one weight vector for all labels. Another advantage of MLNs is that they allow the user to express a template for his or her model using first order logic, a language that is easy to understand and learn.
+%TODO
+	Using a MLN provides several advantages. First, MLNs allows us to perform metric learning by discovering a different weight for every label and feature vector component combination. Therefore, an MLN can model complex systems more easily than an SVM or logistic regression, which can learn one weight vector for all labels. Another advantage of MLNs is that they allow the user to express a template for his or her model using first order logic, a language that is easy to understand and learn.
 
-Examples of numeric terms and predicates in this Markov logic network are: $featureDistance(s_i,s_j)$, $isLabel(s_i,l_k)$, and $isNeighbor(s_i,s_j)$. Where $s_i$ is the $i^\textrm{th}$ superpixel in an image and $l_k$ is the $k^\textrm{th}$ label. $featureDistance()$ is a numeric term that returns the computed distance between two image feature vectors via a distance metric such as euclidean or cosine distance. $isLabel()$ returns 1 if superpixel $s_i$ has label $l_j$ and 0 otherwise, and $isNeighbor$ returns 1 if its arguments are the neighbors and 0 otherwise. 
+Numeric terms and predicates in this Markov logic network are: $\mathrm{featureDistance}(s_i,s_j)$, $\mathrm{isLabel}(s_i,l_k)$, and $\mathrm{isNeighbor}(s_i,s_j)$.
+Where $s_i$ is the $i^\textrm{th}$ superpixel in an image and $l_k$ is the $k^\textrm{th}$ label. 
+$\mathrm{featureDistance}()$ is a numeric term that returns the computed distance between two image feature vectors via a distance metric such as euclidean or cosine distance. $\mathrm{isLabel}()$ returns 1 if superpixel $s_i$ has label $l_j$ and 0 otherwise, and $\mathrm{isNeighbor}()$ returns 1 if its arguments are the neighbors and 0 otherwise. 
 
 An example of a formula in this hybrid Markov logic network that use these predicates and numeric terms are :
 
@@ -236,26 +240,25 @@ We have used the Alchemy - Open Source AI software \cite{alchemy} for learning t
 			\end{subfigure}
 		\end{subfigure}
 
-		
-		\begin{subfigure}[t]{\textwidth}
-			\centering
-			\begin{subfigure}[t]{0.195\textwidth}
-				\subcaption{original image}
-			\end{subfigure}
-			\begin{subfigure}[t]{0.195\textwidth}
-				\subcaption{ground truth segmentation}
-			\end{subfigure}
-			\begin{subfigure}[t]{0.195\textwidth}
-				\subcaption{visual words map}
-			\end{subfigure}
-			\begin{subfigure}[t]{0.195\textwidth}
-				\subcaption{superpixel segmentation}
-			\end{subfigure}
-			\begin{subfigure}[t]{0.195\textwidth}
-				\subcaption{superpixel adjacency matrix}
-			\end{subfigure}
+	\end{comment}	
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\begin{subfigure}[t]{0.195\textwidth}
+			\subcaption{original image}
 		\end{subfigure}
-	\end{comment}
+		\begin{subfigure}[t]{0.195\textwidth}
+			\subcaption{ground truth segmentation}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.195\textwidth}
+			\subcaption{visual words map}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.195\textwidth}
+			\subcaption{superpixel segmentation}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.195\textwidth}
+			\subcaption{superpixel adjacency matrix}
+		\end{subfigure}
+	\end{subfigure}
 	\caption{}
 \end{figure}
 %------------------------------------------------------------------------------------------

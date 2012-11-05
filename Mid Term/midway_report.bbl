@@ -11,11 +11,6 @@ Erik~Rodner Björn~Fröhlich and Joachim Denzler.
   cues in a combined random forest approach.
 \newblock In {\em In ACCV}, 2012.
 
-\bibitem{Borenstein04combiningtop}
-E.~Borenstein, E.~Sharon, and S.~Ullman.
-\newblock Combining top-down and bottom-up segmentation.
-\newblock In {\em CVPR}, 2004.
-
 \bibitem{cao:spatially}
 Liangliang Cao and Fei-Fei Li.
 \newblock Spatially coherent latent topic model for concurrent segmentation and
@@ -108,15 +103,6 @@ Matthew Richardson and Pedro Domingos.
 \newblock Markov logic networks.
 \newblock In {\em Machine Learning}, page 2006, 2006.
 
-\bibitem{Russell:2006:UMS:1153171.1153637}
-Bryan~C. Russell, William~T. Freeman, Alexei~A. Efros, Josef Sivic, and Andrew
-  Zisserman.
-\newblock Using multiple segmentations to discover objects and their extent in
-  image collections.
-\newblock In {\em Proceedings of the 2006 IEEE Computer Society Conference on
-  Computer Vision and Pattern Recognition - Volume 2}, CVPR '06, pages
-  1605--1614, Washington, DC, USA, 2006. IEEE Computer Society.
-
 \bibitem{Shotton06textonboost:joint}
 J.~Shotton, J.~Winn, C.~Rother, and A.~Criminisi.
 \newblock Textonboost: Joint appearance, shape and context modeling for
@@ -126,11 +112,5 @@ J.~Shotton, J.~Winn, C.~Rother, and A.~Criminisi.
 \bibitem{Wang_hybridmarkov}
 Jue Wang and Pedro Domingos.
 \newblock Hybrid markov logic networks.
-
-\bibitem{lin07multiple}
-Lin Yang, Peter Meer, and David~J. Foran.
-\newblock {Multiple Class Segmentation Using A Unified Framework over
-  Mean-Shift Patches}.
-\newblock In {\em Computer Vision and Pattern Recognition}, 2007.
 
 \end{thebibliography}
