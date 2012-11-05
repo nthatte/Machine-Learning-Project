@@ -256,6 +256,8 @@ Unfortunately, we ran into memory issues with the system using more than 23 Gb o
 \label{sec:New}
 After attempting such varied methods using Markov logic networks, we realize that Markov logic is not a good solution to problems in low level vision due to combinatorial explosion. Therefore, we propose to use Markov logic for high level reasoning only. We consider all possible outputs of a meanshift based unsupervised segmentation algorithm by varying the parameters involved and use Markov logic to choose the best of these predictions. We generate a random set of parameter values for the unsupervised segmentation algorithm. An SVM classifier is trained to predict the label for each segment. Each such semantic segmentation corresponds to a parse of the image. An HMLN associates a consistency value with a given parse which evaluates the initial segmentation and classifier output. We choose the best current parameter settings and repeat this process by generating another random set of parameters within the neighborhood of the current values.  
 
+Following the implementation of this approach, we shall experiment on the CAMVID dataset. This dataset consists of 4 video sequences. In the first set of experiments, we shall train on a random subset of frames in each video and test the trained model on the remaining frames of that video itself. The split would be 50:50. Parameters, specifically the window size and sample resolution for meanshift parameter generation, will be derived using cross validation. A second set of experiments would train the model on one video sequence and test it on the other three.
+
 %------------------------------------------------------------------------------------------
 
 \section{Conclusion}
@@ -263,12 +265,16 @@ After attempting such varied methods using Markov logic networks, we realize tha
 
 As mentioned in the project proposal, we have attempted to model different approaches for semantic image segmentation using HMLNs. We further analyzed why these are infeasible and proposed a new method for addressing the problem.
 
-%------------------------------------------------------------------------------------------
-\section{Plan of Activities}
-\label{sec:Plan}
-
 %------------------------------------------------------------------------------------------\bibliography{midway_report}
 \bibliographystyle{plain}
 \bibliography{midway_report}
+%------------------------------------------------------------------------------------------\bibliography{midway_report}
 
+\appendix
+\section{Plan of Activities}
+\label{sec:Plan}
+\subsection*{Old Plan of Activities}
+From now until the midterm report, Nitish will work on writing HMLNs, Aravindh will work on feature extraction and Adwait will work on super-pixel generation techniques. The midterm report will consist of the results of initial experiments with different techniques for each aspect and present our design choices.
+\subsection*{New Plan of Activities}
+Work so far suggest a radical change in approach. Aravindh will work on meanshift segmentation and understand its parameter space. Nitish and Adwait will work on building HMLNs for tree parsing and consistency evaluation.
 \end{document}
