@@ -38,6 +38,15 @@ Pedro Domingos, Stanley Kok, Hoifung Poon, Matthew Richardson, and Parag
 \newblock In {\em Proceedings of the Twenty-First National Conference on
   Artificial Intelligence}, pages 2--7. AAAI Press, 2006.
 
+\bibitem{visualdictrene}
+Aastha Jain, Luca Zappella, Patrick McClure, and René Vidal.
+\newblock Visual dictionary learning for joint object categorization and
+  segmentation.
+\newblock In Andrew Fitzgibbon, Svetlana Lazebnik, Pietro Perona, Yoichi Sato,
+  and Cordelia Schmid, editors, {\em Computer Vision – ECCV 2012}, volume
+  7576 of {\em Lecture Notes in Computer Science}, pages 718--731. Springer
+  Berlin Heidelberg, 2012.
+
 \bibitem{Kumar:2005:OC:1068507.1068889}
 M.~Pawan Kumar, Philip H.~S. Torr, and A.~Zisserman.
 \newblock Obj cut.
@@ -59,6 +68,11 @@ Bastian Leibe, Ales Leonardis, and Bernt Schiele.
   shape model.
 \newblock In {\em In ECCV workshop on statistical learning in computer vision},
   pages 17--32, 2004.
+
+\bibitem{graz02}
+Pinz~A Opelt, A.
+\newblock The tu graz-02 database.
+\newblock Technical report, TU Graz, 2002.
 
 \bibitem{SegmentRegionsParts}
 C.~Gu S. Gupta L.~Bourdev P.~Arbelaez, B.~Hariharan and J.~Malik.

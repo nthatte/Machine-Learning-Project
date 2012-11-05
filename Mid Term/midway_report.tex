@@ -61,6 +61,11 @@ This paper employs several useful tools for image segmentation. First its use of
 \label{sec:RandFor}
 
 \cite{IterContFor12} is another recent approach in which a single random forest is learnt and context features derived from coarser levels are incrementally added. Unlike \cite{Shotton06textonboost:joint}, which learns two random forests, this approach models the dependencies between contextual and non-contextual features directly. The authors suggest that learning the contextual and image features in a single framework is beneficial as it better reflects the inherent dependency between the two types of features. This work uses a large number of features in a single iterative framework and provides better results than previous approaches.
+
+\subsection{Semantic Image Segmentation using Bag of Words Approach}
+\label{sec:bagofwords}
+
+Semantic image segmentation has also been approached using the bag of words model. \cite{visualdictrene} develop a conditional random field model that combines dictionary learning, feature categorization (assigning key points to visual words) and image semantic segmentation into one framework. The conditional random field consists of energy terms for bottom up segmentation, key point categorization, dictionary learning and visual word co-occurrence. The last of these helps overcome the bag of words assumption to incorporate local co-occurrence information. The first of these imposes unary and pairwise potentials, the later of which again incorporates dependence between variables.
 %------------------------------------------------------------------------------------------
 
 \section{Attempted Methods}
@@ -106,7 +111,12 @@ Therefore, we propose to take a middle ground approach that will produce densely
 \subsection{Iterative Context Forests}
 \label{sec:IterContFor}
 
-In the section \ref{sec:RandFor} we discussed a method of using large number of features to learn a single random forest for semantic label segmentation. 
+In the section \ref{sec:RandFor} we discussed a method of using large number of features to learn a single random forest for semantic label segmentation in a joint, flexible and fast manner. The motivation to use HMLN comes with the same purpose of learning the context and pixel features at the same time. We attempt to learn a HMLN on such multiple feature sets, however, while the random forests select a subset of the feature set, the HMLN weights are trained while working with all these features simultaneously. We realize while conducting experiments using \cite{alchemy} that the process of learning the weights for the HMLN is extremely time consuming and memory intensive and hence we abandon this approach. 
+
+\subsection{Bag of Words Approach}
+\label{sec:BofWordApp}
+
+In section \ref{sec:bagofwords} we discussed the bag of words approach for semantic image segmentation. Even though the bag of words approach developed in \cite{visualdictrene} has shown very good results on the CAMVID and Graz-02 \cite{graz02} datasets it cannot be incorporated into a MLN as it requires second order logic. Particularly, the word count histogram built as part of the bag of words model requires a count of the number of true predicates of a certain kind which is a meta level information beyond the first order logic. Hence, we abandon this approach.
 
 \section{Experiment}
 \label{sec:Exp}

@@ -5,7 +5,7 @@ Too many commas in name 1 of "P. Arbelaez, B. Hariharan, C. Gu, S. Gupta, L. Bou
 while executing---line 1049 of file plain.bst
 Too many commas in name 1 of "P. Arbelaez, B. Hariharan, C. Gu, S. Gupta, L. Bourdev and J. Malik" for entry SegmentRegionsParts
 while executing---line 1049 of file plain.bst
-Too many commas in name 1 of "Stanley Kok, Marc Sumner, Matthew Richardson, Parag Singla, Hoifung Poon, Daniel Lowd, Jue Wang, Aniruddh Nath and Pedro Domingos" for entry alchemy
+Too many commas in name 1 of "Opelt, A., Pinz, A" for entry graz02
 while executing---line 1049 of file plain.bst
 Too many commas in name 1 of "Stanley Kok, Marc Sumner, Matthew Richardson, Parag Singla, Hoifung Poon, Daniel Lowd, Jue Wang, Aniruddh Nath and Pedro Domingos" for entry alchemy
 while executing---line 1049 of file plain.bst
@@ -15,6 +15,10 @@ Too many commas in name 1 of "Stanley Kok, Marc Sumner, Matthew Richardson, Para
 while executing---line 1049 of file plain.bst
 Too many commas in name 1 of "Stanley Kok, Marc Sumner, Matthew Richardson, Parag Singla, Hoifung Poon, Daniel Lowd, Jue Wang, Aniruddh Nath and Pedro Domingos" for entry alchemy
 while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Stanley Kok, Marc Sumner, Matthew Richardson, Parag Singla, Hoifung Poon, Daniel Lowd, Jue Wang, Aniruddh Nath and Pedro Domingos" for entry alchemy
+while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Opelt, A., Pinz, A" for entry graz02
+while executing---line 1090 of file plain.bst
 Too many commas in name 1 of "P. Arbelaez, B. Hariharan, C. Gu, S. Gupta, L. Bourdev and J. Malik" for entry SegmentRegionsParts
 while executing---line 1090 of file plain.bst
 Too many commas in name 1 of "P. Arbelaez, B. Hariharan, C. Gu, S. Gupta, L. Bourdev and J. Malik" for entry SegmentRegionsParts
@@ -29,4 +33,4 @@ Too many commas in name 1 of "Stanley Kok, Marc Sumner, Matthew Richardson, Para
 while executing---line 1090 of file plain.bst
 Too many commas in name 1 of "Stanley Kok, Marc Sumner, Matthew Richardson, Parag Singla, Hoifung Poon, Daniel Lowd, Jue Wang, Aniruddh Nath and Pedro Domingos" for entry alchemy
 while executing---line 1090 of file plain.bst
-(There were 14 error messages)
+(There were 16 error messages)
