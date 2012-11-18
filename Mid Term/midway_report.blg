@@ -1,0 +1,7 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: midway_report.aux
+The style file: plain.bst
+Database file #1: midway_report.bib
+A bad cross reference---entry "DBLP:conf/iccv/WinnCM05"
+refers to entry "DBLP:conf/iccv/2005", which doesn't exist
+Warning--I didn't find a database entry for "DBLP:conf/iccv/2005"
+(There was 1 error message)
