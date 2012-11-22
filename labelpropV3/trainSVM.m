@@ -1,4 +1,4 @@
-function SVMstruct = trainSVM(trainimgs);
+function SVMstruct = trainSVM(trainimgs, ratio, C);
 
 global TRAININTERPLABELS TRAINADJMATS
 
@@ -48,7 +48,7 @@ for i = trainimgs
 		SVMfeatMat(edgenum,:) = feat;
 	end
 end
-disp 'assembled data'
+%disp 'assembled data'
 
 %{
 notzero = find(SVMgroupvect ~= 2);
@@ -63,10 +63,10 @@ where1 = find(SVMgroupvect ==1);
 randindex = randperm(length(where1));
 
 warning('off','MATLAB:colon:nonIntegerIndex')
-totrain = [find(SVMgroupvect == 0), where1(randindex(1:1.6*sum(SVMgroupvect == 0)))];
+totrain = [find(SVMgroupvect == 0), where1(randindex(1:ratio*sum(SVMgroupvect == 0)))];
 
 %options = statset('Display','iter');
 options = statset();
-disp 'start training'
-SVMstruct = svmtrain(SVMfeatMat(totrain,:),SVMgroupvect(totrain)','method','SMO','boxconstraint', 1,'kernel_function','rbf','options',options);
-disp 'done training'
+%disp 'start training'
+SVMstruct = svmtrain(SVMfeatMat(totrain,:),SVMgroupvect(totrain)','method','SMO','boxconstraint', C,'kernel_function','rbf','options',options);
+%disp 'done training'

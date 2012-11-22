@@ -1,4 +1,4 @@
-global ALL ALLIMAGES ALLLABELS ALLSUPIX ALLWORDS TEST TESTIMAGES TESTLABELS TESTSUPIX TESTWORDS TESTFEATURES TRAIN TRAINIMAGES TRAINLABELS TRAINSUPIX TRAINWORDS TRAININTERPLABELS TRAINFEATURES TRAINADJMATS
+global ALL ALLIMAGES ALLLABELS ALLSUPIX ALLWORDS TEST TESTIMAGES TESTLABELS TESTSUPIX TESTWORDS TESTFEATURES TESTADJMATS TESTINTERPLABELS TRAIN TRAINIMAGES TRAINLABELS TRAINSUPIX TRAINWORDS TRAININTERPLABELS TRAINFEATURES TRAINADJMATS
 
 ALL = 'allData';
 ALLIMAGES = 'allData/images';
@@ -24,57 +24,90 @@ TRAININTERPLABELS = 'Train/labels_interp';
 TRAINFEATURES = 'Train/featureMats';
 TRAINADJMATS = 'Train/adjMats';
 
-testImgName = '7_2_s'
-k = 5;
+%test image
+testImgName = '1_16_s'
 
-calcGist()
-knnImgs = findkNN(testImgName,k);
-SVMstruct = trainSVM(knnImgs);
+%trains best SVM on KNN
+SVMstruct = findBestSVM(testImgName);
 
-adjMat = dlmread(['Test/adjMats/', testImgName, '.adj23.csv']);
-labelvect = load(['Test/labels_interp/', testImgName, '.labvec.mat']);
-labelvect = labelvect.imgLabelVector;
+%load data files
+adjMat = dlmread(fullfile(TESTADJMATS,[testImgName, '.adj23.csv']));
+adjMatU = triu(adjMat);
+testList = dir(TESTIMAGES);
+testList = testList(3:end);
+testImg = imread(fullfile(TESTIMAGES,[testImgName '.bmp']));
+testImageNum = find(strcmp([testImgName, '.bmp'],{testList.name}));
+supix = dlmread(fullfile(TESTSUPIX,[testImgName '.S3.csv']));
+featureStruct = load('Test/colorfeats.mat');
+features = featureStruct.features;
+featMat = features{testImageNum};
 
-[I, J] = find(triu(adjMat == 1));
-suPairs = [I, J];
-i = 1;
-fp = 0;
-tp = 0;
-fn = 0;
-actualTF = labelvect(suPairs(:,1)) == labelvect(suPairs(:,2));
-actualTF = actualTF';
-SVMTF = testSVM(SVMstruct,testImgName, suPairs);
+%gets a prior distribution for labels for each superpixel in test image
+[priorSeg, priorDist] = getBaselineDistributionImage(testImgName);
+distStack = reshape(priorDist',size(testImg,1),size(testImg,2),14);
 
-tp = sum(SVMTF(SVMTF == 1) == actualTF(SVMTF == 1))
-fp = sum(SVMTF(SVMTF == 1) ~= actualTF(SVMTF == 1))
-tn = sum(SVMTF(SVMTF == 0) == actualTF(SVMTF == 0))
-fn = sum(SVMTF(SVMTF == 0) ~= actualTF(SVMTF == 0))
+%for each superpixel in image, find entropy of probability distribution of its label and sort superpixels  by entropy
 
-precision = tp/(tp + fp)
-recall = tp/(tp + fn)
-specificity = tn/(tn + fp)
-accuracy = (tp + tn)/(tp + fp + tn + fn)
-
-pic = imread(['Test/images/', testImgName, '.bmp']);
-susu = dlmread(['Test/superPixels/', testImgName, '.S2.csv']);
-su = dlmread(['Test/superPixels/', testImgName, '.S3.csv']);
-if 1
-%{
-	figure(1)
-	imshow(pic)
-	axis image
-%}
-	figure(2)
-	[susugx, susugy]= gradient(susu);
-	susug = susugx.^2 + susugy.^2;
-	bord = ones(size(susug));
-	bord(susug ~= 0) = 0;
-	h = imagesc(su);
-	set(h,'AlphaData',bord)
-	colorbar
-	colormap jet
-	set(gca, 'YTick', []);
-	set(gca, 'XTick', []);
-	axis image
-
+supixInfo = zeros(max(unique(supix)),5); %supixNum, label, entropy, visited, changed
+for su = unique(supix)'
+	sumask = supix ~= su;
+	sumaskStack = repmat(sumask,[1,1,14]);
+	sudist = distStack;
+	sudist(sumaskStack) = 0;
+	sulabelDist = sum(sudist,1);
+	sulabelDist = sum(sulabelDist,2);
+	sulabelDist = sulabelDist/sum(sulabelDist,3);
+	sulabelDist = sulabelDist(:);
+	[prob, label] = max(sulabelDist);
+	supixInfo(su,:) = [su, label, entropy(sulabelDist), 0, 0];
 end
+sortedSupixInfo = sortrows(supixInfo,3);
+
+for su = sortedSupixInfo'
+	%mark as visited
+	sortedSupixInfo(sortedSupixInfo(:,1) == su(1),4) = 1;
+	
+	%get neighbors with different labels
+	su
+	allNeighbors = find(adjMatU(su(1),:) == 1);
+	neighborLabels = supixInfo(allNeighbors,2);
+	neighbors = allNeighbors(neighborLabels ~= su(2))
+
+	%query SVM and propogate labels
+	featDiff = abs(repmat(featMat(su(1),:),length(neighbors),1) - featMat(neighbors,:));
+	tf = svmclassify(SVMstruct,featDiff)
+	i = 1;
+	for neighbor = neighbors
+		%if visited do nothing if not visited mark visited and propagate label
+		if  sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,4);
+			i = i+1;
+			continue;
+		elseif tf(i)
+			sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,4) = 1;
+			sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,2) = su(2);
+			sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,5) = 1;
+		end
+		i = i + 1;
+	end
+end
+
+supixInfo = sortrows(sortedSupixInfo,1);
+newImgLabel = zeros(size(supix));
+for su = unique(supix)'
+	if supixInfo(su,5) == 1
+		sumask = supix == su;
+		newImgLabel(sumask) = supixInfo(su,2);
+	end
+end
+finalImgLabels = priorSeg;
+finalImgLabels(newImgLabel ~=0) = newImgLabel(newImgLabel ~= 0);
+
+figure(2)
+subplot(1,2,1)
+imagesc(finalImgLabels)
+axis image
+colorbar
+subplot(1,2,2)
+imagesc(priorSeg)
+axis image
+colorbar
