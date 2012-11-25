@@ -13,7 +13,7 @@ function [dist] = getBaselineDistribution(I, Iseg, textonmap, dictionarysize, tr
 % numLabels + 1 by number of pixels matrix
 v = unique(Iseg(:));
 numSegs = size(v,1);
-K = 14; %number of nearest neighbor histograms to look for
+K = 7; %number of nearest neighbor histograms to look for
 %Compute the histograms for each segment in Iseg
 segment_textonhists = zeros(numSegs, dictionarysize);
 for i=1:numSegs
@@ -25,7 +25,7 @@ end
 %Find the K nearest histograms per segment histogram and copy the labels for each nearest neighbor
 [D,nearestHistogramIndices] = pdist2(training_textonhists, segment_textonhists, 'cityblock', 'Smallest', K);
 nearestHistogramLabels = training_labels(nearestHistogramIndices(:));
-nearestHistogramLabels = reshape(nearestHistogramLabels, K, numSegs);
+nearestHistogramLabels = reshape(nearestHistogramLabels, [] , numSegs);
 %The normalized histogram of labels is the probability mass distribution across the labels for each segment
 perSegmentDistribution = hist(nearestHistogramLabels, 0:numLabels);
 perSegmentDistribution = perSegmentDistribution / K;

@@ -1,3 +1,4 @@
+tic
 global ALL ALLIMAGES ALLLABELS ALLSUPIX ALLWORDS TEST TESTIMAGES TESTLABELS TESTSUPIX TESTWORDS TESTFEATURES TESTADJMATS TESTINTERPLABELS TRAIN TRAINIMAGES TRAINLABELS TRAINSUPIX TRAINWORDS TRAININTERPLABELS TRAINFEATURES TRAINADJMATS
 
 ALL = 'allData';
@@ -64,7 +65,7 @@ for su = unique(supix)'
 	sulabelDist = sulabelDist(:);
 	
 	[prob, label] = max(sulabelDist);
-	supixInfo(su,:) = [su, label, entropy(sulabelDist), 0, 0];
+	supixInfo(su,:) = [su, label-1, entropy(sulabelDist), 0, 0];
 end
 
 sortedSupixInfo = sortrows(supixInfo,3);
@@ -108,21 +109,44 @@ end
 finalImgLabels = priorSeg;
 finalImgLabels(newImgLabel ~=0) = newImgLabel(newImgLabel ~= 0);
 
-figure(1)
-subplot(3,2,3)
-imagesc(supix);
-title('Superpixel Segmentation')
-colormap jet
-set(gca, 'YTick', []);
-set(gca, 'XTick', []);
-axis image
+%plot options
+if 1
+	imsize = [4 5];
 
-figure(2)
-subplot(1,2,1)
-imagesc(finalImgLabels)
-axis image
-colorbar
-subplot(1,2,2)
-imagesc(priorSeg)
-axis image
-colorbar
+	figure(1)
+	subplot(111)
+	hold off
+	imagesc(supix);
+	title('Superpixel Segmentation')
+	colormap jet
+	set(gca, 'YTick', []);
+	set(gca, 'XTick', []);
+	axis image
+	set(gcf, 'PaperUnits', 'inches');
+	set(gcf, 'PaperSize', imsize);
+	set(gcf, 'PaperPosition', [0, 0, imsize]);
+	print('-dpng',['./Results/', testImgName, '.supix.png'])
+
+	imagesc(finalImgLabels)
+	title('Post-Propagation Segmentation')
+	set(gca, 'YTick', []);
+	set(gca, 'XTick', []);
+	axis image
+	colorbar('SouthOutside')
+	set(gcf, 'PaperUnits', 'inches');
+	set(gcf, 'PaperSize', imsize);
+	set(gcf, 'PaperPosition', [0, 0, imsize]);
+	print('-dpng',['./Results/', testImgName, '.final.png'])
+
+	imagesc(newImgLabel)
+	title('Changed Superpixels')
+	set(gca, 'YTick', []);
+	set(gca, 'XTick', []);
+	axis image
+	colorbar('SouthOutside')
+	set(gcf, 'PaperUnits', 'inches');
+	set(gcf, 'PaperSize', imsize);
+	set(gcf, 'PaperPosition', [0, 0, imsize]);
+	print('-dpng',['./Results/', testImgName, '.changed.png'])
+end
+toc

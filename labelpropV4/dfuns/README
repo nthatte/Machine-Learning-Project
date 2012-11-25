@@ -1,0 +1,28 @@
+Here is some MATLAB code to learn per-exemplar distance functions
+Tomasz Malisiewicz (tomasz@cmu.edu)
+July 8th, 2008
+
+-------------------------------------------------------
+
+Per-Exemplar Distance Function Learning used in CVPR 2008 paper:
+Tomasz Malisiewicz, Alexei A. Efros. Recognition by Association via Learning Per-exemplar Distances. In CVPR, June 2008.
+http://www.cs.cmu.edu/~tmalisie/projects/cvpr08/
+
+SVM in the Primal Code from Olivier Chapelle
+http://www.kyb.tuebingen.mpg.de/bs/people/chapelle/primal/
+
+Texton code comes from Berkeley Texton Codebase
+
+-------------------------------------------------------
+
+After features have been computed use the function:
+learn_all_dfuns
+
+Computing CVPR08 Segment Features Code in:
+get14feats
+
+Applying distance functions to new data, use function:
+getdistmatrix_parts
+
+Some synthetic data examples seen in:
+testing/test_learn

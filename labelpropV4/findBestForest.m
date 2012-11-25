@@ -7,9 +7,10 @@ if exist(['Test/Forests/', testImgName, '.forest.mat'])
 	model = model.model;
 else
 	k = 5;
-	Mtrys = 4:4:40;
-	Mtrys = [Mtrys, floor(sqrt(39))];
-	ratios = 1.3:0.1:1.6;
+	%Mtrys = 4:8:40;
+%	Mtrys = [Mtrys, floor(sqrt(39))];
+	Mtrys = [6];
+	ratios = 0.5:0.1:1.5;
 
 	knnImgNums = findkNN(testImgName,k);
 
@@ -25,7 +26,7 @@ else
 				M
 				model = trainForest(knnImgNums(knnImgNums ~= trainImgNum), ratio, M);
 				[precision, recall, specificty] = calcCrossForestStats(model, trainImgNum)
-				forestStats(i,j,:) = [precision, 0.5*recall, 3*specificty];
+				forestStats(i,j,:) = [precision, 0.5*recall, specificty];
 				j = j + 1;
 			end
 			i =i + 1;
