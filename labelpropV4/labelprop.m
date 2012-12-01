@@ -1,3 +1,4 @@
+tic
 global ALL ALLIMAGES ALLLABELS ALLSUPIX ALLWORDS TEST TESTIMAGES TESTLABELS TESTSUPIX TESTWORDS TESTFEATURES TESTADJMATS TESTINTERPLABELS TRAIN TRAINIMAGES TRAINLABELS TRAINSUPIX TRAINWORDS TRAININTERPLABELS TRAINFEATURES TRAINADJMATS
 
 ALL = 'allData';
@@ -25,10 +26,10 @@ TRAINFEATURES = 'Train/featureMats';
 TRAINADJMATS = 'Train/adjMats';
 
 %test image
-testImgName = '1_16_s'
+testImgName = '7_28_s'
 
-%trains best SVM on KNN
-SVMstruct = findBestSVM(testImgName);
+%trains random forest
+model = findBestForest(testImgName);
 
 %load data files
 adjMat = dlmread(fullfile(TESTADJMATS,[testImgName, '.adj23.csv']));
@@ -49,18 +50,24 @@ distStack = reshape(priorDist',size(testImg,1),size(testImg,2),14);
 %for each superpixel in image, find entropy of probability distribution of its label and sort superpixels  by entropy
 
 supixInfo = zeros(max(unique(supix)),5); %supixNum, label, entropy, visited, changed
+
 for su = unique(supix)'
 	sumask = supix ~= su;
+	%sulabels = priorSeg(sumask);
 	sumaskStack = repmat(sumask,[1,1,14]);
 	sudist = distStack;
 	sudist(sumaskStack) = 0;
+	%sulabelDist = hist(sulabels,[1:14])/length(sulabels);
+	
 	sulabelDist = sum(sudist,1);
 	sulabelDist = sum(sulabelDist,2);
 	sulabelDist = sulabelDist/sum(sulabelDist,3);
 	sulabelDist = sulabelDist(:);
+	
 	[prob, label] = max(sulabelDist);
-	supixInfo(su,:) = [su, label, entropy(sulabelDist), 0, 0];
+	supixInfo(su,:) = [su, label-1, entropy(sulabelDist), 0, 0];
 end
+
 sortedSupixInfo = sortrows(supixInfo,3);
 
 for su = sortedSupixInfo'
@@ -68,14 +75,14 @@ for su = sortedSupixInfo'
 	sortedSupixInfo(sortedSupixInfo(:,1) == su(1),4) = 1;
 	
 	%get neighbors with different labels
-	su
+	su;
 	allNeighbors = find(adjMatU(su(1),:) == 1);
 	neighborLabels = supixInfo(allNeighbors,2);
-	neighbors = allNeighbors(neighborLabels ~= su(2))
+	neighbors = allNeighbors(neighborLabels ~= su(2));
 
-	%query SVM and propogate labels
+	%query forest and propogate labels
 	featDiff = abs(repmat(featMat(su(1),:),length(neighbors),1) - featMat(neighbors,:));
-	tf = svmclassify(SVMstruct,featDiff)
+	tf = classRF_predict(featDiff,model);
 	i = 1;
 	for neighbor = neighbors
 		%if visited do nothing if not visited mark visited and propagate label
@@ -83,7 +90,7 @@ for su = sortedSupixInfo'
 			i = i+1;
 			continue;
 		elseif tf(i)
-			sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,4) = 1;
+			%sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,4) = 1;
 			sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,2) = su(2);
 			sortedSupixInfo(sortedSupixInfo(:,1) == neighbor,5) = 1;
 		end
@@ -102,12 +109,44 @@ end
 finalImgLabels = priorSeg;
 finalImgLabels(newImgLabel ~=0) = newImgLabel(newImgLabel ~= 0);
 
-figure(2)
-subplot(1,2,1)
-imagesc(finalImgLabels)
-axis image
-colorbar
-subplot(1,2,2)
-imagesc(priorSeg)
-axis image
-colorbar
+%plot options
+if 1
+	imsize = [4 5];
+
+	figure(1)
+	subplot(111)
+	hold off
+	imagesc(supix);
+	title('Superpixel Segmentation')
+	colormap jet
+	set(gca, 'YTick', []);
+	set(gca, 'XTick', []);
+	axis image
+	set(gcf, 'PaperUnits', 'inches');
+	set(gcf, 'PaperSize', imsize);
+	set(gcf, 'PaperPosition', [0, 0, imsize]);
+	print('-dpng',['./Results/', testImgName, '.supix.png'])
+
+	imagesc(finalImgLabels)
+	title('Post-Propagation Segmentation')
+	set(gca, 'YTick', []);
+	set(gca, 'XTick', []);
+	axis image
+	colorbar('SouthOutside')
+	set(gcf, 'PaperUnits', 'inches');
+	set(gcf, 'PaperSize', imsize);
+	set(gcf, 'PaperPosition', [0, 0, imsize]);
+	print('-dpng',['./Results/', testImgName, '.final.png'])
+
+	imagesc(newImgLabel)
+	title('Changed Superpixels')
+	set(gca, 'YTick', []);
+	set(gca, 'XTick', []);
+	axis image
+	colorbar('SouthOutside')
+	set(gcf, 'PaperUnits', 'inches');
+	set(gcf, 'PaperSize', imsize);
+	set(gcf, 'PaperPosition', [0, 0, imsize]);
+	print('-dpng',['./Results/', testImgName, '.changed.png'])
+end
+toc

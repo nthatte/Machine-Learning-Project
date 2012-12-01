@@ -1,13 +1,11 @@
 function tf = testSVM(SVMstruct, testImageNum, supairs)
 
-global TESTIMAGES
+global TRAINIMAGES
 
-testList = dir(TESTIMAGES);
+testList = dir(TRAINIMAGES);
 testList = testList(3:end);
 
-%testImageNum = find(strcmp([testim, '.bmp'],{testList.name}));
-
-featureStruct = load('Test/colorfeats.mat');
+featureStruct = load('Train/colorfeats.mat');
 features = featureStruct.features;
 featMat = features{testImageNum};
 

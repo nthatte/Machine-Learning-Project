@@ -1,4 +1,4 @@
-function SVMstruct = trainSVM(trainimgs, ratio, C);
+function model = trainForest(trainimgs, ratio, M);
 
 global TRAININTERPLABELS TRAINADJMATS
 
@@ -13,15 +13,15 @@ adjList = adjList(3:end);     %remove . and .. from list
 featureStruct = load('Train/colorfeats.mat');
 features = featureStruct.features;
 
-%make SVM feature matrix of  = total num superpixels width = length of features
+%make forest feature matrix of  = total num superpixels width = length of features
 numedges = 0;
 for i = trainimgs
 	adjMat = dlmread(fullfile(TRAINADJMATS,adjList(i).name));
 	numedges = numedges + length(find(triu(adjMat == 1 )));
 end
 
-SVMfeatMat = zeros(numedges,39);
-SVMgroupvect = zeros(1,numedges);
+forestfeatMat = zeros(numedges,39);
+forestgroupvect = zeros(1,numedges);
 
 edgenum = 0;
 for i = trainimgs
@@ -39,34 +39,31 @@ for i = trainimgs
 		edgenum = edgenum + 1;
 		%{
 		if labelvect(suPair(1)) == 0 || labelvect(suPair(2)) == 0
-			SVMgroupvect(edgenum) = 2;
+			forestgroupvect(edgenum) = 2;
 		else
 		%}
 			feat = abs(featMat(suPair(1),:) - featMat(suPair(2),:));
-			SVMgroupvect(edgenum) = labelvect(suPair(1)) == labelvect(suPair(2));
+			forestgroupvect(edgenum) = labelvect(suPair(1)) == labelvect(suPair(2));
 		%end
-		SVMfeatMat(edgenum,:) = feat;
+		forestfeatMat(edgenum,:) = feat;
 	end
 end
 %disp 'assembled data'
-
 %{
-notzero = find(SVMgroupvect ~= 2);
-length(SVMgroupvect)
-size(SVMfeatMat)
-length(SVMgroupvect(notzero))
-size(SVMfeatMat(notzero,:))
+notzero = find(forestgroupvect ~= 2);
+length(forestgroupvect)
+size(forestfeatMat)
+length(forestgroupvect(notzero))
+size(forestfeatMat(notzero,:))
 %}
 
 %sample true points to balance number of true and false points
-where1 = find(SVMgroupvect ==1);
+where1 = find(forestgroupvect ==1);
 randindex = randperm(length(where1));
 
 warning('off','MATLAB:colon:nonIntegerIndex')
-totrain = [find(SVMgroupvect == 0), where1(randindex(1:ratio*sum(SVMgroupvect == 0)))];
+totrain = [find(forestgroupvect == 0), where1(randindex(1:ratio*sum(forestgroupvect == 0)))];
 
-%options = statset('Display','iter');
-options = statset();
 %disp 'start training'
-SVMstruct = svmtrain(SVMfeatMat(totrain,:),SVMgroupvect(totrain)','method','SMO','boxconstraint', C,'kernel_function','rbf','options',options);
+model = classRF_train(forestfeatMat(totrain,:),forestgroupvect(totrain)', 500, M);
 %disp 'done training'

@@ -1,4 +1,4 @@
-function tf = testSVM(SVMstruct, testImageNum, supairs)
+function tf = testForest(model, testImageNum, supairs)
 
 global TESTIMAGES
 
@@ -12,4 +12,4 @@ features = featureStruct.features;
 featMat = features{testImageNum};
 
 featDiff = abs(featMat(supairs(:,1),:) - featMat(supairs(:,2),:));
-tf = svmclassify(SVMstruct,featDiff);
+tf = classRF_predict(featDiff,model);

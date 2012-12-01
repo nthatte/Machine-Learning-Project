@@ -23,10 +23,8 @@ function imgs = findkNN(testImg,k)
 	[imgs,D] = knnsearch(trainGist,gistTestVector,'K',k);
 	
 	%plot k nearest images
-	if 0
-		scrsz = get(0,'ScreenSize');
-		figure(3)
-		set(gcf,'Position',[1 scrsz(4) scrsz(3)/2 scrsz(4)/2])
+	if 1
+		figure(1)
 		subplot(2,3,1), imshow(testImg)
 		title(strcat('test image: ',testImgName),'Interpreter','none')
 		i = 2;
@@ -36,4 +34,12 @@ function imgs = findkNN(testImg,k)
 			title(strcat(int2str(i-1),': ',trainList(img).name),'Interpreter','none')
 			i = i + 1;
 		end
+		
+		imsize = [3 4];
+		set(gcf, 'PaperUnits', 'inches');
+		set(gcf, 'PaperSize', imsize);
+		set(gcf, 'PaperPosition', [0, 0, imsize]);
+		print('-dpng','-r300',['./Results/', testImgName(1:end-4), '.knn.png'])
+
+
 	end
