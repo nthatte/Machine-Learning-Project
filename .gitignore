@@ -7,12 +7,17 @@ dataset
 ###################
 proposal.pdf
 midway_report.pdf
+finalr_report.pdf
 *.com
 *.class
 *.dll
 *.exe
 *.o
 *.so
+*.bbl
+*.blg
+*.aux
+*.out
 
 # Packages #
 ############
