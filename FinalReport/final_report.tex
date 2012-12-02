@@ -52,7 +52,6 @@ This paper is structured as follows: Section \ref{sec:Problem} discusses the pro
 %------------------------------------------------------------------------------------------
 \section{Proposed Method}
 \label{sec:Proposed}
-\subsection{Attempted Methods}
 \subsection{Intuition}
 \subsection{Our Approach}
 \subsubsection{Features}
@@ -136,6 +135,23 @@ A new model is trained from the GIST feature based nearest neighbors for the giv
 The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the K nearest segments from the training data.
 This distribution is copied to each pixel in the image and a per pixel distribution and entropy is thus available.
 
+\subsection{Other Attempted Methods}
+\subsubsection{HMLN}
+Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach uptil the mid term report was based on an implementation of this tool called Alchemy. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset.
+\subsubsection{SVM for Label Propagation}
+We experimented with SVM's in place of random forests and found them to not converge when training on the entire dataset. Training on the nearest neighbors of a test image lead to convergence but the results were too bad to be used.
+\subsubsection{Conditional Random Fields}
+Conditional random fields are undirected graphical models that can perform inference to compute marginal distributions of label probabilities given features.
+We attempted to use these for generating baseline segmentations.
+The Ising model with each pixel as a node is often used to model images.
+These, however, are computationally expensive as they have loops.
+We experimented with pseudo log likelihood training and loopy belief propogation.
+The maximum aposteriori estimate of label assignments to image pixels always labeled each pixel as Grass.
+This was due to a very high unary potential learnt for the corresponding node. 
+We did not pursue this approach due to very high computational requirements.
+Furthermore, loopy belief propogation did not converge after more than 6 hours of training.
+\subsection{Adaboost}
+We explored used Adaboost instead of random forests but random forests gave better results on the classification task.
 
 %------------------------------------------------------------------------------------------
 
