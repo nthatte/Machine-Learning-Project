@@ -41,6 +41,9 @@ Semantic segmentation is the process of assigning a class label to each pixel of
 This paper is structured as follows: Section \ref{sec:Problem} discusses the problem statement. Section \ref{sec:Related} talks about the related work. Section \ref{sec:Proposed} discusses our method for semantic image segmentation. The experiments conducted and the results obtained are presented in section \ref{sec:Exp}. Finally we summarize our conclusions in section \ref{sec:Conclusion}.
 \label{sec:Intro}
 
+\subsection{Related Work}
+\label{sec:Related}
+
 %------------------------------------------------------------------------------------------
 
 \subsection{Problem Definition}
@@ -125,20 +128,13 @@ below in detail.
 
 \paragraph{Training} Each training image is divided into segments using
 Meanshift based EDISON \cite{meanshift}.
-A normalized texton histogram (bag of words representation) is computed
-for each segment.
-The ground truth label for each segment is selected by taking a majority
-vote over per pixel ground truth labels.
+A normalized texton histogram (bag of words representation) is computed for each segment.
+The ground truth label for each segment is selected by taking a majority vote over per pixel ground truth labels.
 
-\paragraph{Testing} For each test image, meanshift segments and normalized
-texton histograms of the same are computed.
-The probability distribution $P(Label | feature)$ is computed by counting
-the occurrences of each label in the K nearest segments from the training
-data.
-This distribution is copied to each pixel in the image and a per pixel
-distribution and entropy is thus available.
-\subsection{Related Work}
-\label{sec:Related}
+\paragraph{Testing} For each test image, meanshift segments and normalized texton histograms of the same are computed.
+A new model is trained from the GIST feature based nearest neighbors for the given test image.
+The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the K nearest segments from the training data.
+This distribution is copied to each pixel in the image and a per pixel distribution and entropy is thus available.
 
 
 %------------------------------------------------------------------------------------------
