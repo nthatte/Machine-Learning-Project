@@ -137,6 +137,7 @@ the occurrences of each label in the K nearest segments from the training
 data.
 This distribution is copied to each pixel in the image and a per pixel
 distribution and entropy is thus available.
+
 \subsection{Related Work}
 \label{sec:Related}
 
@@ -152,7 +153,20 @@ distribution and entropy is thus available.
 \subsection{Description of Experiments}
 \label{sec:Description}
 
-We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}. Superpixels, connectivity graphs, 
+We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}, which we randomly into 100 test images and 20 validation images and 100 training images.
+Superpixels and connectivity graphs for all the images were precomputed and stored.
+Then, we performed leave-one-out cross validation to optimize the parameters in the algorithm. These parameters are $k_{bag}$ for the $k$-nearest-neighbor images from which the bag of words model is computed, $k_{hist}$ for the $k$-nearest-neighbor texton histograms from which the distribution $P(Label | feature)$ is generated, $k_{forest}$ for the $k$-nearest-neighbors used by the random forest, and a ratio parameter used to balanced the number true and false edges on the connectivity graph. Due to a lack of computational resources, optimizing these four parameters simultaneously proved intractable. Therefore, the assumption was made that the parameters for the bag-of-words model and the random forest affect the final segmentation independently. 
+
+Figure \ref{fig:pickK} shows the accuracy of the final segmentations with respect to the parameters for the bag of words model. For this test, the parameters for the random forest, the $k$ value and ratio, were set 11 and 0.8 respectively. We chose a set of parameters that produced a high accuracy that also had low first and second derivatives. We believe low derivatives are desirable as they indicate stability and should generalize well to the test set. Consequently, we chose $k_{bag} = 15$, and $k_{hist} = 7$ as these parameters satisfy both of these requirements.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width = 0.75\textwidth]{./img/pickK_final}
+\caption{Results from leave-one-out cross validation on the parameters for the bag of words model. The chosen parameters $k_{imgs} = 15$, and $k_{histo} = 7$ are highlighted.}
+\label{fig:pickK}:
+\end{figure}
+
+
 \subsection{Observations}
 \label{sec:Observations}
 
@@ -161,9 +175,7 @@ We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}. Superpixels, connect
 \section{Conclusion}
 \label{sec:Conclusion}
 
-%------------------------------------------------------------------------------------------\bibliography{midway_report}
 \bibliographystyle{plain}
 \bibliography{final_report}
-%------------------------------------------------------------------------------------------\bibliography{midway_report}
 
 \end{document}
