@@ -6,6 +6,7 @@
 \usepackage{subcaption}
 \usepackage{comment}
 \usepackage{hyperref}
+\usepackage{url}
 \usepackage[top=1.0in, bottom=1.0in, left=1.0in, right=1.0in]{geometry}
 
 %\renewcommand\refname{Papers To Read}
@@ -145,11 +146,10 @@ Hybrid Markov Logic Networks combine logic and probabilistic inference technique
 \subsubsection{SVM for Label Propagation}
 We experimented with SVM's in place of random forests and found them to not converge when training on the entire dataset. Training on the nearest neighbors of a test image lead to convergence but the results were too bad to be used.
 \subsubsection{Conditional Random Fields}
-Conditional random fields are undirected graphical models that can perform inference to compute marginal distributions of label probabilities given features.
-We attempted to use these for generating baseline segmentations.
-The Ising model with each pixel as a node is often used to model images.
+Conditional random fields \cite{lafferty2001conditional} are undirected graphical models that can perform inference to compute marginal distributions of label probabilities given features.
+We attempted to use these for generating baseline segmentations using the Ising model with each pixel as a node.
 These, however, are computationally expensive as they have loops.
-We experimented with pseudo log likelihood training and loopy belief propogation.
+We experimented with pseudo log likelihood training and loopy belief propogation using the UGM toolbox\cite{UGMSoftware}.
 The maximum aposteriori estimate of label assignments to image pixels always labeled each pixel as Grass.
 This was due to a very high unary potential learnt for the corresponding node. 
 We did not pursue this approach due to very high computational requirements.
