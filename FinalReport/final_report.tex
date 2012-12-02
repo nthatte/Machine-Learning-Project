@@ -174,9 +174,9 @@ We used Adaboost \cite{Freund96experimentswith} for training the classifier inst
 
 \subsubsection{Cross Validation}
 \label{sec:cross}
-We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}, which we randomly into 100 test images 20 validation images and 100 training images.
+We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}, which we randomly split into 120 test images and 120 training images.
 Superpixels and connectivity graphs for all the images were precomputed and stored.
-Then, we performed leave-one-out cross validation to optimize the parameters in the algorithm.
+Then, we performed leave-one-out cross validation amongst the training images to optimize the parameters in the algorithm.
 These parameters are $k_{bag}$ for the $k$-nearest-neighbor images from which the bag of words model is computed, $k_{hist}$ for the $k$-nearest-neighbor Texton histograms from which the distribution $P(Label | feature)$ is generated, $k_{forest}$ for the $k$-nearest-neighbors used by the random forest, and a ratio parameter used to balanced the number true and false edges on the connectivity graph. 
 
 Due to a lack of computational resources, optimizing these four parameters simultaneously proved intractable. Therefore, the we assumed that the parameters for the bag-of-words model and the random forest affect the final segmentation independently. This assumption is supported by the relative magnitudes by which the parameters affect the accuracy of the semantic segmentation
@@ -200,12 +200,63 @@ Due to a lack of computational resources, optimizing these four parameters simul
 	\end{subfigure}
 \end{figure}
 
-Figure \ref{fig:Kbag} shows the accuracy of the final segmentations of the validation images with respect to the bag of words model parameters. For this test, the parameters for the random forest, $k_{forest}$ value and ratio, were set 11 and 0.8 respectively. We chose a set of parameters that produced a high accuracy result and also had low first and second derivatives. We believe low derivatives are desirable as they indicate stability and therefore characterize parameters that generalize well to the test data. Consequently, we chose $k_{bag} = 15$, and $k_{hist} = 7$ as these parameters satisfy these properties.
+Figure \ref{fig:Kbag} shows the accuracy of the final segmentations of the validation images with respect to the bag of words model parameters. 
+For this test, the parameters for the random forest, $k_{forest}$ value and ratio, were set 11 and 0.8 respectively. 
+We chose a set of parameters that produced a high accuracy result and also had low first and second derivatives. We believe low derivatives are desirable as they indicate stability and therefore characterize parameters that generalize well to the test data. 
+Consequently, we chose $k_{bag} = 15$, and $k_{hist} = 7$ as these parameters satisfy these properties.
 
-The next parameter we validated was the number of nearest neighbor images on which to train the random forest, $k_{forest}$. Figure \ref{fig:Kforest} shows the result of the leave-one-out cross validation on this parameter. This plot shows that for accuracy is roughly constant for all $k_{forest}$ except for a value of 1, for which it is markedly decreased. While this plot shows no conclusive reason to choose one $k$ value over another, high $k$ values result in more data points and thus should decrease the variability of the results. However, larger values of $k_{forest}$ such as 11 or 13, resulted in unacceptably slow training times. Therefore, we chose $k_{forest} = 9$ as it represented an acceptable compromise between these features.
+The next parameter we validated was the number of nearest neighbor images on which to train the random forest, $k_{forest}$. 
+Figure \ref{fig:Kforest} shows the result of the leave-one-out cross validation on this parameter. This plot shows that for accuracy is roughly constant for all $k_{forest}$ except for a value of 1, for which it is markedly decreased. 
+While this plot shows no conclusive reason to choose one $k$ value over another, high $k$ values result in more data points and thus should decrease the variability of the results. 
+However, larger values of $k_{forest}$ such as 11 or 13, resulted in unacceptably slow training times. 
+Therefore, we chose $k_{forest} = 9$ as it represented an acceptable compromise between these features.
 
-The last varied parameter was the ratio of sampled true points to false points used in the training data for the random forest. This parameter is vital, as the graph structure proposed in section \ref{sec:labprop} results in a far greater number of same-labeled superpixel pairs than differently-labeled superpixel pairs. Without this parameter, all tested classifiers tended to fit to the positive labeled points almost exclusively, resulting in high precision and recall but near-zero specificity. For our application, this is extremely undesirable, as a false-positive, resulting in the classifier propagating a label when it should not have, can only degrade the segmentation. For high ratio values, (0.8 - 1.2) this same behavior was observed, as suggested in the variability of the plot in this range. We chose a ratio of 0.5 for our final classifier, as it resulted in very high specificity values, and ensured that the label propogation indicator would be conservative. 
+The last varied parameter was the ratio of sampled true points to false points used in the training data for the random forest.
+The result of this cross-validation, shown in figure \ref{fig:ratio}, was inconclusive.
+However, this parameter is of vital importance, as the graph structure proposed in section \ref{sec:labprop} results in a far greater number of same-labeled superpixel pairs than differently-labeled superpixel pairs.
+Without this parameter, all tested classifiers tended to fit to the positive labeled points almost exclusively, resulting in high precision and recall but very low specificity. 
+For our application, this is extremely undesirable, as a false-positive, resulting in the classifier propagating a label when it should not have, can only degrade the segmentation. 
+For high ratio values, (0.8 - 1.2) this same behavior was observed, as suggested by the variability of figure \ref{fig:ratio} in this range. We chose a ratio of 0.5 for our final classifier, as it resulted in high specificity values, and ensured that the label propagation indicator would be conservative. 
 
+\subsubsection{Experimental Setup}
+Once we obtained the optimal parameters via the procedure described above, we proceeded to test the segmentation algorithm on the 120 images in the test set. Figure \ref{fig:result_good} shows a typical good result from the segmentation algorithm. In this result, one can see that the cow label was successfully propagated and replaced the grass label in the cow on the left, and the tree label on the cow on the right.
+
+\begin{figure}[htb]
+\centering
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/1_11_s.png}
+		\parbox{.95\textwidth}{\caption{Original Image \label{fig:orig_good}}}
+			\end{subfigure}
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/1_11_s_GT.png}
+		\parbox{0.95\textwidth}{\caption{Ground Truth \label{fig:GT_good}}}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/1_11_s_prior.png}
+		\parbox{0.95\textwidth}{\caption{Prior Segmentation \label{fig:prior_good}}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/1_11_s_final.png}
+		\parbox{0.95\textwidth}{\caption{Prior \label{fig:final_good}}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/1_11_s_changed.png}
+		\parbox{0.95\textwidth}{\caption{Changed Superpixels \label{fig:changed_good}}}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width = 0.5\textwidth]{./img/legend-rot.png}
+	\end{subfigure}
+	\caption{Good result from segmentation algorithm.}
+	\label{fig:result_good}
+\end{figure}
 
 \subsection{Observations}
 
