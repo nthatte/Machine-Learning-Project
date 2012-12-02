@@ -142,7 +142,8 @@ This distribution is copied to each pixel in the image and a per pixel distribut
 
 \subsection{Other Attempted Methods}
 \subsubsection{HMLN}
-Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach uptil the mid term report was based on an implementation of this tool called Alchemy. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset.
+Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} attach weights to first-order formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} are an extension that allow for continuous properties to appear as features. Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach till the mid term report was based on an implementation of this tool called Alchemy \cite{alchemy}. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset. 
+
 \subsubsection{SVM for Label Propagation}
 We experimented with SVM's in place of random forests and found them to not converge when training on the entire dataset. Training on the nearest neighbors of a test image lead to convergence but the results were too bad to be used.
 \subsubsection{Conditional Random Fields}
