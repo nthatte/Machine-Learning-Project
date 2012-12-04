@@ -219,32 +219,32 @@ For our application, this is extremely undesirable, as a false-positive, resulti
 For high ratio values, (0.8 - 1.2) this same behavior was observed, as suggested by the variability of figure \ref{fig:ratio} in this range. We chose a ratio of 0.5 for our final classifier, as it resulted in high specificity values, and ensured that the label propagation indicator would be conservative. 
 
 \subsubsection{Experimental Setup}
-Once we obtained the optimal parameters via the procedure described above, we proceeded to test the segmentation algorithm on the 120 images in the test set. Figure \ref{fig:result_good} shows a typical good result from the segmentation algorithm. In this result, one can see that the cow label was successfully propagated and replaced the grass label in the cow on the left, and the tree label on the cow on the right.
+Once we obtained the optimal parameters via the procedure described above, we proceeded to test the segmentation algorithm on the 120 images in the test set. 
+Figure \ref{fig:result_good} shows a typical result from the segmentation algorithm. In this result, one can see that the error near the hind-legs of the cow on the left, in which a portion of the cow was labeled grass, was successfully fixed using our algorithm. Additionally, the erroneous tree label that appears on the right side of the image is partially replaced by cow and tree labels. However, in this example there is an entire cow mislabeled as a building (in red). Our algorithm is not able to correct a mistake such as this, because it can only propgate labels and cannot re
 
 \begin{figure}[htb]
 \centering
-	\begin{subfigure}[t]{0.33\textwidth}
+	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s.png}
 		\parbox{.95\textwidth}{\caption{Original Image \label{fig:orig_good}}}
 			\end{subfigure}
-	\begin{subfigure}[t]{0.33\textwidth}
+	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_GT.png}
 		\parbox{0.95\textwidth}{\caption{Ground Truth \label{fig:GT_good}}}
 	\end{subfigure}
-
-	\begin{subfigure}[t]{0.33\textwidth}
+	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_prior.png}
 		\parbox{0.95\textwidth}{\caption{Prior Segmentation \label{fig:prior_good}}}
 	\end{subfigure}
-	\begin{subfigure}[t]{0.33\textwidth}
+	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_final.png}
-		\parbox{0.95\textwidth}{\caption{Prior \label{fig:final_good}}}
+		\parbox{0.95\textwidth}{\caption{Final Segmentation \label{fig:final_good}}}
 	\end{subfigure}
-	\begin{subfigure}[t]{0.33\textwidth}
+	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_changed.png}
 		\parbox{0.95\textwidth}{\caption{Changed Superpixels \label{fig:changed_good}}}
@@ -252,9 +252,9 @@ Once we obtained the optimal parameters via the procedure described above, we pr
 
 	\begin{subfigure}[t]{\textwidth}
 		\centering
-		\includegraphics[width = 0.5\textwidth]{./img/legend-rot.png}
+		\includegraphics[width = 0.4\textwidth]{./img/legend-rot.png}
 	\end{subfigure}
-	\caption{Good result from segmentation algorithm.}
+	\caption{Typical result from segmentation algorithm.}
 	\label{fig:result_good}
 \end{figure}
 
