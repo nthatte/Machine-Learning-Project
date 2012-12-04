@@ -58,6 +58,11 @@ Several recent approaches use random fields to incorporate local cues and impart
 \section{Proposed Method}
 \label{sec:Proposed}
 \subsection{Intuition}
+\label{sec:intuition}
+Given a pair of super pixels the problem of deciding whether or not they should have the same label is much easier than to decide on which semantic label they should take. This is because features at the scale of a super pixel are noisy and carry very little information for solving the recognition problem.
+Idealy, we would like to query every pair of super pixels but that is computationally infeasible. We can instead work with a sparser graph that still has a few connections going across ajacent super pixels. Such jumps are important as very often parts of objects are hard to identify without having observed the presence of the remaining object not occuring in the immediate vicinity.
+The knowledge of which super pixels share the same label can be used to propogate labels after an initial estimate has been provided. The direction of propogation can be determined using some confidence measure of the initial estimate.
+
 \subsection{Our Approach}
 \subsubsection{Features}
 \paragraph{Textons}
@@ -85,10 +90,9 @@ Each image is divided into super pixels at two different scales such that
 the a coarse super pixels align with corresponding finer ones.
 This is achieved by using \cite{}.%TODO Cite the super pixel people.
 A graph is constructed where each fine super pixel is connected to its
-4-connected neighborhood and to all fine super pixels inside the same
+direct neighborhood and to all fine super pixels inside the same
 coarse super pixel.
-We believe that this connectivity helps model non local properties which
-are important for determining semantically relevant class labels.
+The later of these connections ensure that we have jumps of the kind discussed in section \ref{sec:intuition}.
 
 \paragraph{Training the classifier}
 We train a classifier that decides whether or not two super pixels should
@@ -156,7 +160,7 @@ We experimented with pseudo log likelihood training and loopy belief propogation
 The maximum aposteriori estimate of label assignments to image pixels always labeled each pixel as Grass.
 This was due to a very high unary potential learnt for the corresponding node. 
 We did not pursue this approach due to very high computational requirements.
-Furthermore, loopy belief propogation did not converge after more than 6 hours of training.
+Furthermore, loopy belief propogation did not converge after more than 6 hours of training on a small subset of the images.
 
 \subsection{Adaboost}
 We used Adaboost \cite{Freund96experimentswith} for training the classifier instead of the random forests but random forests gave better results on the classification task. 
@@ -266,6 +270,12 @@ Figure \ref{fig:result_good} shows a typical result from the segmentation algori
 
 \section{Conclusion}
 \label{sec:Conclusion}
+We have experimented with an approach to label propogation methods for semantic segmantation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods in this field out perform the results that we have presented. We conclude with the following three observations:-
+\begin{itemize}
+\item Training on the nearest neighbors can greatly improve performance.
+\item Inadequate feature representation can result in data that is very hard to separate.
+\item Write the last one here
+\end{itemize}
 
 \bibliographystyle{plain}
 \bibliography{final_report}
