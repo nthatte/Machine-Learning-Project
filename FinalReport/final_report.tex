@@ -99,7 +99,7 @@ A normalized texton histogram (bag of words representation) is computed for each
 The ground truth label for each segment is selected by taking a majority vote over per pixel ground truth labels.
 
 \paragraph{Testing} For each test image, mean-shift segments and normalized texton histograms of the same are computed.
-A new model is trained from the k-most similar images to the test image. Similarity here is measured by euclidean distance between GIST\cite{GIST} feature representations of images. Not training on the entire training set gives a great boost to test accuracy.
+A new model is trained from the k-most similar images to the test image. Similarity here is measured by euclidean distance between GIST \cite{Gist} feature representations of images. Not training on the entire training set gives a great boost to test accuracy.
 The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the K nearest segments from the training data.
 This distribution is copied to each pixel in the segment and a per pixel distribution and entropy is thus available.
 
@@ -149,7 +149,7 @@ this sorted list.
 
 \subsection{Other Attempted Methods}
 \subsubsection{HMLN}
-Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} attach weights to first-order logic formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} are an extension that allow for continuous properties to appear as features. Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach till the mid term report was based on an implementation of this tool called Alchemy \cite{alchemy}. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset. We also attempted to use the software ProbCog \cite{conf/ifiptm/NoorianMF11}, however the software did not allow continuous properties to appear as features and we had to abandon the approach. 
+Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} attach weights to first-order logic formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{wang2008hybrid} are an extension that allow for continuous properties to appear as features. Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach till the mid term report was based on an implementation of this tool called Alchemy \cite{alchemy}. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset. We also attempted to use the software ProbCog \cite{progcog}, however the software did not allow continuous properties to appear as features and we had to abandon the approach. 
 
 \subsubsection{SVM for Label Propagation}
 We experimented with SVM's in place of random forests and found them to not converge when training on the entire dataset. Training on the nearest neighbors of a test image lead to convergence but the results were too bad to be used. We experimented with linear, quadratic and radial basis function kernels.
@@ -203,7 +203,6 @@ Due to a lack of computational resources, optimizing these four parameters simul
 		\includegraphics[width = \textwidth]{./img/ratio}
 		\parbox{0.95\textwidth}{\caption{Accuracy versus true/false points ratio obtained from leave-one-out cross validation. A ratio  of 0.5 was chosen. \label{fig:ratio}}}
 	\end{subfigure}
-
 	\caption{}
 \end{figure}
 
@@ -233,8 +232,6 @@ Our testbed process iterated through all images in the test set, obtained their 
 
 \subsection{Observations}
 \label{sec:Observations}
-
-Figure \ref{fig:result_good} shows a typical result from the segmentation algorithm. In this result, one can see that the error near the hind-legs of the cow on the left, in which a portion of the cow was labeled grass, was successfully fixed using our algorithm. Additionally, the erroneous tree label that appears on the right side of the image is partially replaced by cow and tree labels. However, in this example there is an entire cow mislabeled as a building (in red). Our algorithm is not able to correct a mistake such as this, because it can only propagate existing labels and cannot assign labels by inferring which label would be most probable given the label of the lower entropy superpixel. Our attempted Markov logic network approach should have been able to perform this task, but as mentioned earlier, this approach was infeasible due to memory constraints.
 
 \begin{figure}[htb]
 \centering
@@ -272,7 +269,30 @@ Figure \ref{fig:result_good} shows a typical result from the segmentation algori
 	\label{fig:result_good}
 \end{figure}
 
-The overall effect of our label propagation method can be seen in figure \ref{fig:confuse}. This figure shows the confusion matrices for the final segmentation (\ref{fig:conuse_final}), the prior segmentation (\ref{fig:conuse_prior}), and the changed superpixels (\ref{fig:conuse_change}). The confusion matrices for the final and prior segmentations show how, across all test images, our algorithm classified pixels, versus how they are classified in the ground truth images. Specifically, the value  of the $i,j^\textrm{th}$ element in the matrix corresponds to the ratio of instances where our classifier labeled pixels as $j$, when they are labeled $i$ in the ground truth image over the total number of appearances of the $i^\textrm{th}$ label in the dataset. Ideally, this matrix should be diagonal, as this would correspond to perfect agreement between the produced semantic segmentations and the ground truth images. As one can see in the figure the confusion matrices calculated from the result of our test are, for the most part diagonal. 
+Figure \ref{fig:result_good} shows a typical result from the segmentation algorithm. In this result, one can see that the error near the hind-legs of the cow on the left, in which a portion of the cow was labeled grass, was successfully fixed using our algorithm. Additionally, the erroneous tree label that appears on the right side of the image is partially replaced by cow and tree labels. However, in this example there is an entire cow mislabeled as a building (in red). Our algorithm is not able to correct a mistake such as this, because it can only propagate existing labels and cannot assign labels by inferring which label would be most probable given the label of the lower entropy superpixel. Our attempted Markov logic network approach should have been able to perform this task, but as mentioned earlier, this approach was infeasible due to memory constraints.
+
+\begin{figure}[htb]
+\centering
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/priorconfuse.png}
+		\parbox{.95\textwidth}{\caption{Prior Segmentation. \label{fig:confuse_prior}}}
+			\end{subfigure}
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/finalconfuse.png}
+		\parbox{0.95\textwidth}{\caption{Final Segmentation \label{fig:confuse_final}}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.33\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/changeconfuse}
+		\parbox{0.95\textwidth}{\caption{Changed Labels \label{fig:confuse_change}}}
+	\end{subfigure}
+	\caption{Confusion Matrices}
+	\label{fig:confuse}
+\end{figure}
+
+The overall effect of our label propagation method can be seen in figure \ref{fig:confuse}. This figure shows the confusion matrices for the final segmentation (\ref{fig:confuse_final}), the prior segmentation (\ref{fig:confuse_prior}), and the changed superpixels (\ref{fig:confuse_change}). The confusion matrices for the final and prior segmentations show how, across all test images, our algorithm classified pixels, versus how they are classified in the ground truth images. Specifically, the value  of the $i,j^\textrm{th}$ element in the matrix corresponds to the ratio of instances where our classifier labeled pixels as $j$, when they are labeled $i$ in the ground truth image over the total number of appearances of the $i^\textrm{th}$ label in the dataset. Ideally, this matrix should be diagonal, as this would correspond to perfect agreement between the produced semantic segmentations and the ground truth images. As one can see in the figure the confusion matrices calculated from the result of our test are, for the most part diagonal. 
 
 We can then subtract these confusion matrices to arrive at the confusion matrix for the changed labels. The light elements in this confusion matrix correspond to label co-occurrences of ground truth and final labelings that have increased, while the black regions denote co-occurrences that have decreased. This confusion matrix shows the increases in correctly labeled classes as white elements along its diagonal. It is important to note the many negative elements in the first column of the matrix. These correspond to decreases in the number of labels classified as void in the final segmentations versus the prior segmentations.
 
@@ -282,8 +302,9 @@ From these confusion matrices we can calculate the accuracy of the prior segment
 	accuracy = \frac{\mathrm{trace}(A)}{n}
 \end{equation}
 
-Where $A$ is a confusion matrix and $n$ is the total number of pixels across all images. We found that the accuracy of our prior segmentations, across all images, was $56.78\%$ while the accuracy of our final segmentations was $56.88\%$. Therefore the improvement in our accuracy was $0.17\%$. This corresponds to a net of roughly 60 superpixels changed correctly across all the test images, a reasonable number considering that some of the prior segmentations do not need many improvements.
+Where $A$ is a confusion matrix and $n$ is the total number of pixels across all images. We found that the accuracy of our prior segmentations, across all images, was $56.78\%$ while the accuracy of our final segmentations was $56.88\%$. Therefore the improvement in our accuracy was $0.17\%$. This corresponds to a net of roughly 60 superpixels changed correctly across all the test images, a reasonable number considering that some of the prior segmentations do not need improvements.
 
+Another experiment we conducted compared the performance of a segmentation derived from a prior trained on all the images in the training set to a segmentation derived from a prior trained on the $k$-NN images (in terms of distance in GIST feature space) in the training set. The accuracy of the segmentation when using all images for training was $48\%$, a decrease of $13\%$ compared to accuracy obtained by training the prior on the $k$-NN images $(56.88\%)$. The decrease in segmentation accuracy that results from training on all the images stems from the inseparability of all the classes in the feature space. However, when just the $k$-NN are considered, the number of classes that must be separated drops significantly, from 14 to often just 2 or 3, because the $k$-NN images are mostly comprised of the same few labels as the test image. However, one potential downside of this approach is that if a label contained in the test image does not appear in the $k$-NN images, the produced semantic segmentation can never contain this label. In practice, this does not appear to be a problem, as evidenced by the large improvement in accuracy obtained by training on the $k$-NN.
 %------------------------------------------------------------------------------------------
 
 \section{Conclusion}
