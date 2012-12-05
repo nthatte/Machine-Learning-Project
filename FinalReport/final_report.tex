@@ -99,7 +99,7 @@ A normalized texton histogram (bag of words representation) is computed for each
 The ground truth label for each segment is selected by taking a majority vote over per pixel ground truth labels.
 
 \paragraph{Testing} For each test image, mean-shift segments and normalized texton histograms of the same are computed.
-A new model is trained from the GIST feature based nearest neighbors for the given test image.
+A new model is trained from the k-most similar images to the test image. Similarity here is measured by euclidean distance between GIST\cite{GIST} feature representations of images. Not training on the entire training set gives a great boost to test accuracy.
 The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the K nearest segments from the training data.
 This distribution is copied to each pixel in the segment and a per pixel distribution and entropy is thus available.
 
@@ -227,7 +227,7 @@ For high ratio values, (0.8 - 1.2) this same behavior was observed, as suggested
 
 \subsection{Experimental Setup}
 
-Once we obtained the optimal parameters via the procedure described above, we proceeded to test the segmentation algorithm on the 120 images in the test set. We also tested training the random forest and bag of words model on the $k-$NN training images versus training on all the training images.
+Once we obtained the optimal parameters via the procedure described above, we proceeded to test the segmentation algorithm on the 120 images in the test set. We also compare the performance of this approach when training the random forest and bag of words model on the $k-$most similar training images (based on GIST feature representation) versus training on all of them.
 
 Our testbed process iterated through all images in the test set, obtained their prior, and final, post-propagation, segmentations. Then, the process calculated accuracy scores and confusion matrices, across all images, for the prior and the final segmentations and a confusion matrix for the changed superpixels across all images. 
 
