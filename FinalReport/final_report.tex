@@ -103,15 +103,17 @@ The probability distribution $P(Label | feature)$ is computed by counting the oc
 This distribution is copied to each pixel in the segment and a per pixel distribution and entropy is thus available.
 
 \subsubsection{Label Propagation}
+Label propogation will now try to improve upon the baseline (or prior), by training a random forest that predicts whether two super pixels share the same label and propagating labels whenever this prediction contradicts the baselines output.
+This requires that the image be divided into small regions (super pixels) and also requires the construction of a super pixel connectivity graph, the edges of which will be queries given to the random forest.
 \paragraph{Super pixels and connectivity graph}
 \label{sec:labprop}
 Each image is divided into super pixels at two different scales such that
-the a coarse super pixels align with corresponding finer ones.
+the coarse super pixels align with corresponding finer ones.
 This is achieved by using \cite{}.%TODO Cite the super pixel people.
 A graph is constructed where each fine super pixel is connected to its
 direct neighborhood and to all fine super pixels inside the same
 coarse super pixel.
-The later of these connections ensure that we have more long range connections. This is important because some parts of objects are hard to classify as corresponding to that object class without having observed the other parts.
+The later of these connections ensure that we have more long range propogation. This is important because some parts of objects are hard to classify as corresponding to that object class without having observed the other parts.
 
 \paragraph{Training the classifier}
 We train a classifier that decides whether or not two super pixels should
@@ -129,8 +131,7 @@ We resample the training data to ensure a low enough ratio between these
 before training our classifier.
 Note that we train a new random forest for every test image.
 Texton and color features are concatenated to describe each super pixel.
-Further, each edge in the graph is described by the absolute difference of
-their features.
+Further, each edge in the graph is described by the absolute difference of super pixel features.
 
 \paragraph{Propagating Labels}
 The baseline algorithm provides a probability for each pixel label pair. Averaged over all pixels within a super pixel we obtain the distribution for each super pixel.
@@ -310,8 +311,6 @@ Another experiment we conducted compared the performance of a segmentation deriv
 We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods (eg. \cite{urtasun}) in this field out perform the results that we have presented. One reason for the bad results could be
 
 Random forests and the baseline use aggregates of local statistics for predicting semantics or relative semantics between image patches. There is a chance that both approaches are right at the same places and wrong at the same places too and in these cases label propagation will not help. Therefore, even though our random forest achieves precision, recall and specificity values $\ge 80\%$, we do not make much progress in terms of improving the baseline.
-
-
 
 \bibliographystyle{plain}
 \bibliography{final_report}
