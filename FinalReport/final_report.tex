@@ -35,7 +35,6 @@ Adwait Gandhe \\
 Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. In this work we attempt a supervised learning approach to solve this problem by training a classifier that helps propagate labels to improve upon a prior distribution over semantic labels. We present our results on the 13 class MSRC V1 Dataset. We achieved an accuracy of $56.88\%$ across all test images and an improvement in accuracy of $0.17\%$ over our prior segmentations.
 \end{abstract}
 
-
 \section{Introduction}
 Semantic segmentation is the process of assigning a class label to each pixel of the image. This is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. There are two common methods for semantic segmentation. The first makes use of low level features and combines them with a learning framework to obtain higher level labels. The second approach is to use low level cues, rather than features, with random fields and learn a unified framework using low level segmentation. In this paper, present a novel approach that improves upon a prior distribution obtained using a bag of visual words over mean-shift segments by propagating labels at the discretion of a trained Random Forest \cite{Statistics01randomforests}.
 
