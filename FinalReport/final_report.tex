@@ -218,11 +218,11 @@ However, larger values of $k_{forest}$ such as 11 or 13, resulted in unacceptabl
 Therefore, we chose $k_{forest} = 9$ as it represented an acceptable compromise between these features.
 
 The last varied parameter was the ratio of sampled true points to false points used in the training data for the random forest.
-The result of this cross-validation, shown in figure \ref{fig:ratio}, was inconclusive.
-However, this parameter is of vital importance, as the graph structure proposed in section \ref{sec:labprop} results in a far greater number of same-labeled superpixel pairs than differently-labeled superpixel pairs.
+The ratio parameter is of vital importance, as the graph structure proposed in section \ref{sec:labprop} results in a far greater number of same-labeled superpixel pairs than differently-labeled superpixel pairs.
 Without this parameter, all tested classifiers tended to fit to the positive labeled points almost exclusively, resulting in high precision and recall but very low specificity. 
-For our application, a low specificity is extremely undesirable, as a false-positive, resulting in the classifier propagating a label when it should not , will only degrade the segmentation. 
-For high ratio values, (0.8 - 1.2) this same behavior was observed, as suggested by the variability of figure \ref{fig:ratio} in this range. We chose a ratio of 0.5 for our final classifier, as it resulted in high specificity values, and ensured that the label propagation indicator would be conservative. 
+However, for our application low specificity is extremely undesirable, as a false-positive, resulting in the classifier propagating a label when it should not , can only degrade the segmentation. By randomly sampling the true points in order to balance the number of trues and falses, all the classifiers we tested, were able to more easily find a decision boundary with high that did not compromise recall too much.  
+From the result of cross-validation on this parameter, shown in figure \ref{fig:ratio}, we conclude that a ratio of 0.8 is ideal.
+
 
 \subsection{Experimental Setup}
 
