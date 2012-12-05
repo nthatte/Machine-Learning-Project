@@ -92,6 +92,7 @@ Color information is more reliable at small scales because large regions show to
 \subsubsection{Baseline}
 \label{baseline}
 Label propagation requires an initial estimate of the semantic class of each pixel. In our approach we further require an estimate of this classifications' uncertainty. This initial estimate is based on big mean-shift patches.
+
 \paragraph{Training} Each training image is divided into segments using
 Mean-shift based EDISON \cite{meanshift}.
 A normalized texton histogram (bag of words representation) is computed for each segment.
@@ -174,12 +175,12 @@ We used Adaboost \cite{Freund96experimentswith} instead of the random forests bu
 \label{sec:Exp}
 
 We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}, which we randomly split into 120 test images and 120 training images.
-We tested our algorithm to quantify the improvement over the prior segmentation that the label propagation method provided. We also examined the performance gain from training both the random forest and bag of words model on the $k$-NN versus training on all the images.
+Our tests aimed to quantify the improvement our algorithm provides over the prior segmentation. We also examined the performance gain from training both the random forest and bag of words model on the $k$-NN versus training on all the images.
 
 \subsection{Cross Validation}
 \label{sec:cross}
 
-To optimize our algorithm we performed leave-one-out cross validation. We chose this particular style of cross-validation because our algorithm requires retraining the random forest for each test image. Thus, all forms of $k$-fold cross validation reduce to leave-one-out validation for our algorithm.
+To optimize our algorithm we performed leave-one-out cross validation. We chose this particular style of cross-validation because our algorithm requires retraining the random forest for each test image. Thus, all forms of $k$-fold cross validation reduce to leave-one-out validation for our method.
 
 The cross validation parameters that needed to be optimized were $k_{bag}$ for the $k$-nearest-neighbor images from which the bag of words model is computed, $k_{hist}$ for the $k$-nearest-neighbor Texton histograms from which the distribution $P(Label | feature)$ is generated, $k_{forest}$ for the $k$-nearest-neighbors used by the random forest, and a ratio parameter used to balanced the number true and false edges on the connectivity graph. 
 
@@ -278,10 +279,11 @@ We can then subtract these confusion matrices to arrive at the confusion matrix 
 From these confusion matrices we can calculate the accuracy of the prior segmentation, the final segmentation, and the accuracy of the changed superpixels. This metric is computed via the following formula:
 
 \begin{equation}
-	accuracy = \frac{\mathrm{trace}(A)}{n^2/2}
+	accuracy = \frac{\mathrm{trace}(A)}{n}
 \end{equation}
 
-Where $A$ is a confusion matrix and $n$ is the total number of classes, in our case 14. We found that the accuracy of our prior segmentations, across all images, was $56.78\%$ while the accuracy of our final segmentations was $56.88\%$. Therefore the improvement in our accuracy was $0.17\%$. This corresponds to a net of roughly 60 superpixels changed correctly across all the test images.
+Where $A$ is a confusion matrix and $n$ is the total number of pixels across all images. We found that the accuracy of our prior segmentations, across all images, was $56.78\%$ while the accuracy of our final segmentations was $56.88\%$. Therefore the improvement in our accuracy was $0.17\%$. This corresponds to a net of roughly 60 superpixels changed correctly across all the test images, a reasonable number considering that some of the prior segmentations do not need many improvements.
+
 %------------------------------------------------------------------------------------------
 
 \section{Conclusion}
