@@ -286,12 +286,11 @@ Where $A$ is a confusion matrix and $n$ is the total number of classes, in our c
 
 \section{Conclusion}
 \label{sec:Conclusion}
-We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods in this field out perform the results that we have presented. We conclude with the following three observations:
-\begin{itemize}
-\item Training on the nearest neighbors can greatly improve performance. We note a $10\%$ in accuracy.
-\item Inadequate feature representation can result in data that is very hard to separate.
-\item Write the last one here
-\end{itemize}
+We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods (eg. \cite{urtasun}) in this field out perform the results that we have presented. One reason for the bad results could be
+
+Random forests and the baseline use aggregates of local statistics for predicting semantics or relative semantics between image patches. There is a chance that both approaches are right at the same places and wrong at the same places too and in these cases label propagation will not help. Therefore, even though our random forest achieves precision, recall and specificity values $\ge 80\%$, we do not make much progress in terms of improving the baseline.
+
+
 
 \bibliographystyle{plain}
 \bibliography{final_report}
