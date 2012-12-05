@@ -32,50 +32,55 @@ Adwait Gandhe \\
 \maketitle
 
 \begin{abstract}
-Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. Increasing the number of labels increases the complexity of the problem. In this work we attempt a supervised learning approach to solve this problem by training a classifier that helps propagate labels to improve upon a generative prior. We present our results on the 13 class MSRC V1 Dataset.
+Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. In this work we attempt a supervised learning approach to solve this problem by training a classifier that helps propagate labels to improve upon a prior distribution over semantic labels. We present our results on the 13 class MSRC V1 Dataset. We achieved an accuracy of $56.88\%$ across all test images and an improvement in accuracy of $0.17\%$ over our prior segmentations.
 \end{abstract}
 
 
 \section{Introduction}
-Semantic segmentation is the process of assigning a class label to each pixel of the image. This is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. There are two common approaches for semantic segmentation. The first makes use of low level features and combines them with a learning framework to obtain higher level labels. The second approach is to use low level cues, rather than features, with random fields and learn a unified framework using low level segmentation. In this paper, we first estimate the probability for every pixel label pair by using the k-Nearest Neighbors and the Bag of Words model. A Random Forest \cite{Statistics01randomforests} using the color and texton features is trained which decides whether two connected super pixels share a label and the direction in which the label is propagated. 
+Semantic segmentation is the process of assigning a class label to each pixel of the image. This is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. There are two common methods for semantic segmentation. The first makes use of low level features and combines them with a learning framework to obtain higher level labels. The second approach is to use low level cues, rather than features, with random fields and learn a unified framework using low level segmentation. In this paper, present a novel approach that improves upon a prior distribution obtained using a bag of visual words over mean-shift segments by propagating labels at the discretion of a trained Random Forest \cite{Statistics01randomforests}.
 
-This paper is structured as follows: Section \ref{sec:Problem} discusses the problem statement. Section \ref{sec:Related} talks about the related work. Section \ref{sec:Proposed} discusses our method for semantic image segmentation. The experiments conducted and the results obtained are presented in section \ref{sec:Exp}. Finally we summarize our conclusions in section \ref{sec:Conclusion}.
+This paper is structured as follows: Section \ref{sec:Problem} discusses the problem statement. Section \ref{sec:Related} talks about the related work. Section \ref{sec:Proposed} discusses our method for semantic image segmentation. We present the experiments conducted and the results obtained in section \ref{sec:Exp}. Finally we summarize our conclusions in section \ref{sec:Conclusion}.
 \label{sec:Intro}
 
 \subsection{Related Work}
 \label{sec:Related}
-One of the first approaches for simultaneous object segmentation and recognition utilizes an Implicit Shape Model that integrates both capabilities into a common probabilistic framework \cite{Leibe04combinedobject}. 
+One of the first approaches for semantic segmentation utilized an Implicit Shape Model that %TODO 
+\cite{Leibe04combinedobject}. 
 Another approach used a generative model based on the bag of words representation for such simultaneous recognition and segmentation \cite{cao:spatially}.  
 Furthermore, a method based on some of these approaches for scoring low-level patches according to their class relevance and propagating these posterior probabilities to pixels has been developed \cite{conf/bmvc/CsurkaP08}.
 
-Several recent approaches use random fields to incorporate local cues and impart global control without implementing low level segmentation. For example, \cite{Kumar:2005:OC:1068507.1068889} proposes a Bayesian method for combining top-down and bottom-up cues. Conditional random fields have also been used for this purpose \cite{Kumar:2005:HFF:1097115.1097790} \cite{Richard04multiscaleconditional}. Finally, Textonboost \cite{Shotton06textonboost:joint} is an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for other semantic image segmentation approaches.
+Several recent approaches use random fields to incorporate local cues without implementing low level segmentation. For example, \cite{Kumar:2005:OC:1068507.1068889} proposes a Bayesian method for combining top-down and bottom-up cues. Conditional random fields have also been used for this purpose \cite{Kumar:2005:HFF:1097115.1097790} \cite{Richard04multiscaleconditional}. Finally, Textonboost \cite{Shotton06textonboost:joint} is an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for other semantic image segmentation approaches.
+
+A third class of algorithms propagate labels given a prior estimate of the segmentation. One of the recent approaches, that inspired this work, used a distance metric in feature space along with %TODO @nitish
+
 %------------------------------------------------------------------------------------------
 
 \subsection{Problem Definition}
 \label{sec:Problem}
+Semantic segmentation requires assigning a label $l \in L$ to each pixel in an image, where $L$ is a set of pre decided labels. In the supervised version of this problem we are given a collection of hand labeled training images and are required to predict labels for every pixel in a new test image. 
 
 %------------------------------------------------------------------------------------------
 \section{Proposed Method}
 \label{sec:Proposed}
 \subsection{Intuition}
 \label{sec:intuition}
-Given a pair of super pixels the problem of deciding whether or not they should have the same label is much easier than to decide on which semantic label they should take. This is because features at the scale of a super pixel are noisy and carry very little information for solving the recognition problem.
-Idealy, we would like to query every pair of super pixels but that is computationally infeasible. We can instead work with a sparser graph that still has a few connections going across ajacent super pixels. Such jumps are important as very often parts of objects are hard to identify without having observed the presence of the remaining object not occuring in the immediate vicinity.
-The knowledge of which super pixels share the same label can be used to propogate labels after an initial estimate has been provided. The direction of propogation can be determined using some confidence measure of the initial estimate.
+To perform semantic segmentation, one normally wants to divide the image into regions based on image statistics and then categorize these regions into semantic classes. If one uses big regions, object boundaries are often missed and the segmentation output is smudged. On the other hand, if small regions are used, features within these are too noisy to perform reliable classification resulting in low accuracy. A good trade off between the two is hard to achieve. Therefore, an approach that makes uncertain decision on big patches and less complex decisions on small patches should yield good results. 
 
 \subsection{Our Approach}
+Based on the above intuition and the idea of label propagation we propose a two phase algorithm. In the first step we process big patches generated by mean-shift segmentation to obtain $P(label | feature)$. In the second step, we decide whether two small patches should have the same label or not and propagate labels based on this decision. This second step corrects for the fact that the prior acting on large patches may miss small details. Further, the second step is less prone to noise because the task of deciding whether to propagate a label reduces to binary classification instead of $|L|$ classification.
 \subsubsection{Features}
 \paragraph{Textons}
 Textons represent texture information.
 A collection of filters is used to process each pixel to obtain a per
 pixel feature vector.
 This is quantized to a single number by selecting a vector nearest to the
-current one from a precomputed dictionary.
-If each vector in the dictionary is considered to be a word, this
+current one from a precomputed dictionary of feature cluster centers.
+If each vector in this dictionary is considered to be a word, this
 representation gives one word per image pixel and is called the TextonMap
 or WordMap. %TODO: Insert figure
 A bag of words histogram is computed for each super pixel or segment by
 counting word occurrences.
+Texture information is more reliable over large regions because of inseparability of data at small scales.
 We used the filter bank and dictionary provided by \cite{malisiewicz-cvpr08}.
 
 \paragraph{Color}
@@ -83,6 +88,21 @@ Color information is important for separating classes that lack texture or
 have similar texture.
 We use the per channel color histogram, color mean and standard deviation
 from the HSV color space.
+Color information is more reliable at small scales because large regions show too much intra class variability.
+
+\subsubsection{Baseline}
+\label{baseline}
+Label propagation requires an initial estimate of the semantic class of each pixel. In our approach we further require an estimate of this classifications' uncertainty. This initial estimate is based on big mean-shift patches.
+\paragraph{Training} Each training image is divided into segments using
+Mean-shift based EDISON \cite{meanshift}.
+A normalized texton histogram (bag of words representation) is computed for each segment.
+The ground truth label for each segment is selected by taking a majority vote over per pixel ground truth labels.
+
+\paragraph{Testing} For each test image, mean-shift segments and normalized texton histograms of the same are computed.
+A new model is trained from the GIST feature based nearest neighbors for the given test image.
+The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the K nearest segments from the training data.
+This distribution is copied to each pixel in the segment and a per pixel distribution and entropy is thus available.
+
 \subsubsection{Label Propagation}
 \label{sec:labprop}
 \paragraph{Super pixels and connectivity graph}
@@ -92,7 +112,7 @@ This is achieved by using \cite{}.%TODO Cite the super pixel people.
 A graph is constructed where each fine super pixel is connected to its
 direct neighborhood and to all fine super pixels inside the same
 coarse super pixel.
-The later of these connections ensure that we have jumps of the kind discussed in section \ref{sec:intuition}.
+The later of these connections ensure that we have more long range connections. This is important because some parts of objects are hard to classify as corresponding to that object class without having observed the other parts.
 
 \paragraph{Training the classifier}
 We train a classifier that decides whether or not two super pixels should
@@ -114,43 +134,25 @@ Further, each edge in the graph is described by the absolute difference of
 their features.
 
 \paragraph{Propagating Labels}
-A different segmentation algorithm (see section \ref{baseline}) gives a
-probability for each pixel label pair.
+The baseline algorithm provides a probability for each pixel label pair. Averaged over all pixels within a super pixel we obtain the distribution for each super pixel.
 The entropy for each super pixel can be calculated from this distribution.
 The label with highest probability is treated as the label assigned to
 each pixel.
 A majority vote over this assignment is used to determine the label for
 each super pixel.
 When the baseline is inconsistent with the prediction of our random
-forest, we propagate labels from the super pixel with higher entropy to
-the super pixel with lower entropy.
+forest, we propagate labels from the super pixel with lower entropy to
+the super pixel with higher entropy.
 This propagation is run from the lowest entropy super pixel to the highest
 entropy super pixel propagating labels to super pixels further down in
 this sorted list.
 
-\subsubsection{Baseline}
-\label{baseline}
-The label propagation approach discussed above requires per pixel values
-for $P(Label|feature)$.
-The algorithm which provides this is referred to as baseline and described
-below in detail.
-
-\paragraph{Training} Each training image is divided into segments using
-Meanshift based EDISON \cite{meanshift}.
-A normalized texton histogram (bag of words representation) is computed for each segment.
-The ground truth label for each segment is selected by taking a majority vote over per pixel ground truth labels.
-
-\paragraph{Testing} For each test image, meanshift segments and normalized texton histograms of the same are computed.
-A new model is trained from the GIST feature based nearest neighbors for the given test image.
-The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the K nearest segments from the training data.
-This distribution is copied to each pixel in the image and a per pixel distribution and entropy is thus available.
-
 \subsection{Other Attempted Methods}
 \subsubsection{HMLN}
-Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} attach weights to first-order formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} are an extension that allow for continuous properties to appear as features. Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach till the mid term report was based on an implementation of this tool called Alchemy \cite{alchemy}. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset. We also attempted to use the software ProbCog \cite{conf/ifiptm/NoorianMF11}, however the software did not allow continuous properties to appear as features and we had to abandon the approach. 
+Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} attach weights to first-order logic formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{Wang_hybridmarkov} are an extension that allow for continuous properties to appear as features. Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach till the mid term report was based on an implementation of this tool called Alchemy \cite{alchemy}. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset. We also attempted to use the software ProbCog \cite{conf/ifiptm/NoorianMF11}, however the software did not allow continuous properties to appear as features and we had to abandon the approach. 
 
 \subsubsection{SVM for Label Propagation}
-We experimented with SVM's in place of random forests and found them to not converge when training on the entire dataset. Training on the nearest neighbors of a test image lead to convergence but the results were too bad to be used.
+We experimented with SVM's in place of random forests and found them to not converge when training on the entire dataset. Training on the nearest neighbors of a test image lead to convergence but the results were too bad to be used. We experimented with linear, quadratic and radial basis function kernels.
 
 \subsubsection{Conditional Random Fields}
 Conditional random fields \cite{lafferty2001conditional} are undirected graphical models that can perform inference to compute marginal distributions of label probabilities given features.
@@ -163,7 +165,7 @@ We did not pursue this approach due to very high computational requirements.
 Furthermore, loopy belief propogation did not converge after more than 6 hours of training on a small subset of the images.
 
 \subsection{Adaboost}
-We used Adaboost \cite{Freund96experimentswith} for training the classifier instead of the random forests but random forests gave better results on the classification task. 
+We used Adaboost \cite{Freund96experimentswith} instead of the random forests but random forests gave better results on the classification task. Furthermore, Adaboost had a higher classification time than random forests.
 
 %------------------------------------------------------------------------------------------
 
