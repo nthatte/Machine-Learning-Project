@@ -91,8 +91,7 @@ Color information is more reliable at small scales because large regions show to
 
 \subsubsection{Baseline}
 \label{baseline}
-Label propagation requires an initial estimate of the semantic class of each pixel. In our approach we further require an estimate of this classifications' uncertainty. This initial estimate is based on big mean-shift patches.
-
+Label propagation requires an initial estimate of the semantic class of each pixel. In our approach we further require an estimate of this classifications' uncertainty. This initial estimate is based on big mean-shift patches using texture information. This follows from our intuition of looking at large patches in the first phase and that textons are more reliable over large patches.
 \paragraph{Training} Each training image is divided into segments using
 Mean-shift based EDISON \cite{meanshift}.
 A normalized texton histogram (bag of words representation) is computed for each segment.
@@ -165,8 +164,7 @@ We did not pursue this approach due to very high computational requirements.
 Furthermore, loopy belief propogation did not converge after more than 6 hours of training on a small subset of the images.
 
 \subsection{Adaboost}
-We used Adaboost \cite{Freund96experimentswith} instead of the random forests but random forests gave better results on the classification task. Furthermore, Adaboost had a higher classification time than random forests.
-
+Another classifier that we tried was Adaboost \cite{Freund96experimentswith}. Adaboost is well suited for our application because, if each weak classifier deals with only a subset of the features, it will perform feature selection. The results on the classification task were, however, not significantly different from Random Forests. This may be because feature selection is also the intuition behind random forests as each tree in the forest acts on a random subset of the feature set. Furthermore, the run time for training and testing was significantly higher when using Adaboost and infeasible given the size of our dataset and computational resources.
 %------------------------------------------------------------------------------------------
 
 
@@ -175,7 +173,7 @@ We used Adaboost \cite{Freund96experimentswith} instead of the random forests bu
 \label{sec:Exp}
 
 We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}, which we randomly split into 120 test images and 120 training images.
-Our tests aimed to quantify the improvement our algorithm provides over the prior segmentation. We also examined the performance gain from training both the random forest and bag of words model on the $k$-NN versus training on all the images.
+We tested our algorithm to quantify the improvement over the prior segmentation that the label propagation method provided. We also examined the performance gain from training both the random forest and bag of words model on the $k$-NN versus training on all the images.
 
 \subsection{Cross Validation}
 \label{sec:cross}
@@ -309,12 +307,11 @@ Another experiment we conducted compared the performance of a segmentation deriv
 
 \section{Conclusion}
 \label{sec:Conclusion}
-We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods in this field out perform the results that we have presented. We conclude with the following three observations:
-\begin{itemize}
-\item Training on the nearest neighbors can greatly improve performance. We note a $10\%$ in accuracy.
-\item Inadequate feature representation can result in data that is very hard to separate.
-\item Write the last one here
-\end{itemize}
+We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods (eg. \cite{urtasun}) in this field out perform the results that we have presented. One reason for the bad results could be
+
+Random forests and the baseline use aggregates of local statistics for predicting semantics or relative semantics between image patches. There is a chance that both approaches are right at the same places and wrong at the same places too and in these cases label propagation will not help. Therefore, even though our random forest achieves precision, recall and specificity values $\ge 80\%$, we do not make much progress in terms of improving the baseline.
+
+
 
 \bibliographystyle{plain}
 \bibliography{final_report}
