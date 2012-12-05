@@ -273,7 +273,7 @@ Figure \ref{fig:result_good} shows a typical result from the segmentation algori
 
 The overall effect of our label propagation method can be seen in figure \ref{fig:confuse}. This figure shows the confusion matrices for the final segmentation (\ref{fig:conuse_final}), the prior segmentation (\ref{fig:conuse_prior}), and the changed superpixels (\ref{fig:conuse_change}). The confusion matrices for the final and prior segmentations show how, across all test images, our algorithm classified pixels, versus how they are classified in the ground truth images. Specifically, the value  of the $i,j^\textrm{th}$ element in the matrix corresponds to the ratio of instances where our classifier labeled pixels as $j$, when they are labeled $i$ in the ground truth image over the total number of appearances of the $i^\textrm{th}$ label in the dataset. Ideally, this matrix should be diagonal, as this would correspond to perfect agreement between the produced semantic segmentations and the ground truth images. As one can see in the figure the confusion matrices calculated from the result of our test are, for the most part diagonal. 
 
-We can then subtract these confusion matrices to arrive at the confusion matrix for the changed labels. The light elements in this confusion matrix correspond to label co-occurrences of ground truth and final labelings that have increased, while the black regions denote co-occurrences that have decreased. This confusion matrix shows the increases in correctly labeled classes as white elements along its diagonal. Of note is the many negative elements in the first column of the matrix. These correspond to decreases in the number of labels classified as void in the final segmentations versus the prior segmentations.
+We can then subtract these confusion matrices to arrive at the confusion matrix for the changed labels. The light elements in this confusion matrix correspond to label co-occurrences of ground truth and final labelings that have increased, while the black regions denote co-occurrences that have decreased. This confusion matrix shows the increases in correctly labeled classes as white elements along its diagonal. It is important to note the many negative elements in the first column of the matrix. These correspond to decreases in the number of labels classified as void in the final segmentations versus the prior segmentations.
 
 From these confusion matrices we can calculate the accuracy of the prior segmentation, the final segmentation, and the accuracy of the changed superpixels. This metric is computed via the following formula:
 
@@ -286,9 +286,9 @@ Where $A$ is a confusion matrix and $n$ is the total number of classes, in our c
 
 \section{Conclusion}
 \label{sec:Conclusion}
-We have experimented with an approach to label propagation methods for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods in this field out perform the results that we have presented. We conclude with the following three observations:
+We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods in this field out perform the results that we have presented. We conclude with the following three observations:
 \begin{itemize}
-\item Training on the nearest neighbors can greatly improve performance.
+\item Training on the nearest neighbors can greatly improve performance. We note a $10\%$ in accuracy.
 \item Inadequate feature representation can result in data that is very hard to separate.
 \item Write the last one here
 \end{itemize}
