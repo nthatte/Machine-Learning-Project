@@ -38,17 +38,17 @@ Semantic image segmentation is the process of assigning human relevant labels to
 \section{Introduction}
 Semantic segmentation is the process of assigning a class label to each pixel of the image. This is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. There are two common methods for semantic segmentation. The first makes use of low level features and combines them with a learning framework to obtain higher level labels. The second approach is to use low level cues, rather than features, with random fields and learn a unified framework using low level segmentation. In this paper, present a novel approach that improves upon a prior distribution obtained using a bag of visual words over mean-shift segments by propagating labels at the discretion of a trained Random Forest \cite{Statistics01randomforests}.
 
-This paper is structured as follows: Section \ref{sec:Problem} discusses the problem statement. Section \ref{sec:Related} talks about the related work. Section \ref{sec:Proposed} discusses our method for semantic image segmentation. We present the experiments conducted and the results obtained in section \ref{sec:Exp}. Finally we summarize our conclusions in section \ref{sec:Conclusion}.
+This paper is structured as follows: Section \ref{sec:Related} talks about the related work. Section \ref{sec:Problem} discusses the problem statement. Section \ref{sec:Proposed} discusses our method for semantic image segmentation. We present the experiments conducted and the results obtained in section \ref{sec:Exp}. Finally we summarize our conclusions in section \ref{sec:Conclusion}.
 \label{sec:Intro}
 
 \subsection{Related Work}
 \label{sec:Related}
-One of the first approaches for semantic segmentation utilized an Implicit Shape Model that %TODO 
+One of the first approaches for semantic segmentation utilized an Implicit Shape Model%TODO @Adwait
 \cite{Leibe04combinedobject}. 
 Another approach used a generative model based on the bag of words representation for such simultaneous recognition and segmentation \cite{cao:spatially}.  
 Furthermore, a method based on some of these approaches for scoring low-level patches according to their class relevance and propagating these posterior probabilities to pixels has been developed \cite{conf/bmvc/CsurkaP08}.
 
-Several recent approaches use random fields to incorporate local cues without implementing low level segmentation. For example, \cite{Kumar:2005:OC:1068507.1068889} proposes a Bayesian method for combining top-down and bottom-up cues. Conditional random fields have also been used for this purpose \cite{Kumar:2005:HFF:1097115.1097790} \cite{Richard04multiscaleconditional}. Finally, Textonboost \cite{Shotton06textonboost:joint} is an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for other semantic image segmentation approaches.
+Several recent approaches use random fields to incorporate local cues without implementing low level segmentation. For example, \cite{Kumar:2005:OC:1068507.1068889} proposes a Bayesian method for combining top-down and bottom-up cues. Conditional random fields have also been used for this purpose \cite{Kumar:2005:HFF:1097115.1097790} \cite{Richard04multiscaleconditional}. Finally, Textonboost \cite{Shotton06textonboost:joint} is an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for a review of other semantic image segmentation approaches.
 
 A third class of algorithms propagate labels given a prior estimate of the segmentation. One of the recent approaches, that inspired this work, propagates labels on a graph of connected superpixels whose weights correspond to an integrated distance metric in feature space.
 
@@ -103,6 +103,8 @@ The probability distribution $P(Label | feature)$ is computed by counting the oc
 This distribution is copied to each pixel in the segment and a per pixel distribution and entropy is thus available.
 
 \subsubsection{Label Propagation}
+Label propogation will now try to improve upon the baseline (or prior), by training a random forest that predicts whether two super pixels share the same label and propagating labels whenever this prediction contradicts the baselines output.
+This requires that the image be divided into small regions (super pixels) and also requires the construction of a super pixel connectivity graph, the edges of which will be queries given to the random forest.
 \paragraph{Superpixels and connectivity graph}
 \label{sec:labprop}
 Each image is divided into superpixels at two different scales such that
