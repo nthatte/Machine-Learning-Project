@@ -234,38 +234,101 @@ Our testbed process iterated through all images in the test set, obtained their 
 	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s.png}
-		\parbox{.95\textwidth}{\caption{Original Image \label{fig:orig_good}}}
+		\caption{}
+		\label{fig:orig_good}
 			\end{subfigure}
 	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_GT.png}
-		\parbox{0.95\textwidth}{\caption{Ground Truth \label{fig:GT_good}}}
+		\caption{}
+		\label{fig:GT_good}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_prior.png}
-		\parbox{0.95\textwidth}{\caption{Prior Segmentation \label{fig:prior_good}}}
+		\caption{}
+		\label{fig:prior_good}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_final.png}
-		\parbox{0.95\textwidth}{\caption{Final Segmentation \label{fig:final_good}}}
+		\caption{}
+		\label{fig:final_good}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.19\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/1_11_s_changed.png}
-		\parbox{0.95\textwidth}{\caption{Changed Superpixels \label{fig:changed_good}}}
+		\caption{}
+		\label{fig:changed_good}
 	\end{subfigure}
+	
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/4_14_s.png}
+		\caption{}
+		\label{fig:orig_plane}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/4_14_s_GT.png}
+		\caption{}
+		\label{fig:GT_plane}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/4_14_s_prior.png}
+		\caption{}
+		\label{fig:prior_plane}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/4_14_s_final.png}
+		\caption{}
+		\label{fig:final_plane}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/4_14_s_changed.png}
+		\caption{}
+		\label{fig:changed_plane}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/7_18_s.png}
+		\parbox{.95\textwidth}{\caption{Original Image \label{fig:orig_car}}}
+			\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/7_18_s_GT.png}
+		\parbox{0.95\textwidth}{\caption{Ground Truth \label{fig:GT_car}}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/7_18_s_prior.png}
+		\parbox{0.95\textwidth}{\caption{Prior Segmentation \label{fig:prior_car}}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/7_18_s_final.png}
+		\parbox{0.95\textwidth}{\caption{Final Segmentation \label{fig:final_car}}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.19\textwidth}
+		\centering
+		\includegraphics[width = \textwidth]{./img/7_18_s_changed.png}
+		\parbox{0.95\textwidth}{\caption{Changed Superpixels \label{fig:changed_car}}}
+	\end{subfigure}
+
 
 	\begin{subfigure}[t]{\textwidth}
 		\centering
 		\includegraphics[width = 0.4\textwidth]{./img/legend-rot.png}
 	\end{subfigure}
-	\caption{Typical result from segmentation algorithm.}
-	\label{fig:result_good}
+	\caption{Typical results from segmentation algorithm.}
+	\label{fig:result}
 \end{figure}
 
-Figure \ref{fig:result_good} shows a typical result from the segmentation algorithm. In this result, one can see that the error near the hind-legs of the cow on the left, in which a portion of the cow was labeled grass, was successfully fixed using our algorithm. Additionally, the erroneous tree label that appears on the right side of the image is partially replaced by cow and tree labels. However, in this example there is an entire cow mislabeled as a building (in red). Our algorithm is not able to correct a mistake such as this, because it can only propagate existing labels and cannot assign labels by inferring which label would be most probable given the label of the lower entropy superpixel. Our attempted Markov logic network approach should have been able to perform this task, but as mentioned earlier, this approach was infeasible due to memory constraints.
+Figure \ref{fig:result} show some typical results from the segmentation algorithm. In the first row of images, one can see that the error near the hind-legs of the cow on the left, in which a portion of the cow was labeled grass, was successfully fixed using our algorithm. Additionally, the erroneous tree label that appears on the right side of the image is partially replaced by cow and tree labels. However, in this example there is an entire cow mislabeled as a building (in red). Our algorithm is not able to correct a mistake such as this, because it can only propagate existing labels and cannot assign labels by inferring which label would be most probable given the label of the lower entropy superpixel. A more extreme example of this issue can be seen in figures \ref{fig:orig_plane} to \ref{fig:changed_plane}. In these images, one can see that the plane is completely miss labeled as void. This is a consequence of void labels existing in many disparate regions of feature space, as voids can look like anything. Therefore, they are easily selected by the $k$--NN search over visual word histograms.
 
 \begin{figure}[htb]
 \centering
