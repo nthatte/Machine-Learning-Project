@@ -32,41 +32,41 @@ Adwait Gandhe \\
 \maketitle
 
 \begin{abstract}
-Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. In this work we attempt a supervised learning approach to solve this problem by training a classifier that helps propagate labels to improve upon a prior distribution over semantic labels. We present our results on the 13 class MSRC V1 Dataset. We achieved an accuracy of $56.50\%$ across all test images and an improvement in accuracy of $0.17\%$ over our prior segmentations.
+Semantic image segmentation is the process of assigning human relevant labels to pixels in an image and is a high level vision problem. In this work we attempt a supervised learning approach to solve this problem by training a classifier that helps propagate labels to improve upon a prior distribution over semantic labels. We present our results on the 13 class MSRC V1 Dataset. We achieved an accuracy of $56.50\%$ across all test images and an improvement in accuracy of $0.18\%$ over our prior segmentations.
 \end{abstract}
 
 \section{Introduction}
-Semantic segmentation is the process of assigning a class label to each pixel of the image. This is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. There are two common methods for semantic segmentation. The first makes use of low level features and combines them with a learning framework to obtain higher level labels. The second approach is to use low level cues, rather than features, with random fields and learn a unified framework using low level segmentation. In this paper, present a novel approach that improves upon a prior distribution obtained using a bag of visual words over mean-shift segments by propagating labels at the discretion of a trained Random Forest \cite{Statistics01randomforests}.
+Semantic segmentation is the process of assigning a class label to each pixel of the image. This is an important problem in computer vision for understanding the underlying information in an image. While classical segmentation techniques group together the pixels based on low level features, semantic segmentation adopts a supervised learning approach. There are two common methods for semantic segmentation. The first makes use of low level features and combines them with a learning framework to obtain higher level labels. The second approach is to use low level cues, rather than features, with random fields and learn a unified framework using low level segmentation. In this paper, we present a novel approach that improves upon a prior distribution obtained using a bag of visual words over mean-shift segments by propagating labels at the discretion of a trained Random Forest \cite{Statistics01randomforests}.
 
 This paper is structured as follows: Section \ref{sec:Related} talks about the related work. Section \ref{sec:Problem} discusses the problem statement. Section \ref{sec:Proposed} discusses our method for semantic image segmentation. We present the experiments conducted and the results obtained in section \ref{sec:Exp}. Finally we summarize our conclusions in section \ref{sec:Conclusion}.
 \label{sec:Intro}
 
 \subsection{Related Work}
 \label{sec:Related}
-One of the first approaches for semantic segmentation utilized an Implicit Shape Model%TODO @Adwait
-\cite{Leibe04combinedobject}. 
-Another approach used a generative model based on the bag of words representation for such simultaneous recognition and segmentation \cite{cao:spatially}.  
+One of the first approaches for semantic segmentation utilized an Implicit Shape Model \cite{Leibe04combinedobject} that automatically segments the object as a result of categorization .
+Another approach used a generative model based on the bag of words representation for simultaneous recognition and segmentation \cite{cao:spatially}.  
 Furthermore, a method based on some of these approaches for scoring low-level patches according to their class relevance and propagating these posterior probabilities to pixels has been developed \cite{conf/bmvc/CsurkaP08}.
 
 Several recent approaches use random fields to incorporate local cues without implementing low level segmentation. For example, \cite{Kumar:2005:OC:1068507.1068889} proposes a Bayesian method for combining top-down and bottom-up cues. Conditional random fields have also been used for this purpose \cite{Kumar:2005:HFF:1097115.1097790} \cite{Richard04multiscaleconditional}. Finally, Textonboost \cite{Shotton06textonboost:joint} is an approach to learning a discriminative model of object classes incorporating appearance, shape and context information efficiently. We suggest \cite{SegmentRegionsParts} for a review of other semantic image segmentation approaches.
 
-A third class of algorithms propagate labels given a prior estimate of the segmentation. One of the recent approaches, that inspired this work, propagates labels on a graph of connected superpixels whose weights correspond to an integrated distance metric in feature space.
+Another class of algorithms propagate labels given a prior estimate of the segmentation. One of the recent approaches, that inspired our work, propagates labels on a graph of connected superpixels whose weights correspond to an integrated distance metric in feature space.
 
 %------------------------------------------------------------------------------------------
 
 \subsection{Problem Definition}
 \label{sec:Problem}
-Semantic segmentation requires assigning a label $l \in L$ to each pixel in an image, where $L$ is a set of pre decided labels. In the supervised version of this problem we are given a collection of hand labeled training images and are required to predict labels for every pixel in a new test image. 
+Semantic segmentation requires assigning a label $l \in L$ to each pixel in an image, where $L$ is a set of pre-decided labels. In the supervised version of this problem we are given a collection of hand-labeled training images and are required to predict labels for every pixel in a new test image. 
 
 %------------------------------------------------------------------------------------------
 \section{Proposed Method}
 \label{sec:Proposed}
 \subsection{Intuition}
 \label{sec:intuition}
-To perform semantic segmentation, one normally wants to divide the image into regions based on image statistics and then categorize these regions into semantic classes. If one uses big regions, object boundaries are often missed and the segmentation output is smudged. On the other hand, if small regions are used, features within these are too noisy to perform reliable classification resulting in low accuracy. A good trade off between the two is hard to achieve. Therefore, an approach that makes uncertain decision on big patches and less complex decisions on small patches should yield good results. 
+To perform semantic segmentation, one normally wants to divide the image into regions based on image statistics and then categorize these regions into semantic classes. If one uses big regions, object boundaries are often missed and the segmentation output is smudged. On the other hand, if small regions are used, features within these regions are too noisy to perform reliable classification resulting in low accuracy. A good trade off between the two is hard to achieve. Therefore, an approach that makes uncertain decisions on big patches and less complex decisions on small patches should yield good results. 
 
 \subsection{Our Approach}
-Based on the above intuition and the idea of label propagation we propose a two phase algorithm. In the first step we process big patches generated by mean-shift segmentation to obtain $P(label | feature)$. In the second step, we decide whether two small patches should have the same label or not and propagate labels based on this decision. This second step corrects for the fact that the prior acting on large patches may miss small details. Further, the second step is less prone to noise because the task of deciding whether to propagate a label reduces to binary classification instead of $|L|$ classification.
+Based on the above intuition and the idea of label propagation we propose a two phase algorithm. In the first phase we process big patches generated by mean-shift segmentation to obtain $P(label | feature)$. In the second phase, we decide whether two small patches should have the same label or not and propagate labels based on this decision. This second step corrects for the fact that the prior acting on large patches may miss small details. Further, the second step is less prone to noise because the task of deciding whether to propagate a label reduces to binary classification instead of $|L|$ classification.
+
 \subsubsection{Features}
 \paragraph{Textons}
 Textons represent texture information.
@@ -79,7 +79,7 @@ representation gives one word per image pixel and is called the TextonMap
 or WordMap. %TODO: Insert figure
 A bag of words histogram is computed for each superpixel or segment by
 counting word occurrences.
-Texture information is more reliable over large regions because of inseparability of data at small scales.
+Texture information is more reliable over large regions because of low inter-class at small scales.
 We used the filter bank and dictionary provided by \cite{malisiewicz-cvpr08}.
 
 \paragraph{Color}
@@ -87,86 +87,82 @@ Color information is important for separating classes that lack texture or
 have similar texture.
 We use the per channel color histogram, color mean and standard deviation
 from the HSV color space.
-Color information is more reliable at small scales because large regions show too much intra class variability.
+In contrast to texture features, color information is more reliable at small scales because large regions show too much intra-class variability.
 
 \subsubsection{Baseline}
 \label{baseline}
-Label propagation requires an initial estimate of the semantic class of each pixel. In our approach we further require an estimate of this classifications' uncertainty. This initial estimate is based on big mean-shift patches using texture information. This follows from our intuition of looking at large patches in the first phase and that textons are more reliable over large patches.
-\paragraph{Training} Each training image is divided into segments using
-Mean-shift based EDISON \cite{meanshift}.
-A normalized texton histogram (bag of words representation) is computed for each segment.
-The ground truth label for each segment is selected by taking a majority vote over per pixel ground truth labels.
+Label propagation requires an initial estimate of the semantic class of each pixel. In our approach we further require an estimate of this classifications' uncertainty. This initial estimate is based on large mean-shift patches using texture information. This follows from our intuition of looking at large patches in the first phase and that textons are more reliable over large patches.
 
-\paragraph{Testing} For each test image, mean-shift segments and normalized texton histograms of the same are computed.
-A new model is trained from the k-most similar images to the test image. Similarity here is measured by euclidean distance between GIST \cite{Gist} feature representations of images. Not training on the entire training set gives a great boost to test accuracy.
-The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the K nearest segments from the training data.
+To obtain training data for the baseline segmentation, each training image is divided into segments using Mean-shift based EDISON \cite{meanshift}.
+Then, a normalized texton histogram (bag of words representation) is computed for each segment and the ground truth label for each segment is selected by taking a majority vote over per pixel ground truth labels.
+
+For each test image, mean-shift segments and normalized texton histograms are computed.
+A new model is then trained from the $k$-most similar images to the test image. Similarity here is measured by euclidean distance between GIST \cite{Gist} feature representations of images.  We train on only the $k$-NN because, as demonstrated in section \ref{sec:trainAll}, not training on the entire training set gives a great boost to test accuracy.
+The probability distribution $P(Label | feature)$ is computed by counting the occurrences of each label in the $k$-nearest segments from the training data.
 This distribution is copied to each pixel in the segment and a per pixel distribution and entropy is thus available.
 
 \subsubsection{Label Propagation}
-Label propogation will now try to improve upon the baseline (or prior), by training a random forest that predicts whether two super pixels share the same label and propagating labels whenever this prediction contradicts the baselines output.
-This requires that the image be divided into small regions (super pixels) and also requires the construction of a super pixel connectivity graph, the edges of which will be queries given to the random forest.
+Label propagation will now try to improve upon the baseline (or prior), by training a random forest that predicts whether two superpixels share the same label and propagates labels whenever this prediction contradicts the baseline's output.
+This procedure requires that the image be divided into small regions (superpixels) and also requires the construction of a superpixel connectivity graph, the edges of which will be queries given to the random forest.
+
 \paragraph{Superpixels and connectivity graph}
 \label{sec:labprop}
 Each image is divided into superpixels at two different scales such that
-the a coarse superpixels align with corresponding finer ones.
-This is achieved by using \cite{supix}.
-A graph is constructed where each fine superpixel is connected to its
+the coarse superpixels align with corresponding finer ones.
+This is achieved by using the superpixel segmentation algorithm provided by \cite{supix}.
+We then construct a graph is constructed where each fine superpixel is connected to its
 direct neighborhood and to all fine superpixels inside the same
 coarse superpixel.
 The later of these connections ensure that we have more long range connections. This is important because some parts of objects are hard to classify as corresponding to that object class without having observed the other parts.
 
 \paragraph{Training the classifier}
-We train a classifier that decides whether or not two superpixels should
+We train a classifier that decides whether or not two connected superpixels should
 have the same label.
-We assign a label for each superpixel by taking the majority vote over
-ground truth labels of each pixel in it.
-Each edge in the superpixel graph of a training image is considered a
-positive sample if corresponding superpixels have the same label,
-negative other wise.
-This training data is collected over the k nearest neighbors to the test
-image and used to train a random forest.
-If done this way, we have too many positive samples and too few negatives
-and discriminative learning fails to separate them.
-We resample the training data to ensure a low enough ratio between these
-before training our classifier.
-Note that we train a new random forest for every test image.
-Texton and color features are concatenated to describe each superpixel.
-Further, each edge in the graph is described by the absolute difference of
-their features.
+To train the classifier, we first assign a label for each superpixel by taking the majority vote over the ground truth labels of each pixel in it.
+Then , each edge in the superpixel graph of a training image is considered a
+positive sample if corresponding superpixels have the same label, and a negative sample if other wise.
+As features we use the absolute difference between the Texton and color features of the superpixel pairs.
+This training data is collected over the $k$-nearest neighbors to the test
+image and used to train the random forest.
+
+However, because of the structure of the superpixel connectivity graph, there are many more positive samples than negatives samples.
+This causes discriminative learning to have difficulty separating the classes.
+To alleviate this problem, we subsample the positive data points to obtain a more balanced ratio between classes before training our classifier.
+
+Note that we train a new random forest for every test image as it leads to higher performance due to increased separability of data, as shown in section \ref{sec:trainAll}.
 
 \paragraph{Propagating Labels}
-The baseline algorithm provides a probability for each pixel label pair. Averaged over all pixels within a superpixel we obtain the distribution for each superpixel.
-The entropy for each superpixel can be calculated from this distribution.
+The baseline algorithm provides a probability for each pixel label pair. By averaging over all pixels within a superpixel we obtain the distribution for each superpixel.
+Then, we calculate the entropy for each superpixel from this distribution.
 The label with highest probability is treated as the label assigned to
-each pixel.
-A majority vote over this assignment is used to determine the label for
+each pixel and a majority vote over this assignment is used to determine the label for
 each superpixel.
-When the baseline is inconsistent with the prediction of our random
-forest, we propagate labels from the superpixel with lower entropy to
+When this baseline label, for a pair of superpixels, is inconsistent with the prediction of our random forest, we propagate labels from the superpixel with lower entropy to
 the superpixel with higher entropy.
-This propagation is run from the lowest entropy superpixel to the highest
-entropy superpixel propagating labels to superpixels further down in
-this sorted list.
+To perform this propagation, we iterate through a list of superpixels, sorted by their entropy, in order to propagate labels from lower entropy superpixels to higher entropy superpixels.
 
-\subsection{Other Attempted Methods}
+\paragraph{Why Random Forest?} 
+The binary classification task for label propogation proved to be very challenging inspite of being a 2 class problem. We experimented with SVMs, Adaboost and Random forests and chose Random forests as they gave best results. The advantage of using Random Forests or Adaboost over SVMs is that the former perform feature selection. Such feature selection is important for this data because just using SVMs with color or textons was ineffective and simply concatenating them also did not give good results. The next section discusses more about these alternatives and why we used random forests.
+
+\subsection{Attempted Methods}
+
 \subsubsection{HMLN}
-Markov Logic Networks \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} attach weights to first-order logic formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{wang2008hybrid} are an extension that allow for continuous properties to appear as features. Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems such as semantic segmentation which involve complexity and noise. Our initial approach till the mid term report was based on an implementation of this tool called Alchemy \cite{alchemy}. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset. We also attempted to use the software ProbCog \cite{progcog}, however the software did not allow continuous properties to appear as features and we had to abandon the approach. 
+The first approach we tried involved Markov Logic Networks, \cite{Domingos06unifyinglogical} \cite{Richardson06markovlogic} which attach weights to first-order logic formulae and view them as templates for building Markov Networks. Hybrid Markov Logic Networks (HMLNs)\cite{wang2008hybrid} are an extension that allow for continuous properties to appear as features. Hybrid Markov Logic Networks combine logic and probabilistic inference techniques. This provides a powerful tool for solving high level problems, such as semantic segmentation, that involve complexity and noise. The approach we pursued until the mid term report was based on an implementation of a tool called Alchemy \cite{alchemy}. This attempt, however, failed due to bugs in the implementation and memory issues causing lack of scalability to our dataset. We also attempted to use the software ProbCog \cite{progcog}, however the software did not allow continuous properties to appear as features and we had to abandon the approach. 
 
 \subsubsection{SVM for Label Propagation}
-We experimented with SVM's in place of random forests and found them to not converge when training on the entire dataset. Training on the nearest neighbors of a test image lead to convergence but the results were too bad to be used. We experimented with linear, quadratic and radial basis function kernels.
+We also experimented with SVM's in place of random forests but found that they could not separate our data well, leading to either low specificity and high recall or vice versa. The separability of the data did not improve regardless of whether we used a linear, quadratic and radial basis function kernel.
 
 \subsubsection{Conditional Random Fields}
 Conditional random fields \cite{lafferty2001conditional} are undirected graphical models that can perform inference to compute marginal distributions of label probabilities given features.
 We attempted to use these for generating baseline segmentations using the Ising model with each pixel as a node.
-These, however, are computationally expensive as they have loops.
 We experimented with pseudo log likelihood training and loopy belief propogation using the UGM toolbox\cite{UGMSoftware}.
 The maximum aposteriori estimate of label assignments to image pixels always labeled each pixel as Grass.
-This was due to a very high unary potential learnt for the corresponding node. 
+This was due to a very high unary potential learned for the corresponding node. 
 We did not pursue this approach due to very high computational requirements.
-Furthermore, loopy belief propogation did not converge after more than 6 hours of training on a small subset of the images.
+Furthermore, loopy belief propagation did not converge after more than 6 hours of training on a small subset of the images.
 
 \subsection{Adaboost}
-Another classifier that we tried was Adaboost \cite{Freund96experimentswith}. Adaboost is well suited for our application because, if each weak classifier deals with only a subset of the features, it will perform feature selection. The results on the classification task were, however, not significantly different from Random Forests. This may be because feature selection is also the intuition behind random forests as each tree in the forest acts on a random subset of the feature set. Furthermore, the run time for training and testing was significantly higher when using Adaboost and infeasible given the size of our dataset and computational resources.
+Another classifier that we tried was Adaboost \cite{Freund96experimentswith}. Adaboost is well suited for our application because, if each weak classifier deals with only a subset of the features, it will perform feature selection. The results on the classification task were, however, not significantly different from Random Forests. This may be because feature selection is also the intuition behind random forests as each tree in the forest acts on a random subset of the feature set. Furthermore, the run time for training and testing was significantly higher when using Adaboost and infeasible given the size of our dataset and the computational resources available.
 %------------------------------------------------------------------------------------------
 
 
@@ -175,56 +171,54 @@ Another classifier that we tried was Adaboost \cite{Freund96experimentswith}. Ad
 \label{sec:Exp}
 
 We tested our algorithm on the MSRC V1 Dataset \cite{MSRC}, which we randomly split into 120 test images and 120 training images.
-We tested our algorithm to quantify the improvement over the prior segmentation that the label propagation method provided. We also examined the performance gain from training both the random forest and bag of words model on the $k$-NN versus training on all the images.
+We tested our algorithm to quantify the improvement over the prior segmentation that the label propagation method provided. We also examined the performance gain from training both the random forest and bag of words model on the $k$-most similar training images versus training on all the images.
 
 \subsection{Cross Validation}
 \label{sec:cross}
 
 To optimize our algorithm we performed leave-one-out cross validation. We chose this particular style of cross-validation because our algorithm requires retraining the random forest for each test image. Thus, all forms of $k$-fold cross validation reduce to leave-one-out validation for our method.
 
-The cross validation parameters that needed to be optimized were $k_{bag}$ for the $k$-nearest-neighbor images from which the bag of words model is computed, $k_{hist}$ for the $k$-nearest-neighbor Texton histograms from which the distribution $P(Label | feature)$ is generated, $k_{forest}$ for the $k$-nearest-neighbors used by the random forest, and a ratio parameter used to balanced the number true and false edges on the connectivity graph. 
+The cross validation parameters that needed to be optimized were $k_{bag}$ - the number of nearest-neighbor images from which the bag of words model is computed, $k_{hist}$ - the number of nearest-neighbor Texton histograms from which the distribution $P(Label | feature)$ is generated, $k_{forest}$ - the number of nearest-neighbor images used to train the random forest, and a ratio parameter used to balanced the number of true and false edges on the connectivity graph. 
 
-Due to a lack of computational resources, optimizing these four parameters simultaneously proved intractable. Therefore, the we assumed that the parameters for the bag-of-words model and the random forest affect the final segmentation independently. This assumption is supported by the relative magnitudes by which the parameters affect the accuracy of the semantic segmentation
+Due to a lack of computational resources, optimizing these four parameters simultaneously proved intractable. Therefore, we assumed that the parameters for the bag-of-words model and the random forest affect the final segmentation independently. We further separated the cross validation for $k_{forest}$ and the ratio parameter to decrease computational time. This assumption is supported by the relative magnitudes by which the parameters affect the accuracy of the semantic segmentation.
 
 \begin{figure}[htb]
 \centering
 	\begin{subfigure}[t]{0.33\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/pickK3}
-		\parbox{.95\textwidth}{\caption{Accuracy versus bag of words model parameters obtained from leave-one-out cross validation. The parameters that maximized the accuracy were $k_{imgs} = 11$, and $k_{histo} = 3$. \label{fig:Kbag} }}
+		\parbox{.95\textwidth}{\caption{Accuracy versus bag of words model parameters. The parameters that maximized the accuracy were $k_{imgs} = 11$, and $k_{histo} = 3$. \label{fig:Kbag} }}
 			\end{subfigure}
 	\begin{subfigure}[t]{0.33\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/kforest}
-		\parbox{0.95\textwidth}{\caption{Accuracy versus $k_{forest}$ obtained from leave-one-out cross validation. $k_{forest} = 7$ was chosen. \label{fig:Kforest}}}
+		\parbox{0.95\textwidth}{\caption{Accuracy versus $k_{forest}$. $k_{forest} = 7$ was chosen. \label{fig:Kforest}}}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.33\textwidth}
 		\centering
 		\includegraphics[width = \textwidth]{./img/ratio}
-		\parbox{0.95\textwidth}{\caption{Accuracy versus true/false points ratio obtained from leave-one-out cross validation. A ratio  of 0.8 was chosen. \label{fig:ratio}}}
+		\parbox{0.95\textwidth}{\caption{Accuracy versus true/false points ratio. A ratio  of 0.8 was chosen. \label{fig:ratio}}}
 	\end{subfigure}
-	\caption{}
+	\caption{Leave-one-out cross validation for parameter selection}
 \end{figure}
 
 Figure \ref{fig:Kbag} shows the accuracy of the final segmentations of the validation images with respect to the bag of words model parameters. 
 For this test, the parameters for the random forest, $k_{forest}$ and ratio, were set to 7 and 0.7 respectively. 
-The cross validation procedure found that $k_{bag} = 15$, and $k_{hist} = 7$ maximize the accuracy of the segmentation on the training set.
+The cross validation procedure found that $k_{bag} = 11$, and $k_{hist} = 3$ maximize the accuracy of the segmentation on the training set.
 
 The next parameter we validated was the number of nearest neighbor images on which to train the random forest, $k_{forest}$. 
-	Figure \ref{fig:Kforest} shows the result of the leave-one-out cross validation on this parameter. The accuracy is clearly maximized at $k_{forest} = 7$. The overall range of the accuracy results is quite small, $0.1\%$. This is because the segmentation result is primarily obtained via the bag of words prior, while the random forest on propagates labels. Therefore, varying the parameters for the random forest will only have a small, but significant effect on the overall accuracy.
+	Figure \ref{fig:Kforest} shows the result of the leave-one-out cross validation on this parameter. The accuracy is maximized at $k_{forest} = 7$. The overall range of the accuracy results is quite small, $0.1\%$. This is because the segmentation result is primarily obtained via the bag of words prior, while the random forest only propagates labels. Therefore, varying the parameters for the random forest will only have a small, but significant effect on the overall accuracy.
 
 The last varied parameter was the ratio of sampled true points to false points used in the training data for the random forest.
 The ratio parameter is of vital importance, as the graph structure proposed in section \ref{sec:labprop} results in a far greater number of same-labeled superpixel pairs than differently-labeled superpixel pairs.
-Without this parameter, all tested classifiers tended to fit to the positive labeled points almost exclusively, resulting in high precision and recall but very low specificity. 
-However, for our application low specificity is extremely undesirable, as a false-positive, resulting in the classifier propagating a label when it should not, can only degrade the segmentation. By randomly sampling the true points in order to balance the number of trues and falses, all the classifiers we tested, were able to more easily find a decision boundary with high accuracy that did not compromise recall too much.  
 From the result of cross-validation on this parameter, shown in figure \ref{fig:ratio}, we conclude that a ratio of 0.8 is ideal.
 
 
 \subsection{Experimental Setup}
 
-Once we obtained the optimal parameters via the procedure described above, we proceeded to test the segmentation algorithm on the 120 images in the test set. We also compare the performance of this approach when training the random forest and bag of words model on the $k-$most similar training images (based on GIST feature representation) versus training on all of them.
+Once we obtained the optimal parameters via the procedure described above, we proceeded to test the segmentation algorithm on the 120 images in the test set. We also compare the performance of this approach when training the random forest and bag of words model on the $k-$most similar training images (based on GIST feature representation) versus training on all of the test images.
 
-Our testbed process iterated through all images in the test set, obtained their prior, and final, post-propagation, segmentations. Then, the process calculated accuracy scores and confusion matrices, across all images, for the prior and the final segmentations and a confusion matrix for the changed superpixels across all images. 
+Our testbed process iterated through all images in the test set, obtained their prior, and post-propagation segmentations. Then, the process calculated accuracy scores and confusion matrices, across all images, for the prior and the final segmentations and a confusion matrix for the changed superpixels across all images. 
 
 \subsection{Observations}
 \label{sec:Observations}
@@ -328,7 +322,9 @@ Our testbed process iterated through all images in the test set, obtained their 
 	\label{fig:result}
 \end{figure}
 
-Figure \ref{fig:result} show some typical results from the segmentation algorithm. In the first row of images, one can see that the error near the hind-legs of the cow on the left, in which a portion of the cow was labeled grass, was successfully fixed using our algorithm. Additionally, the erroneous tree label that appears on the right side of the image is partially replaced by cow and tree labels. However, in this example there is an entire cow mislabeled as a building (in red). Our algorithm is not able to correct a mistake such as this, because it can only propagate existing labels and cannot assign labels by inferring which label would be most probable given the label of the lower entropy superpixel. A more extreme example of this issue can be seen in figures \ref{fig:orig_plane} to \ref{fig:changed_plane}. In these images, one can see that the plane is completely miss labeled as void. This is a consequence of void labels existing in many disparate regions of feature space, as voids can look like anything. Therefore, they are easily selected by the $k$--NN search over visual word histograms.
+Figure \ref{fig:result} show some typical results from the segmentation algorithm. In the first row of images, one can see that the error near the hind-legs of the cow on the left, in which a portion of the cow was labeled grass, was successfully fixed using our algorithm. Additionally, the erroneous tree label that appears on the right side of the image is partially replaced by cow and tree labels. However, in this example there is an entire cow mislabeled as a building (in red). Our algorithm is not able to correct a mistake such as this, because it can only propagate existing labels and cannot assign labels by inferring which label would be most probable given the label of the lower entropy superpixel. A more extreme example of this issue can be seen in figures \ref{fig:orig_plane} to \ref{fig:changed_plane}. In these images, one can see that the plane is completely mislabeled as void. This is a consequence of void labels existing in many disparate regions of feature space, as voids can look like anything. Therefore, they are often selected by the $k$--NN search over visual word histograms.
+
+Figures \ref{fig:orig_car} to \ref{fig:changed_car}, show a good result of the label propagation technique. In the prior segmentation, the grill of the car is mislabeled as void and grass. Our label propagation technique corrects some of these miss classifications. It also correctly adds car labels to the wind screen and the car's left A pillar.
 
 \begin{figure}[htb]
 \centering
@@ -353,7 +349,7 @@ Figure \ref{fig:result} show some typical results from the segmentation algorith
 
 The overall effect of our label propagation method can be seen in figure \ref{fig:confuse}. This figure shows the confusion matrices for the final segmentation (\ref{fig:confuse_final}), the prior segmentation (\ref{fig:confuse_prior}), and the changed superpixels (\ref{fig:confuse_change}). The confusion matrices for the final and prior segmentations show how, across all test images, our algorithm classified pixels, versus how they are classified in the ground truth images. Specifically, the value  of the $i,j^\textrm{th}$ element in the matrix corresponds to the ratio of instances where our classifier labeled pixels as $j$, when they are labeled $i$ in the ground truth image over the total number of appearances of the $i^\textrm{th}$ label in the dataset. Ideally, this matrix should be diagonal, as this would correspond to perfect agreement between the produced semantic segmentations and the ground truth images. As one can see in the figure the confusion matrices calculated from the result of our test are, for the most part diagonal. 
 
-We can then subtract these confusion matrices to arrive at the confusion matrix for the changed labels. The light elements in this confusion matrix correspond to label co-occurrences of ground truth and final labelings that have increased, while the black regions denote co-occurrences that have decreased. This confusion matrix shows the increases in correctly labeled classes as white elements along its diagonal. It is important to note the many negative elements in the first column of the matrix. These correspond to decreases in the number of labels classified as void in the final segmentations versus the prior segmentations.
+We can then subtract the non-normalized prior confusion matrix from the final confusion matrix to arrive at the confusion matrix for the changed labels. This confusion matrix shows the increases in correctly labeled classes as white elements along its diagonal. It is important to note the many negative elements in the first column of the matrix. These correspond to decreases in the number of labels classified as void in the final segmentations versus the prior segmentations.
 
 From these confusion matrices we can calculate the accuracy of the prior segmentation, the final segmentation, and the accuracy of the changed superpixels. This metric is computed via the following formula:
 
@@ -361,18 +357,20 @@ From these confusion matrices we can calculate the accuracy of the prior segment
 	accuracy = \frac{\mathrm{trace}(A)}{n}
 \end{equation}
 
-Where $A$ is a confusion matrix and $n$ is the total number of pixels across all images. We found that the accuracy of our prior segmentations, across all images, was $56.40\%$ while the accuracy of our final segmentations was $56.50\%$. Therefore the improvement in our accuracy was $0.17\%$. This corresponds to a net of roughly 60 superpixels changed correctly across all the test images, a reasonable number considering that some of the prior segmentations do not need improvements.
+Where $A$ is a confusion matrix and $n$ is the total number of pixels across all images. We found that the accuracy of our prior segmentations, across all images, was $56.40\%$ while the accuracy of our final segmentations was $56.50\%$. Therefore the improvement in our accuracy was $0.18\%$. This corresponds to a net of roughly 60 superpixels changed correctly across all the test images.
 
-Another experiment we conducted compared the performance a bag pf words model trained on all the images in the training set to bag of words trained on the $k$-NN images (in terms of distance in GIST feature space) in the training set. The accuracy of the prior segmentation when using all images for training was $44.44\%$, a decrease of $21.2\%$ compared to accuracy of the prior obtained by on the $k$-NN images $(56.40\%)$. The decrease in segmentation accuracy that results from training on all the images stems from the inseparability of all the classes in the feature space. However, when just the $k$-NN are considered, the number of classes that must be separated drops significantly, from 14 to often just 2 or 3, because the $k$-NN images are mostly comprised of the same few labels as the test image. However, one potential downside of this approach is that if a label contained in the test image does not appear in the $k$-NN images, the produced semantic segmentation can never contain this label. In practice, this does not appear to be a problem, as evidenced by the large improvement in accuracy obtained by training on the $k$-NN.
+\subsubsection{Training on all Images}
+\label{sec:trainAll}
+Another experiment we conducted compared the performance a bag of words model trained on all the images in the training set to bag of words trained on the $k$-NN images (in terms of distance in GIST feature space) in the training set. The accuracy of the prior segmentation when using all images for training was $44.44\%$, a decrease of $21.2\%$ compared to accuracy of the prior obtained by on the $k$-NN images $(56.40\%)$. The decrease in segmentation accuracy that results from training on all the images stems from the inseparability of all the classes in the feature space. However, when just the $k$-NN are considered, the number of classes that must be separated drops significantly, from 14 to often just 2 or 3, because the $k$-NN images are mostly comprised of the same few labels as the test image. However, one potential downside of this approach is that if a label contained in the test image does not appear in the $k$-NN images, the produced semantic segmentation can never contain this label. In practice, this does not appear to be a problem, as evidenced by the large improvement in accuracy obtained by training on the $k$-most similar images.
 
-We performed a similar test to compare the performance of a random forest trained on all the images in the training set versus a random forest trained on the $k$-NN images in the training set. Again, the performance of our segmentation algorithm was reduced after training a classifier on the entire training dataset. In fact, in this case the random forest trained on all the images degraded the prior, resulting in a $.0530 \%$ decrease in accuracy. This is because the decision boundaries that separate superpixels that share a label and superpixels that do not share labels, may overlap for different label pairs. By training on the $k$-NN we greatly reduce the number of labels the classifier must consider, and therefore increase the separability of the data
+We performed a similar test to compare the performance of a random forest trained on all the images in the training set versus a random forest trained on the $k$-NN images in the training set. Again, the performance of our segmentation algorithm was reduced after training a classifier on the entire training dataset. In fact, in this case the random forest trained on all the images degraded the prior, resulting in a $.0530 \%$ decrease in accuracy. This is because the decision boundaries that separate superpixels that share a label and superpixels that do not share labels, may overlap for different label pairs. By training on the $k$-NN we greatly reduce the number of label pairs the classifier must consider, and therefore increase the separability of the data
 %------------------------------------------------------------------------------------------
 
 \section{Conclusion}
 \label{sec:Conclusion}
-We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods (eg. \cite{urtasun}) in this field out perform the results that we have presented. One reason for the bad results could be
+We have experimented with a label propagation method for semantic segmentation and presented a very simple segmentation algorithm for obtaining a prior. The results, however, show that our approach cannot fix major errors in the prior. A better prior may certainly give much better results. State of art methods (eg. \cite{urtasun}) in this field out perform the results that we have presented. One reason for the bad results could be that random forests and the baseline use aggregates of local statistics for predicting semantics or relative semantics between image patches. There is a chance that both approaches are right at the same places and wrong at the same places too and in these cases label propagation will not help. Therefore, even though our random forest achieves precision, recall and specificity values $\ge 80\%$, we do not make much progress in terms of improving the baseline.
 
-Random forests and the baseline use aggregates of local statistics for predicting semantics or relative semantics between image patches. There is a chance that both approaches are right at the same places and wrong at the same places too and in these cases label propagation will not help. Therefore, even though our random forest achieves precision, recall and specificity values $\ge 80\%$, we do not make much progress in terms of improving the baseline.
+Future work along these lines could improve results by using a more sophisticated baseline. Further, the feature description for each super pixel could involve a small neighborhood beyond the super pixel itself and use descriptors such as Histogram of Oriented Gradients \cite{HOG} to enrich the feature space representation.
 
 
 
